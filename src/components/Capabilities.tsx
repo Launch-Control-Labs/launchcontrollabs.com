@@ -42,29 +42,28 @@ export default function Capabilities() {
             gap: '0',
           }}
         >
-          {capabilities.map((cap, i) => (
+          {capabilities.map((cap) => (
             <div
               key={cap.number}
               style={{
                 display: 'grid',
-                gridTemplateColumns: '2rem 1fr',
-                gap: 'var(--space-5)',
+                gridTemplateColumns: '3.5rem 1fr',
+                gap: 'var(--space-4)',
                 alignItems: 'start',
-                padding: 'var(--space-5) 0',
-                borderTop:
-                  i === 0 ? '1px solid var(--border)' : undefined,
-                borderBottom: '1px solid var(--border-subtle)',
+                padding: 'var(--space-6) 0',
+                borderTop: '1px solid var(--border)',
                 maxWidth: '640px',
               }}
             >
-              {/* Number */}
+              {/* Number — large and amber */}
               <span
                 style={{
-                  fontSize: '0.6rem',
-                  letterSpacing: '0.1em',
-                  color: 'var(--text-muted)',
-                  paddingTop: '0.2rem',
-                  fontVariantNumeric: 'tabular-nums',
+                  fontSize: '1.8rem',
+                  fontWeight: 300,
+                  color: 'var(--amber)',
+                  lineHeight: 1,
+                  fontFamily: 'var(--font-mono)',
+                  letterSpacing: '-0.02em',
                 }}
               >
                 {cap.number}
@@ -74,10 +73,11 @@ export default function Capabilities() {
               <div>
                 <p
                   style={{
-                    fontSize: '0.95rem',
-                    fontWeight: 500,
+                    fontSize: '1rem',
+                    fontWeight: 600,
                     color: 'var(--text)',
                     marginBottom: 'var(--space-2)',
+                    letterSpacing: '-0.02em',
                   }}
                 >
                   {cap.title}
@@ -98,7 +98,7 @@ export default function Capabilities() {
                   style={{
                     fontSize: '0.85rem',
                     color: 'var(--text-dim)',
-                    lineHeight: 1.6,
+                    lineHeight: 1.65,
                   }}
                 >
                   {cap.description}

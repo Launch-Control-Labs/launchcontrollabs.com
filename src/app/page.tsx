@@ -13,9 +13,29 @@ export default function Home() {
 
       <main>
         <Hero />
+
+        <div className="page">
+          <hr className="section-divider" />
+        </div>
+
         <MissionNarrative />
+
+        <div className="page">
+          <hr className="section-divider" />
+        </div>
+
         <MissionCards />
+
+        <div className="page">
+          <hr className="section-divider" />
+        </div>
+
         <Capabilities />
+
+        <div className="page">
+          <hr className="section-divider" />
+        </div>
+
         <CompanyTicker />
         <Brief />
       </main>

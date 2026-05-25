@@ -4,24 +4,28 @@ import { useEffect, useRef } from 'react'
 
 const phases = [
   {
+    number: '01',
     label: 'THE PROBLEM',
     content:
-      "Traditional accounting software couldn't categorize transactions intelligently. Manual review took 4+ hours daily.",
+      'Traditional accounting software couldn\'t categorize transactions intelligently. Firms spent 4+ hours daily on manual review and reconciliation.',
   },
   {
+    number: '02',
     label: 'THE APPROACH',
     content:
-      'We built an AI categorization engine, anomaly detection system, and natural language reporting layer.',
+      'Custom AI categorization engine. Anomaly detection. Natural language reporting. Built to replace 80% of manual bookkeeping workflows.',
   },
   {
+    number: '03',
     label: 'THE BUILD',
     content:
-      'Next.js + Python ML pipeline + custom fine-tuned models. 14 weeks. Shipped weekly.',
+      '14 weeks. Next.js frontend, Python ML pipeline, custom fine-tuned models. Weekly ship cadence with live client feedback loops.',
   },
   {
+    number: '04',
     label: 'THE OUTCOME',
     content:
-      'SaaS Product of the Week on Product Hunt. Multiple design awards. $2M ARR year one.',
+      'Multiple design awards. SaaS Product of the Week on Product Hunt. Active user base across accounting firms.',
   },
 ]
 
@@ -30,7 +34,6 @@ export default function MissionNarrative() {
   const phaseRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    // Dynamically import GSAP to avoid SSR issues
     let ctx: { revert: () => void } | null = null
 
     const init = async () => {
@@ -39,19 +42,20 @@ export default function MissionNarrative() {
       gsap.registerPlugin(ScrollTrigger)
 
       ctx = gsap.context(() => {
-        phaseRefs.current.forEach((el) => {
+        phaseRefs.current.forEach((el, i) => {
           if (!el) return
           gsap.fromTo(
             el,
-            { opacity: 0, y: 28 },
+            { opacity: 0, y: 32 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.7,
+              duration: 0.8,
+              delay: i * 0.05,
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: el,
-                start: 'top 82%',
+                start: 'top 85%',
                 toggleActions: 'play none none none',
               },
             }
@@ -73,30 +77,27 @@ export default function MissionNarrative() {
         {/* Section label */}
         <p className="section-label">FEATURED MISSION · MSN-001</p>
 
-        {/* Outcome first */}
+        {/* Headline */}
         <h2
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
+            fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)',
             fontWeight: 500,
             color: 'var(--text)',
-            marginBottom: 'var(--space-8)',
-            maxWidth: '600px',
+            marginBottom: 'var(--space-3)',
+            maxWidth: '650px',
             lineHeight: 1.35,
+            letterSpacing: '-0.03em',
           }}
         >
-          AI-Powered Accounting Platform —{' '}
-          <span style={{ color: 'var(--amber)' }}>$2M ARR in Year One</span>
+          AI-Powered Accounting Platform — Design Awards · Product Hunt SaaS of the Week
         </h2>
 
         {/* Link to live product */}
         <p
-          className="text-dim"
           style={{
-            fontSize: '0.65rem',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            marginBottom: 'var(--space-7)',
+            fontSize: '0.7rem',
+            marginBottom: 'var(--space-8)',
           }}
         >
           <a
@@ -104,12 +105,19 @@ export default function MissionNarrative() {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              borderBottom: '1px solid var(--border)',
+              color: 'var(--amber)',
+              borderBottom: '1px solid transparent',
               paddingBottom: '1px',
-              transition: 'color 0.2s',
+              transition: 'border-color 0.2s',
             }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.borderBottomColor = 'var(--amber)')
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.borderBottomColor = 'transparent')
+            }
           >
-            gettalisman.com ↗
+            gettalisman.com →
           </a>
         </p>
 
@@ -118,7 +126,7 @@ export default function MissionNarrative() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 'var(--space-8)',
+            gap: 'var(--space-7)',
           }}
         >
           {phases.map((phase, i) => (
@@ -127,11 +135,31 @@ export default function MissionNarrative() {
               ref={(el) => {
                 phaseRefs.current[i] = el
               }}
-              style={{ maxWidth: '580px' }}
+              style={{
+                maxWidth: '600px',
+                opacity: 0,
+              }}
             >
+              {/* Phase number */}
+              <span
+                style={{
+                  fontSize: '2.5rem',
+                  fontWeight: 300,
+                  color: 'var(--text-muted)',
+                  lineHeight: 1,
+                  display: 'block',
+                  marginBottom: 'var(--space-2)',
+                  fontFamily: 'var(--font-mono)',
+                  letterSpacing: '-0.03em',
+                }}
+              >
+                {phase.number}
+              </span>
+
+              {/* Phase label */}
               <p
                 style={{
-                  fontSize: '0.5rem',
+                  fontSize: '0.55rem',
                   letterSpacing: '0.3em',
                   textTransform: 'uppercase',
                   color: 'var(--text-muted)',
@@ -140,12 +168,14 @@ export default function MissionNarrative() {
               >
                 {phase.label}
               </p>
+
+              {/* Phase content */}
               <p
                 className="font-body"
                 style={{
-                  fontSize: '1rem',
+                  fontSize: '0.95rem',
                   fontWeight: 400,
-                  lineHeight: 1.65,
+                  lineHeight: 1.7,
                   color: 'var(--text)',
                 }}
               >

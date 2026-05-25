@@ -1,19 +1,17 @@
 const missions = [
   {
     id: 'MSN-002',
-    title: 'E-Commerce Platform',
-    client: 'GrocerKey / Wynshop',
+    title: 'E-Commerce Infrastructure — GrocerKey/Wynshop',
     description:
-      "Modern e-commerce infrastructure for grocery. Powers Woodman's and regional chains. Zero-downtime migration from legacy systems.",
-    metric: 'Zero-downtime migration',
+      'Modern e-commerce platform for grocery retailers. Powers Woodman\'s and regional chains. Zero-downtime migration from legacy systems.',
+    tag: 'GROCERY · E-COMMERCE',
   },
   {
     id: 'MSN-003',
-    title: 'Enterprise Integration Platform',
-    client: 'Confidential',
+    title: 'AI Medication Safety Platform — HomeMeds',
     description:
-      'Connected 14 siloed systems into unified data pipeline. Processing 2M+ events/day.',
-    metric: '2M+ events/day',
+      'AI-enhanced platform reducing medication errors for older adults. Camera-based label recognition, automated safety alerts. 80+ program sites across 19 states.',
+    tag: 'HEALTHCARE · AI',
   },
 ]
 
@@ -34,78 +32,66 @@ export default function MissionCards() {
             <div
               key={m.id}
               style={{
-                border: '1px solid var(--border)',
+                borderLeft: '3px solid var(--amber)',
                 padding: 'var(--space-5)',
                 background: 'var(--surface)',
                 maxWidth: '680px',
               }}
             >
-              {/* Top row */}
-              <div
+              {/* Mission ID */}
+              <span
                 style={{
-                  display: 'flex',
-                  alignItems: 'baseline',
-                  gap: 'var(--space-4)',
-                  marginBottom: 'var(--space-3)',
+                  display: 'block',
+                  fontSize: '0.55rem',
+                  letterSpacing: '0.25em',
+                  textTransform: 'uppercase',
+                  color: 'var(--amber)',
+                  marginBottom: 'var(--space-2)',
                 }}
               >
-                <span
-                  style={{
-                    fontSize: '0.5rem',
-                    letterSpacing: '0.25em',
-                    textTransform: 'uppercase',
-                    color: 'var(--text-muted)',
-                  }}
-                >
-                  {m.id}
-                </span>
-                <h3
-                  style={{
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    color: 'var(--text)',
-                  }}
-                >
-                  {m.title}
-                </h3>
-                <span
-                  style={{
-                    fontSize: '0.6rem',
-                    color: 'var(--text-dim)',
-                    marginLeft: 'auto',
-                  }}
-                >
-                  {m.client}
-                </span>
-              </div>
+                {m.id}
+              </span>
+
+              {/* Title */}
+              <h3
+                style={{
+                  fontSize: '0.95rem',
+                  fontWeight: 600,
+                  color: 'var(--text)',
+                  marginBottom: 'var(--space-3)',
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                {m.title}
+              </h3>
 
               {/* Description */}
               <p
                 className="font-body"
                 style={{
-                  fontSize: '0.875rem',
+                  fontSize: '0.85rem',
                   color: 'var(--text-dim)',
-                  lineHeight: 1.6,
-                  marginBottom: 'var(--space-3)',
+                  lineHeight: 1.65,
+                  marginBottom: 'var(--space-4)',
                 }}
               >
                 {m.description}
               </p>
 
-              {/* Metric tag */}
+              {/* Metric tag pill */}
               <span
                 style={{
                   display: 'inline-block',
                   fontSize: '0.55rem',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
-                  color: 'var(--amber)',
-                  border: '1px solid var(--amber-dim)',
-                  padding: '0.2rem 0.5rem',
-                  background: 'var(--amber-dim)',
+                  color: 'var(--text-dim)',
+                  border: '1px solid var(--border)',
+                  padding: '0.2rem 0.6rem',
+                  borderRadius: '2px',
                 }}
               >
-                {m.metric}
+                {m.tag}
               </span>
             </div>
           ))}

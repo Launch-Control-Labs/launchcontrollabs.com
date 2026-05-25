@@ -2,18 +2,19 @@
 
 export default function Brief() {
   return (
-    <section>
+    <section style={{ position: 'relative' }}>
       <div className="page">
         <p className="section-label">START HERE</p>
 
         <h2
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: 'clamp(1.4rem, 3vw, 2rem)',
-            fontWeight: 500,
+            fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)',
+            fontWeight: 400,
             color: 'var(--text)',
             marginBottom: 'var(--space-4)',
-            lineHeight: 1.3,
+            lineHeight: 1.25,
+            letterSpacing: '-0.03em',
           }}
         >
           Ready to launch?
@@ -33,33 +34,50 @@ export default function Brief() {
           hours.
         </p>
 
-        {/* Primary CTA */}
-        <a
-          href="https://calendly.com/launchcontrollabs"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-block',
-            background: 'var(--amber)',
-            color: 'var(--bg)',
-            padding: '0.75rem 1.5rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            marginBottom: 'var(--space-4)',
-            transition: 'opacity 0.2s',
-          }}
-          onMouseEnter={(e) =>
-            ((e.currentTarget as HTMLAnchorElement).style.opacity = '0.85')
-          }
-          onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLAnchorElement).style.opacity = '1')
-          }
-        >
-          Book a Mission Brief →
-        </a>
+        {/* CTA with radial glow */}
+        <div style={{ position: 'relative', display: 'inline-block', marginBottom: 'var(--space-4)' }}>
+          {/* Radial glow pseudo */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '300px',
+              height: '300px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, var(--amber) 0%, transparent 70%)',
+              opacity: 0.05,
+              pointerEvents: 'none',
+            }}
+          />
+          <a
+            href="https://calendly.com/launchcontrollabs"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              position: 'relative',
+              display: 'inline-block',
+              background: 'var(--amber)',
+              color: 'var(--bg)',
+              padding: '1.2rem 3rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.7rem',
+              fontWeight: 600,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              transition: 'opacity 0.2s',
+            }}
+            onMouseEnter={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.opacity = '0.85')
+            }
+            onMouseLeave={(e) =>
+              ((e.currentTarget as HTMLAnchorElement).style.opacity = '1')
+            }
+          >
+            Book a Mission Brief →
+          </a>
+        </div>
 
         {/* Secondary */}
         <p
@@ -86,16 +104,7 @@ export default function Brief() {
             gap: '0.5rem',
           }}
         >
-          <span
-            style={{
-              width: '5px',
-              height: '5px',
-              borderRadius: '50%',
-              background: 'var(--green)',
-              display: 'inline-block',
-              flexShrink: 0,
-            }}
-          />
+          <span className="status-dot" />
           <span
             style={{
               fontSize: '0.6rem',
