@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useCallback } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
+import { EffectComposer, Bloom, Noise, Vignette, ToneMapping } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { ScrollCamera } from './ScrollCamera'
 import { InteractiveRoom } from './InteractiveRoom'
@@ -67,9 +67,10 @@ function SceneContent({ containerRef }: ControlRoomSceneProps) {
       </Suspense>
 
       <EffectComposer>
-        <Bloom intensity={0.4} luminanceThreshold={0.8} luminanceSmoothing={0.9} mipmapBlur />
-        <Noise opacity={0.015} />
-        <Vignette darkness={0.4} offset={0.5} />
+        <ToneMapping mode={7} />
+        <Bloom intensity={0.8} luminanceThreshold={0.85} luminanceSmoothing={0.9} mipmapBlur />
+        <Vignette offset={0.3} darkness={0.5} />
+        <Noise opacity={0.02} />
       </EffectComposer>
     </>
   )
