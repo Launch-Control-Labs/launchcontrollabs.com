@@ -3,6 +3,7 @@
 import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
+import { useSceneStore } from '@/store/scene-store'
 
 // 3D world coordinates: establishing shot (outside) → operator seat (inside)
 const CAMERA_PATH = {
@@ -16,8 +17,10 @@ interface ScrollCameraProps {
 
 export function ScrollCamera({ containerRef }: ScrollCameraProps) {
   const { camera } = useThree()
+  const setInteractionEnabled = useSceneStore((s) => s.setInteractionEnabled)
   const progress = useRef(0)
   const mouseRef = useRef({ x: 0, y: 0 })
+  const interactionEnabledRef = useRef(false)
 
   useEffect(() => {
     camera.position.set(CAMERA_PATH.start.x, CAMERA_PATH.start.y, CAMERA_PATH.start.z)
@@ -50,6 +53,10 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
             scrub: 1.5,
             onUpdate: (self) => {
               progress.current = self.progress
+              if (self.progress >= 0.9 && !interactionEnabledRef.current) {
+                interactionEnabledRef.current = true
+                setInteractionEnabled(true)
+              }
             },
           },
         }).to(proxy, {
@@ -67,7 +74,7 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
       ctx?.revert()
       window.removeEventListener('mousemove', handleMouse)
     }
-  }, [camera, containerRef])
+  }, [camera, containerRef, setInteractionEnabled])
 
   useFrame(() => {
     const t = progress.current

@@ -6,16 +6,59 @@ import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocess
 import * as THREE from 'three'
 import { ScrollCamera } from './ScrollCamera'
 import { InteractiveRoom } from './InteractiveRoom'
+import { InfoPanel } from './InfoPanel'
+import { useSceneStore } from '@/store/scene-store'
+import { PANEL_POSITIONS } from '@/data/panel-content'
 import type { MeshGroup } from './mesh-map'
 import type { ThreeEvent } from '@react-three/fiber'
 
 interface ControlRoomSceneProps {
   containerRef: React.RefObject<HTMLElement | null>
-  onGroupClick?: (group: MeshGroup, event: ThreeEvent<MouseEvent>) => void
-  onGroupHover?: (group: MeshGroup | null) => void
 }
 
-export default function ControlRoomScene({ containerRef, onGroupClick, onGroupHover }: ControlRoomSceneProps) {
+function SceneContent({ containerRef }: ControlRoomSceneProps) {
+  const { activePanel, interactionEnabled, setActivePanel, setHoveredGroup } = useSceneStore()
+
+  const handleGroupClick = (group: MeshGroup, _event: ThreeEvent<MouseEvent>) => {
+    if (!interactionEnabled) return
+    // Toggle: clicking active panel's group closes it
+    setActivePanel(activePanel === group ? null : group)
+  }
+
+  const handleGroupHover = (group: MeshGroup | null) => {
+    if (!interactionEnabled) return
+    setHoveredGroup(group)
+  }
+
+  return (
+    <>
+      <ScrollCamera containerRef={containerRef} />
+
+      <Suspense fallback={null}>
+        <InteractiveRoom
+          onGroupClick={handleGroupClick}
+          onGroupHover={handleGroupHover}
+        />
+
+        {activePanel && PANEL_POSITIONS[activePanel] && (
+          <InfoPanel
+            group={activePanel}
+            position={PANEL_POSITIONS[activePanel]!}
+            onClose={() => setActivePanel(null)}
+          />
+        )}
+      </Suspense>
+
+      <EffectComposer>
+        <Bloom intensity={0.4} luminanceThreshold={0.8} luminanceSmoothing={0.9} mipmapBlur />
+        <Noise opacity={0.015} />
+        <Vignette darkness={0.4} offset={0.5} />
+      </EffectComposer>
+    </>
+  )
+}
+
+export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps) {
   return (
     <div style={{ width: '100%', height: '100%', background: '#000000' }}>
       <Canvas
@@ -27,17 +70,7 @@ export default function ControlRoomScene({ containerRef, onGroupClick, onGroupHo
         }}
         camera={{ position: [6, 3, 8], fov: 50 }}
       >
-        <ScrollCamera containerRef={containerRef} />
-
-        <Suspense fallback={null}>
-          <InteractiveRoom onGroupClick={onGroupClick} onGroupHover={onGroupHover} />
-        </Suspense>
-
-        <EffectComposer>
-          <Bloom intensity={0.4} luminanceThreshold={0.8} luminanceSmoothing={0.9} mipmapBlur />
-          <Noise opacity={0.015} />
-          <Vignette darkness={0.4} offset={0.5} />
-        </EffectComposer>
+        <SceneContent containerRef={containerRef} />
       </Canvas>
     </div>
   )
