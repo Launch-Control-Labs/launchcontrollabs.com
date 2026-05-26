@@ -1,46 +1,53 @@
+'use client'
+
+import { Suspense } from 'react'
+import dynamic from 'next/dynamic'
+import { useIsMobile } from '@/hooks/useIsMobile'
+import { SceneWrapper } from '@/components/3d/SceneWrapper'
+import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
+import { SceneLoadingState } from '@/components/3d/SceneLoadingState'
+import { StaticHeroFallback } from '@/components/3d/StaticHeroFallback'
 import StatusBar from '@/components/StatusBar'
-import Hero from '@/components/Hero'
-import MissionNarrative from '@/components/MissionNarrative'
-import MissionCards from '@/components/MissionCards'
 import Capabilities from '@/components/Capabilities'
-import CompanyTicker from '@/components/CompanyTicker'
-import Brief from '@/components/Brief'
+import MissionCards from '@/components/MissionCards'
 import Contact from '@/components/Contact'
 
+const ControlRoomScene = dynamic(
+  () => import('@/components/3d/ControlRoomScene'),
+  { ssr: false }
+)
+
 export default function Home() {
+  const isMobile = useIsMobile()
+
   return (
     <>
       <StatusBar />
 
       <main>
-        <Hero />
+        {isMobile ? (
+          <StaticHeroFallback />
+        ) : (
+          <SceneErrorBoundary>
+            <Suspense fallback={<SceneLoadingState />}>
+              <SceneWrapper>
+                {(containerRef) => <ControlRoomScene containerRef={containerRef} />}
+              </SceneWrapper>
+            </Suspense>
+          </SceneErrorBoundary>
+        )}
 
-        <div className="page">
-          <hr className="section-divider" />
-        </div>
+        <section id="capabilities">
+          <Capabilities />
+        </section>
 
-        <MissionNarrative />
+        <section id="projects">
+          <MissionCards />
+        </section>
 
-        <div className="page">
-          <hr className="section-divider" />
-        </div>
-
-        <MissionCards />
-
-        <div className="page">
-          <hr className="section-divider" />
-        </div>
-
-        <Capabilities />
-
-        <div className="page">
-          <hr className="section-divider" />
-        </div>
-
-        <CompanyTicker />
-        <Brief />
-
-        <Contact />
+        <section id="contact">
+          <Contact />
+        </section>
       </main>
 
       <footer
