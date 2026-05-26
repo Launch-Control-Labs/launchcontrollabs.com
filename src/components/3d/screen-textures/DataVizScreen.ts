@@ -63,9 +63,11 @@ export function createDataVizTexture(): THREE.CanvasTexture {
       ctx.fillStyle = ch.color
       ctx.fillRect(60, y, barW, 16)
       
-      // Subtle glow on bar
-      ctx.fillStyle = ch.color.replace(')', ',0.3)').replace('rgb', 'rgba').replace('#', 'rgba(')
-      ctx.fillRect(60, y, barW, 2)
+       // Subtle glow on bar
+       ctx.globalAlpha = 0.3
+       ctx.fillStyle = ch.color
+       ctx.fillRect(60, y, barW, 2)
+       ctx.globalAlpha = 1.0
       
       // Label
       ctx.fillStyle = '#8B9DB5'

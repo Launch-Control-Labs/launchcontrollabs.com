@@ -25,14 +25,17 @@ export function InteractiveRoom({ onGroupClick, onGroupHover }: InteractiveRoomP
   const screenTextures = useRef<Map<string, THREE.CanvasTexture> | null>(null)
 
   useEffect(() => {
+    let disposed = false
     const loader = new EXRLoader()
     loader.load(LIGHTMAP_PATH, (texture) => {
+      if (disposed) { texture.dispose(); return }
       texture.minFilter = THREE.NearestFilter
       texture.magFilter = THREE.NearestFilter
       texture.colorSpace = THREE.NoColorSpace
       texture.generateMipmaps = false
       setLightmap(texture)
     })
+    return () => { disposed = true }
   }, [])
 
   useEffect(() => {
@@ -41,6 +44,9 @@ export function InteractiveRoom({ onGroupClick, onGroupHover }: InteractiveRoomP
       if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
         const matName = child.material.name.toLowerCase()
         child.userData.materialName = matName
+        if (!child.geometry.hasAttribute('uv2')) {
+          child.geometry.setAttribute('uv2', child.geometry.getAttribute('uv'))
+        }
         child.material = createControlRoomShader(child.material, lightmap, {
           isScreen: SCREEN_MATERIALS.has(matName),
           isLight: LIGHT_MATERIALS.has(matName),
@@ -90,6 +96,10 @@ export function InteractiveRoom({ onGroupClick, onGroupHover }: InteractiveRoomP
       }
     })
   }, [scene, hoveredGroup])
+
+  useEffect(() => {
+    return () => { document.body.style.cursor = 'auto' }
+  }, [])
 
   const resolveGroup = useCallback((object: THREE.Object3D): MeshGroup | null => {
     const group = getMeshGroup(object.name)
