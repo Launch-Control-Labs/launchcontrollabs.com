@@ -23,33 +23,38 @@ uniform vec3 emissiveColor;
 uniform float emissiveIntensity;
 uniform float opacity;
 uniform vec3 fogColor;
-uniform float fogNear;
-uniform float fogFar;
+uniform float fogDensity;
+uniform float fogDepth;
 
 varying vec2 vUv;
 varying vec2 vUv2;
 varying vec3 vWorldPosition;
 
 void main() {
+  // Base color from texture
   vec4 texColor = texture2D(map, vUv);
-  vec3 diffuse = texColor.rgb * baseColor;
+  vec3 color = baseColor * texColor.rgb;
 
-  vec3 lighting = vec3(1.0);
+  // Baked lighting from lightmap (this is THE lighting — no runtime lights)
+  vec3 irradiance = color;
   if (lightMapIntensity > 0.0) {
-    vec4 lightSample = texture2D(lightMap, vUv2);
-    lighting = lightSample.rgb * lightMapIntensity;
+    vec3 lightMapSample = texture2D(lightMap, vUv2).rgb;
+    irradiance *= lightMapSample * lightMapIntensity;
   }
 
-  vec3 color = diffuse * lighting;
+  // Emissive (screens, lights — additive glow)
+  irradiance += emissiveColor * emissiveIntensity;
 
-  color += emissiveColor * emissiveIntensity;
+  // Exponential squared fog (basement.studio formula — view-depth based)
+  float fogDepthValue = min(-length(vWorldPosition) + fogDepth, 0.0);
+  float fogFactor = 1.0 - exp(-(fogDensity * fogDensity) * (fogDepthValue * fogDepthValue));
+  fogFactor = clamp(fogFactor, 0.0, 1.0);
+  if (fogFactor > 0.0) {
+    irradiance = irradiance * (1.0 - fogFactor) + fogColor * fogFactor;
+  }
 
-  float fogFactor = smoothstep(fogNear, fogFar, length(vWorldPosition));
-  color = mix(color, fogColor, fogFactor * 0.4);
-
-  color = color * (2.51 * color + 0.03) / (color * (2.43 * color + 0.59) + 0.14);
-
-  gl_FragColor = vec4(color, opacity * texColor.a);
+  // NO tone mapping here — that goes in postprocessing only (basement approach)
+  gl_FragColor = vec4(irradiance, opacity * texColor.a);
 }
 `
 
@@ -70,11 +75,11 @@ export function createControlRoomShader(
   let emissiveIntensity = 0
 
   if (isScreen) {
-    emissiveColor = new THREE.Color('#1a5c3a')
-    emissiveIntensity = 3.0
+    emissiveColor = new THREE.Color('#E5A832')
+    emissiveIntensity = 2.0
   } else if (isLight) {
     emissiveColor = new THREE.Color('#FF4D00')
-    emissiveIntensity = 6.0
+    emissiveIntensity = 4.0
   }
 
   return new THREE.ShaderMaterial({
@@ -83,14 +88,14 @@ export function createControlRoomShader(
     uniforms: {
       map: { value: baseMaterial.map || new THREE.Texture() },
       lightMap: { value: lightmap },
-      lightMapIntensity: { value: lightmap ? 1.0 : 0.0 },
+      lightMapIntensity: { value: lightmap ? 1.8 : 0.0 },
       baseColor: { value: baseMaterial.color || new THREE.Color(1, 1, 1) },
       emissiveColor: { value: emissiveColor },
       emissiveIntensity: { value: emissiveIntensity },
       opacity: { value: baseMaterial.opacity ?? 1.0 },
-      fogColor: { value: new THREE.Color(0.02, 0.03, 0.05) },
-      fogNear: { value: 5.0 },
-      fogFar: { value: 20.0 },
+      fogColor: { value: new THREE.Color(0.2, 0.2, 0.2) },
+      fogDensity: { value: 0.05 },
+      fogDepth: { value: 9.0 },
     },
     transparent: baseMaterial.transparent || false,
     side: baseMaterial.side ?? THREE.FrontSide,

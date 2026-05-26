@@ -79,7 +79,7 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
   const setActivePanel = useSceneStore((s) => s.setActivePanel)
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#000000' }}>
+    <div style={{ width: '100%', height: '100%', background: '#0A0A0C' }}>
       <Canvas
         onPointerMissed={() => setActivePanel(null)}
         gl={{
