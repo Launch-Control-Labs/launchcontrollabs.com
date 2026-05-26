@@ -15,6 +15,9 @@ interface ScrollCameraProps {
   containerRef: React.RefObject<HTMLElement | null>
 }
 
+const _targetPos = new THREE.Vector3()
+const _lookTarget = new THREE.Vector3()
+
 export function ScrollCamera({ containerRef }: ScrollCameraProps) {
   const { camera } = useThree()
   const setInteractionEnabled = useSceneStore((s) => s.setInteractionEnabled)
@@ -35,10 +38,12 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
     window.addEventListener('mousemove', handleMouse, { passive: true })
 
     let ctx: { revert: () => void } | null = null
+    let cancelled = false
 
     const init = async () => {
       const { gsap } = await import('gsap')
       const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+      if (cancelled) return
       gsap.registerPlugin(ScrollTrigger)
 
       ctx = gsap.context(() => {
@@ -56,6 +61,10 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
               if (self.progress >= 0.9 && !interactionEnabledRef.current) {
                 interactionEnabledRef.current = true
                 setInteractionEnabled(true)
+              } else if (self.progress < 0.85 && interactionEnabledRef.current) {
+                interactionEnabledRef.current = false
+                setInteractionEnabled(false)
+                useSceneStore.getState().setActivePanel(null)
               }
             },
           },
@@ -71,6 +80,7 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
     init()
 
     return () => {
+      cancelled = true
       ctx?.revert()
       window.removeEventListener('mousemove', handleMouse)
     }
@@ -79,19 +89,19 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
   useFrame(() => {
     const t = progress.current
 
-    const targetPos = new THREE.Vector3(
+    _targetPos.set(
       THREE.MathUtils.lerp(CAMERA_PATH.start.x, CAMERA_PATH.end.x, t),
       THREE.MathUtils.lerp(CAMERA_PATH.start.y, CAMERA_PATH.end.y, t),
       THREE.MathUtils.lerp(CAMERA_PATH.start.z, CAMERA_PATH.end.z, t),
     )
-    camera.position.lerp(targetPos, 0.1)
+    camera.position.lerp(_targetPos, 0.1)
 
-    const lookTarget = new THREE.Vector3(
+    _lookTarget.set(
       THREE.MathUtils.lerp(CAMERA_PATH.start.lookAtX, CAMERA_PATH.end.lookAtX, t),
       THREE.MathUtils.lerp(CAMERA_PATH.start.lookAtY, CAMERA_PATH.end.lookAtY, t),
       THREE.MathUtils.lerp(CAMERA_PATH.start.lookAtZ, CAMERA_PATH.end.lookAtZ, t),
     )
-    camera.lookAt(lookTarget)
+    camera.lookAt(_lookTarget)
 
     // ±2° max parallax — only active after scroll begins (t > 0.1)
     if (t > 0.1) {

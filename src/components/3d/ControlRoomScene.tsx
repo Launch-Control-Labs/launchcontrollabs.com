@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense } from 'react'
+import { Suspense, useEffect, useCallback } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 import * as THREE from 'three'
@@ -17,7 +17,24 @@ interface ControlRoomSceneProps {
 }
 
 function SceneContent({ containerRef }: ControlRoomSceneProps) {
-  const { activePanel, interactionEnabled, setActivePanel, setHoveredGroup } = useSceneStore()
+  const activePanel = useSceneStore((s) => s.activePanel)
+  const interactionEnabled = useSceneStore((s) => s.interactionEnabled)
+  const setActivePanel = useSceneStore((s) => s.setActivePanel)
+  const setHoveredGroup = useSceneStore((s) => s.setHoveredGroup)
+  const setInteractionEnabled = useSceneStore((s) => s.setInteractionEnabled)
+
+  useEffect(() => {
+    setActivePanel(null)
+    setHoveredGroup(null)
+    setInteractionEnabled(false)
+    return () => {
+      setActivePanel(null)
+      setHoveredGroup(null)
+      setInteractionEnabled(false)
+    }
+  }, [setActivePanel, setHoveredGroup, setInteractionEnabled])
+
+  const handleClose = useCallback(() => setActivePanel(null), [setActivePanel])
 
   const handleGroupClick = (group: MeshGroup, _event: ThreeEvent<MouseEvent>) => {
     if (!interactionEnabled) return
@@ -44,7 +61,7 @@ function SceneContent({ containerRef }: ControlRoomSceneProps) {
           <InfoPanel
             group={activePanel}
             position={PANEL_POSITIONS[activePanel]!}
-            onClose={() => setActivePanel(null)}
+            onClose={handleClose}
           />
         )}
       </Suspense>
@@ -59,9 +76,12 @@ function SceneContent({ containerRef }: ControlRoomSceneProps) {
 }
 
 export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps) {
+  const setActivePanel = useSceneStore((s) => s.setActivePanel)
+
   return (
     <div style={{ width: '100%', height: '100%', background: '#000000' }}>
       <Canvas
+        onPointerMissed={() => setActivePanel(null)}
         gl={{
           antialias: false,
           alpha: false,
