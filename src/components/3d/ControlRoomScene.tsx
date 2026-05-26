@@ -2,11 +2,12 @@
 
 import { Suspense, useEffect, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { useGLTF, OrbitControls } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei'
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'
 import { createControlRoomShader, SCREEN_MATERIALS, LIGHT_MATERIALS } from '@/shaders/control-room-shader'
+import { ScrollCamera } from './ScrollCamera'
 
 const MODEL_PATH = '/models/nasa-jsc-control-room.glb'
 const LIGHTMAP_PATH = '/models/textures/bake-02-lightmap-5229a667.exr'
@@ -43,9 +44,13 @@ function NasaControlRoom() {
   return <primitive object={scene} rotation={[-Math.PI / 2, 0, 0]} />
 }
 
-export default function ControlRoomScene() {
+interface ControlRoomSceneProps {
+  containerRef: React.RefObject<HTMLElement | null>
+}
+
+export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps) {
   return (
-    <div style={{ width: '100%', height: '100vh', background: '#000000' }}>
+    <div style={{ width: '100%', height: '100%', background: '#000000' }}>
       <Canvas
         gl={{
           antialias: false,
@@ -55,17 +60,11 @@ export default function ControlRoomScene() {
         }}
         camera={{ position: [6, 3, 8], fov: 50 }}
       >
+        <ScrollCamera containerRef={containerRef} />
+
         <Suspense fallback={null}>
           <NasaControlRoom />
         </Suspense>
-
-        <OrbitControls
-          target={[0, 1.5, 0]}
-          enableDamping
-          dampingFactor={0.05}
-          minDistance={3}
-          maxDistance={20}
-        />
 
         <EffectComposer>
           <Bloom intensity={0.4} luminanceThreshold={0.8} luminanceSmoothing={0.9} mipmapBlur />
