@@ -120,24 +120,24 @@ const rules: Rule[] = [
     description: 'Lorem ipsum placeholder text — no placeholder copy allowed',
     pattern: /Lorem\s+ipsum/i,
   },
-  {
-    id: 'LCL-W03',
-    severity: 'warn',
-    description: 'Generic CTA text — LCL uses email links, not signup buttons',
-    pattern: /["'](?:Get Started|Sign Up Today|Start Free Trial|Learn More|Book a Demo|Schedule a Call|Try It Free)["']/i,
-  },
+   {
+     id: 'LCL-W03',
+     severity: 'warn',
+     description: 'Generic CTA text — LCL uses email links, not signup buttons',
+     pattern: /["'](?:Get Started|Sign Up Today|Start Free Trial|Learn More|Book a Demo|Schedule a Call|Try It Free|[Ll]et'?s\s+talk|[Gg]et in touch|[Rr]each out|[Cc]ontact us today)["']/i,
+   },
   {
     id: 'LCL-W04',
     severity: 'warn',
     description: '"Trust us" copy pattern — we show work, not ask for trust',
     pattern: /\b(?:Trusted by|As seen in|Featured in|Loved by|Join [\d,]+ (?:companies|teams|users))\b/i,
   },
-  {
-    id: 'LCL-W05',
-    severity: 'error',
-    description: 'Vanity metrics pattern (10,000+ users / 99.9% uptime claims) — not operational data',
-    pattern: /(?:[\d,]+\+?\s*(?:happy\s+)?(?:users|customers|clients|companies))|(?:99\.9+%\s*uptime)/i,
-  },
+   {
+     id: 'LCL-W05',
+     severity: 'error',
+     description: 'Vanity metrics pattern (10,000+ users / 99.9% uptime claims) — not operational data',
+     pattern: /(?:[\d,]+\+?\s*(?:happy\s+)?(?:users|customers|clients|companies))|(?:99\.9[0-9]*%)/i,
+   },
 
   // ── Asset violations ──
   {

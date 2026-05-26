@@ -39,7 +39,7 @@ export default function Contact() {
               maxWidth: '480px',
             }}
           >
-            We take on 2–3 new missions per quarter. If you have a project that needs serious engineering, let's talk.
+            We take on 2–3 new missions per quarter. If you have a project that needs serious engineering, open a channel.
           </p>
 
           <a

@@ -100,7 +100,8 @@ export default function MissionCards() {
                         height: '5px',
                         borderRadius: '50%',
                         background: STATUS_COLORS[project.status],
-                        boxShadow: project.status === 'ACTIVE' ? '0 0 6px rgba(52, 211, 153, 0.5)' : 'none',
+                        boxShadow: project.status === 'ACTIVE' ? '0 0 8px rgba(52, 211, 153, 0.4)' : 'none',
+                        animation: project.status === 'ACTIVE' ? 'status-pulse 2.5s ease infinite' : 'none',
                       }}
                     />
                     {project.status}
