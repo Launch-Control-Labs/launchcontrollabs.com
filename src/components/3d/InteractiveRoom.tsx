@@ -7,6 +7,7 @@ import { ThreeEvent } from '@react-three/fiber'
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'
 import { getMeshGroup, INTERACTIVE_GROUPS, type MeshGroup } from './mesh-map'
 import { createControlRoomShader, SCREEN_MATERIALS, LIGHT_MATERIALS } from '@/shaders/control-room-shader'
+import { applyScreenTextures, disposeScreenTextures } from './screen-textures'
 
 const MODEL_PATH = '/models/nasa-jsc-control-room.glb'
 const LIGHTMAP_PATH = '/models/textures/bake-02-lightmap-5229a667.exr'
@@ -21,6 +22,7 @@ export function InteractiveRoom({ onGroupClick, onGroupHover }: InteractiveRoomP
   const [lightmap, setLightmap] = useState<THREE.Texture | null>(null)
   const [hoveredGroup, setHoveredGroup] = useState<MeshGroup | null>(null)
   const shadersApplied = useRef(false)
+  const screenTextures = useRef<Map<string, THREE.CanvasTexture> | null>(null)
 
   useEffect(() => {
     const loader = new EXRLoader()
@@ -46,7 +48,15 @@ export function InteractiveRoom({ onGroupClick, onGroupHover }: InteractiveRoomP
         child.userData.hasCustomShader = true
       }
     })
+    
+    screenTextures.current = applyScreenTextures(scene)
     shadersApplied.current = true
+    
+    return () => {
+      if (screenTextures.current) {
+        disposeScreenTextures(screenTextures.current)
+      }
+    }
   }, [scene, lightmap])
 
   useEffect(() => {
