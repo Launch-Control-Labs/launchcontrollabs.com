@@ -1,35 +1,37 @@
-const capabilities = [
+'use client'
+
+import { useState } from 'react'
+
+const SERVICES = [
   {
     number: '01',
-    title: 'New Products',
-    subtitle: 'Zero to Shipped',
+    name: 'AI-Powered Products',
     description:
-      'From validated idea to production in weeks, not quarters. We scope, build, and ship.',
+      'LLMs, agents, and automation systems built for production. Not prototypes—deployed systems.',
   },
   {
     number: '02',
-    title: 'AI Engineering',
-    subtitle: null,
+    name: 'Full-Stack Web Apps',
     description:
-      'Custom models, fine-tuning, inference pipelines, and AI-native product features that actually work.',
+      'From architecture to deployment. React, Next.js, Node. We ship complete products, not partial commits.',
   },
   {
     number: '03',
-    title: 'Platform Rescue',
-    subtitle: null,
+    name: 'Data Pipelines',
     description:
-      "Legacy systems replaced without downtime. We've migrated six-figure user bases with zero incidents.",
+      'ETL, real-time processing, and analytics infrastructure. Systems that handle millions of events without breaking.',
   },
   {
     number: '04',
-    title: 'Scale Engineering',
-    subtitle: null,
+    name: 'Technical Operations',
     description:
-      'Architecture, data pipelines, and infrastructure that hold up at millions of events per day.',
+      'DevOps, monitoring, and system reliability engineering. We keep things running when it matters.',
   },
 ]
 
 export default function Capabilities() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+
   return (
     <section>
       <div className="page">
@@ -37,73 +39,65 @@ export default function Capabilities() {
 
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
             gap: '0',
           }}
         >
-          {capabilities.map((cap) => (
+          {SERVICES.map((service, index) => (
             <div
-              key={cap.number}
+              key={service.number}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
               style={{
-                display: 'grid',
-                gridTemplateColumns: '3.5rem 1fr',
-                gap: 'var(--space-4)',
-                alignItems: 'start',
-                padding: 'var(--space-6) 0',
+                position: 'relative',
+                padding: 'clamp(2rem, 5vh, 3.5rem) clamp(1.5rem, 4vw, 2.5rem)',
                 borderTop: '1px solid var(--border)',
-                maxWidth: '640px',
+                borderLeft: hoveredIndex === index ? '3px solid var(--amber)' : '3px solid transparent',
+                background: hoveredIndex === index ? 'var(--surface)' : 'transparent',
+                transition: 'border-color 150ms ease-out, background 150ms ease-out',
+                cursor: 'default',
               }}
             >
-              {/* Number — large and amber */}
               <span
                 style={{
-                  fontSize: '1.8rem',
-                  fontWeight: 300,
-                  color: 'var(--amber)',
-                  lineHeight: 1,
+                  display: 'block',
+                  fontSize: 'clamp(3rem, 8vw, 6rem)',
+                  fontWeight: 700,
                   fontFamily: 'var(--font-mono)',
-                  letterSpacing: '-0.02em',
+                  color: 'var(--amber)',
+                  lineHeight: 0.9,
+                  letterSpacing: '-0.03em',
+                  marginBottom: 'var(--space-4)',
                 }}
               >
-                {cap.number}
+                {service.number}
               </span>
 
-              {/* Content */}
-              <div>
-                <p
-                  style={{
-                    fontSize: '1rem',
-                    fontWeight: 600,
-                    color: 'var(--text)',
-                    marginBottom: 'var(--space-2)',
-                    letterSpacing: '-0.02em',
-                  }}
-                >
-                  {cap.title}
-                  {cap.subtitle && (
-                    <span
-                      style={{
-                        color: 'var(--text-dim)',
-                        fontWeight: 400,
-                        marginLeft: '0.5rem',
-                      }}
-                    >
-                      — {cap.subtitle}
-                    </span>
-                  )}
-                </p>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '0.85rem',
-                    color: 'var(--text-dim)',
-                    lineHeight: 1.65,
-                  }}
-                >
-                  {cap.description}
-                </p>
-              </div>
+              <h3
+                style={{
+                  fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
+                  fontWeight: 700,
+                  fontFamily: 'var(--font-mono)',
+                  color: 'var(--text)',
+                  letterSpacing: '-0.02em',
+                  marginBottom: 'var(--space-3)',
+                }}
+              >
+                {service.name}
+              </h3>
+
+              <p
+                className="font-body"
+                style={{
+                  fontSize: 'clamp(0.85rem, 1.1vw, 1rem)',
+                  color: 'var(--text-dim)',
+                  lineHeight: 1.65,
+                  maxWidth: '320px',
+                }}
+              >
+                {service.description}
+              </p>
             </div>
           ))}
         </div>

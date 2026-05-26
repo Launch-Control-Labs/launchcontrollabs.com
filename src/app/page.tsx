@@ -5,6 +5,7 @@ import MissionCards from '@/components/MissionCards'
 import Capabilities from '@/components/Capabilities'
 import CompanyTicker from '@/components/CompanyTicker'
 import Brief from '@/components/Brief'
+import Contact from '@/components/Contact'
 
 export default function Home() {
   return (
@@ -38,6 +39,8 @@ export default function Home() {
 
         <CompanyTicker />
         <Brief />
+
+        <Contact />
       </main>
 
       <footer
