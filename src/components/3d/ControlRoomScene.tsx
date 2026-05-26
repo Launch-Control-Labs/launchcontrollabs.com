@@ -1,54 +1,45 @@
 'use client'
 
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { useGLTF, OrbitControls } from '@react-three/drei'
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 import * as THREE from 'three'
+import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'
+import { createControlRoomShader, SCREEN_MATERIALS, LIGHT_MATERIALS } from '@/shaders/control-room-shader'
 
 const MODEL_PATH = '/models/nasa-jsc-control-room.glb'
+const LIGHTMAP_PATH = '/models/textures/bake-02-lightmap-5229a667.exr'
 
-/**
- * NASA JSC Control Room - loaded as a single scene.
- * Rendering approach matches basement.studio:
- * - NoToneMapping (baked lighting from model)
- * - SRGBColorSpace
- * - No fog, no scene.background
- * - Grey aesthetic comes from model materials (wall, floor, console_body)
- */
 function NasaControlRoom() {
   const { scene } = useGLTF(MODEL_PATH)
+  const [lightmap, setLightmap] = useState<THREE.Texture | null>(null)
 
   useEffect(() => {
+    const loader = new EXRLoader()
+    loader.load(LIGHTMAP_PATH, (texture) => {
+      texture.minFilter = THREE.NearestFilter
+      texture.magFilter = THREE.NearestFilter
+      texture.colorSpace = THREE.NoColorSpace
+      texture.generateMipmaps = false
+      setLightmap(texture)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!scene || !lightmap) return
     scene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh
-        const mat = mesh.material as THREE.MeshStandardMaterial
-        if (!mat || !mat.name) return
-        const name = mat.name.toLowerCase()
-
-        // Make screens glow with emissive
-        if (name.includes('screen') || name === 'screens' || name === 'wall_screen') {
-          mat.emissive = new THREE.Color(0x1a3a5c)
-          mat.emissiveIntensity = 1.5
-        }
-
-        // Lights material should also glow
-        if (name === 'lights') {
-          mat.emissive = new THREE.Color(0xfff5e0)
-          mat.emissiveIntensity = 2.0
-        }
-
-        // Projector glow
-        if (name.includes('projector')) {
-          mat.emissive = new THREE.Color(0x2244aa)
-          mat.emissiveIntensity = 0.8
-        }
+      if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
+        const matName = child.material.name.toLowerCase()
+        child.material = createControlRoomShader(child.material, lightmap, {
+          isScreen: SCREEN_MATERIALS.has(matName),
+          isLight: LIGHT_MATERIALS.has(matName),
+        })
+        child.userData.hasCustomShader = true
       }
     })
-  }, [scene])
+  }, [scene, lightmap])
 
-  // Model authored in Z-up, rotate to Y-up
   return <primitive object={scene} rotation={[-Math.PI / 2, 0, 0]} />
 }
 
@@ -57,17 +48,13 @@ export default function ControlRoomScene() {
     <div style={{ width: '100%', height: '100vh', background: '#000000' }}>
       <Canvas
         gl={{
-          antialias: true,
-          toneMapping: THREE.NoToneMapping,
-          outputColorSpace: THREE.SRGBColorSpace,
+          antialias: false,
           alpha: false,
+          outputColorSpace: THREE.SRGBColorSpace,
+          toneMapping: THREE.NoToneMapping,
         }}
         camera={{ position: [6, 3, 8], fov: 50 }}
       >
-        <ambientLight intensity={0.25} color="#e8e8f0" />
-        <directionalLight position={[5, 8, 3]} intensity={0.3} color="#ffffff" />
-        <pointLight position={[0, 2, -4]} intensity={0.15} color="#4488cc" distance={12} />
-
         <Suspense fallback={null}>
           <NasaControlRoom />
         </Suspense>
