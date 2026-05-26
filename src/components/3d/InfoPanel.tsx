@@ -24,7 +24,7 @@ export function InfoPanel({ group, position, onClose }: InfoPanelProps) {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
-    window.addEventListener('keydown', handleKey)
+    window.addEventListener('keydown', handleKey, { passive: true })
     return () => window.removeEventListener('keydown', handleKey)
   }, [onClose])
 
