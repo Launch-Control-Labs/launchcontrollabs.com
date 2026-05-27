@@ -8,6 +8,8 @@ import * as THREE from 'three'
 const STAR_COUNT = 3000
 
 function StarField() {
+  const groupRef = useRef<THREE.Group>(null)
+
   const { positions } = useMemo(() => {
     const positions = new Float32Array(STAR_COUNT * 3)
     for (let i = 0; i < STAR_COUNT; i++) {
@@ -41,19 +43,28 @@ function StarField() {
     return new THREE.CanvasTexture(canvas)
   }, [])
 
+  useFrame((_, delta) => {
+    if (!groupRef.current) return
+    groupRef.current.rotation.y += delta * 0.004
+    groupRef.current.rotation.x += delta * 0.001
+  })
+
   return (
-    <points geometry={geometry} frustumCulled={false}>
-      <pointsMaterial map={starTexture} size={1.5} sizeAttenuation={false}
-        transparent alphaTest={0.005} color="#ffffff" depthWrite={false} fog={false} />
-    </points>
+    <group ref={groupRef}>
+      <points geometry={geometry} frustumCulled={false}>
+        <pointsMaterial map={starTexture} size={1.5} sizeAttenuation={false}
+          transparent alphaTest={0.005} color="#ffffff" depthWrite={false} fog={false} />
+      </points>
+    </group>
   )
 }
 
-function Planet({ path, worldSize, position, rotSpeed = 0.02, floatOffset = 0 }: {
-  path: string; worldSize: number; position: [number,number,number]; rotSpeed?: number; floatOffset?: number
+function Planet({ path, worldSize, position, rotSpeed = 0.02, floatOffset = 0, driftSpeed = 0 }: {
+  path: string; worldSize: number; position: [number,number,number]; rotSpeed?: number; floatOffset?: number; driftSpeed?: number
 }) {
   const { scene } = useGLTF(path)
   const ref = useRef<THREE.Group>(null)
+  const originZ = useRef(position[2])
   const scale = useMemo(() => {
     scene.updateWorldMatrix(true, true)
     const box = new THREE.Box3().setFromObject(scene)
@@ -61,19 +72,26 @@ function Planet({ path, worldSize, position, rotSpeed = 0.02, floatOffset = 0 }:
     const maxDim = Math.max(size.x, size.y, size.z)
     return maxDim > 0 ? worldSize / maxDim : 1
   }, [scene, worldSize])
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     if (!ref.current) return
     ref.current.rotation.y += rotSpeed * 0.016
     ref.current.position.y = position[1] + Math.sin(clock.getElapsedTime() * 0.3 + floatOffset) * 0.5
+    if (driftSpeed > 0) {
+      ref.current.position.z += driftSpeed * delta
+      if (ref.current.position.z > 35) {
+        ref.current.position.z = originZ.current - 20
+      }
+    }
   })
   return <group ref={ref} position={position} scale={[scale, scale, scale]}><primitive object={scene} /></group>
 }
 
-function VariousPlanet({ nodeName, worldSize, position, rotSpeed, floatOffset }: {
-  nodeName: string; worldSize: number; position: [number,number,number]; rotSpeed: number; floatOffset: number
+function VariousPlanet({ nodeName, worldSize, position, rotSpeed, floatOffset, driftSpeed = 0 }: {
+  nodeName: string; worldSize: number; position: [number,number,number]; rotSpeed: number; floatOffset: number; driftSpeed?: number
 }) {
   const { scene } = useGLTF('/models/various-planets.glb')
   const ref = useRef<THREE.Group>(null)
+  const originZ = useRef(position[2])
   const { clone, scale } = useMemo(() => {
     const node = scene.getObjectByName(nodeName)
     if (!node) return { clone: null, scale: 1 }
@@ -83,10 +101,16 @@ function VariousPlanet({ nodeName, worldSize, position, rotSpeed, floatOffset }:
     const maxDim = Math.max(size.x, size.y, size.z)
     return { clone: cloned, scale: maxDim > 0 ? worldSize / maxDim : 1 }
   }, [scene, nodeName, worldSize])
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     if (!ref.current) return
     ref.current.rotation.y += rotSpeed * 0.016
     ref.current.position.y = position[1] + Math.sin(clock.getElapsedTime() * 0.25 + floatOffset) * 0.5
+    if (driftSpeed > 0) {
+      ref.current.position.z += driftSpeed * delta
+      if (ref.current.position.z > 35) {
+        ref.current.position.z = originZ.current - 20
+      }
+    }
   })
   if (!clone) return null
   return <group ref={ref} position={position} scale={[scale, scale, scale]}><primitive object={clone} /></group>
@@ -96,15 +120,15 @@ export function Particles() {
   return (
     <group>
       <StarField />
-      <VariousPlanet nodeName="planet_gas_2"        worldSize={11} position={[-32,  12,  -38]} rotSpeed={0.006} floatOffset={0.0} />
-      <Planet path="/models/earth.glb"              worldSize={9}  position={[ 28, -14,  -42]} rotSpeed={0.014} floatOffset={1.5} />
-      <Planet path="/models/mercury.glb"            worldSize={4}  position={[-22,  18,  -90]} rotSpeed={0.028} floatOffset={3.0} />
-      <VariousPlanet nodeName="planet_lava_7"       worldSize={7}  position={[ 48,   4, -110]} rotSpeed={0.022} floatOffset={2.2} />
-      <VariousPlanet nodeName="planet_frozen_6"     worldSize={8}  position={[-50, -16, -130]} rotSpeed={0.016} floatOffset={4.0} />
-      <VariousPlanet nodeName="planet_barren_8"     worldSize={5}  position={[ 38,  20, -170]} rotSpeed={0.010} floatOffset={1.0} />
-      <VariousPlanet nodeName="planet_continental_4" worldSize={22} position={[-72,  -6, -280]} rotSpeed={0.008} floatOffset={5.0} />
-      <VariousPlanet nodeName="planet_gas_2"        worldSize={16} position={[ 80,   8, -220]} rotSpeed={0.005} floatOffset={2.8} />
-      <Planet path="/models/mercury.glb"            worldSize={6}  position={[-14, -20, -350]} rotSpeed={0.012} floatOffset={6.0} />
+      <VariousPlanet nodeName="planet_gas_2"          worldSize={11} position={[-32,  12,  -38]} rotSpeed={0.006} floatOffset={0.0} driftSpeed={2.2} />
+      <Planet        path="/models/earth.glb"          worldSize={9}  position={[ 28, -14,  -42]} rotSpeed={0.014} floatOffset={1.5} driftSpeed={2.0} />
+      <Planet        path="/models/mercury.glb"        worldSize={4}  position={[-22,  18,  -90]} rotSpeed={0.028} floatOffset={3.0} driftSpeed={1.2} />
+      <VariousPlanet nodeName="planet_lava_7"          worldSize={7}  position={[ 48,   4, -110]} rotSpeed={0.022} floatOffset={2.2} driftSpeed={1.0} />
+      <VariousPlanet nodeName="planet_frozen_6"        worldSize={8}  position={[-50, -16, -130]} rotSpeed={0.016} floatOffset={4.0} driftSpeed={0.8} />
+      <VariousPlanet nodeName="planet_barren_8"        worldSize={5}  position={[ 38,  20, -170]} rotSpeed={0.010} floatOffset={1.0} driftSpeed={0.6} />
+      <VariousPlanet nodeName="planet_continental_4"   worldSize={22} position={[-72,  -6, -280]} rotSpeed={0.008} floatOffset={5.0} driftSpeed={0.3} />
+      <VariousPlanet nodeName="planet_gas_2"           worldSize={16} position={[ 80,   8, -220]} rotSpeed={0.005} floatOffset={2.8} driftSpeed={0.4} />
+      <Planet        path="/models/mercury.glb"        worldSize={6}  position={[-14, -20, -350]} rotSpeed={0.012} floatOffset={6.0} driftSpeed={0.15} />
     </group>
   )
 }

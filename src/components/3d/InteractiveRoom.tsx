@@ -223,14 +223,16 @@ function Rocket({ modelPath }: { modelPath: string }) {
   useFrame((state) => {
     if (!groupRef.current) return
     const t = state.clock.elapsedTime
-    groupRef.current.position.x = Math.sin(t * 0.04) * 0.4
-    groupRef.current.position.y = 2 + Math.sin(t * 0.07) * 0.3
-    groupRef.current.position.z = Math.sin(t * 0.05) * 0.5
+    groupRef.current.position.x = Math.sin(t * 0.04) * 0.35
+    groupRef.current.position.y = 2 + Math.sin(t * 0.06) * 0.25
+    groupRef.current.position.z = Math.sin(t * 0.035) * 0.4
+    groupRef.current.rotation.x = Math.sin(t * 0.05) * 0.018
+    groupRef.current.rotation.z = Math.sin(t * 0.04) * 0.012
   })
 
   return (
     <group ref={groupRef} position={[0, 2, 0]}>
-      <group scale={[scale, scale, scale]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
+      <group scale={[scale, scale, scale]} rotation={[Math.PI / 2.5 - 0.08, Math.PI, 0]}>
         <primitive object={scene} />
       </group>
       <PlumeStream config={SMOKE_CONFIG} position={[0, -2.5, 5.7]} />
