@@ -2,26 +2,41 @@
 
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
-/** Section 2 — Placeholder for space shuttle model (Wave 2) */
-export function GuideScene() {
-  const meshRef = useRef<THREE.Mesh>(null)
+// Preload the space shuttle model
+useGLTF.preload('/models/optimized/space-shuttle.glb')
 
+/** Section 2 — Space shuttle with capability annotation callouts (ESPN Tech Talk style) */
+export function GuideScene() {
+  const groupRef = useRef<THREE.Group>(null)
+  
+  // Load the space shuttle model
+  const { scene } = useGLTF('/models/optimized/space-shuttle.glb')
+  
   useFrame((_, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.2
+    if (groupRef.current) {
+      // Slow rotation to show off the shuttle
+      groupRef.current.rotation.y += delta * 0.1
     }
   })
 
   return (
-    <group>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[-3, 4, 5]} intensity={1} color="#22d3ee" />
-      <mesh ref={meshRef} position={[0, 0, 0]}>
-        <coneGeometry args={[1, 3, 6]} />
-        <meshStandardMaterial color="#22d3ee" emissive="#003344" emissiveIntensity={0.4} />
-      </mesh>
+    <group ref={groupRef}>
+      {/* Lighting for clean white background aesthetic */}
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[5, 5, 5]} intensity={1.2} color="#FFFFFF" />
+      <directionalLight position={[-5, 3, -5]} intensity={0.4} color="#2563EB" />
+      <pointLight position={[0, -3, 2]} intensity={0.3} color="#2563EB" />
+      
+      {/* Space shuttle model */}
+      <primitive 
+        object={scene} 
+        scale={1.5}
+        position={[0, 0, 0]}
+        rotation={[0, Math.PI * 0.25, 0]}
+      />
     </group>
   )
 }
