@@ -45,7 +45,10 @@ export function InteractiveRoom({ onGroupClick, onGroupHover }: InteractiveRoomP
         const matName = child.material.name.toLowerCase()
         child.userData.materialName = matName
         if (!child.geometry.hasAttribute('uv2')) {
-          child.geometry.setAttribute('uv2', child.geometry.getAttribute('uv'))
+          const uvAttr = child.geometry.getAttribute('uv')
+          if (uvAttr) {
+            child.geometry.setAttribute('uv2', uvAttr)
+          }
         }
         child.material = createControlRoomShader(child.material, lightmap, {
           isScreen: SCREEN_MATERIALS.has(matName),
