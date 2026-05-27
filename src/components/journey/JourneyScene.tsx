@@ -80,7 +80,7 @@ export function JourneyScene() {
       </Suspense>
 
       <EffectComposer>
-        <Bloom luminanceThreshold={0.6} luminanceSmoothing={0.9} intensity={0.3} mipmapBlur />
+        <Bloom luminanceThreshold={0.6} luminanceSmoothing={0.9} intensity={0.2} mipmapBlur={false} />
       </EffectComposer>
     </>
   )

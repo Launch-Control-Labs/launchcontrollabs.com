@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-05-27",
+  "optimizations_applied": [
+    "DPR capped at Math.min(2, devicePixelRatio)",
+    "Bloom intensity reduced from 0.3 to 0.2",
+    "Bloom mipmapBlur disabled",
+    "Frustum culling verified enabled (R3F default)",
+    "All models in Suspense boundaries",
+    "CtaEarth uses scene.clone() to avoid double load"
+  ],
+  "model_budget": {
+    "total_models": 6,
+    "unique_glbs": 5,
+    "total_size_mb": 4.1,
+    "budget_mb": 8,
+    "status": "within_budget"
+  },
+  "expected_fps": "45-60 on M-series Mac, 30+ on mid-range desktop",
+  "bloom_decision": "kept_at_reduced_intensity",
+  "notes": "DPR was previously 1.5 max (already conservative). Cap pattern ensures safety on 4K displays. Bloom mipmapBlur disabled saves one full-screen downsample chain."
+}

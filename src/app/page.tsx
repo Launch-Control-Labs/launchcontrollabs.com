@@ -12,6 +12,7 @@ import { ScrollJourney } from '@/components/ScrollJourney'
 import { JourneyScene } from '@/components/journey/JourneyScene'
 import { BeatOverlays } from '@/components/journey/BeatOverlays'
 import { MobileExperience } from '@/components/MobileExperience'
+import { StaticContent } from '@/components/StaticContent'
 
 export default function Home() {
   const experienceMode = useExperienceMode()
@@ -41,9 +42,7 @@ export default function Home() {
           ) : experienceMode === '2d-parallax' ? (
             <MobileExperience />
           ) : (
-            <div style={{ padding: '2rem', textAlign: 'center', color: '#22D3EE' }}>
-              Static Content — Coming in Task 17
-            </div>
+            <StaticContent />
           )}
         </div>
       </main>

@@ -585,7 +585,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 7. Unified 3D Scene Setup (All Models Positioned)
+- [x] 7. Unified 3D Scene Setup (All Models Positioned)
 
   **What to do**:
   - Create `src/components/journey/JourneyScene.tsx` — single scene with ALL models positioned in world space
@@ -652,7 +652,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 8. Beat 1 — Pre-Launch (Hero) Content Overlay
+- [x] 8. Beat 1 — Pre-Launch (Hero) Content Overlay
 
   **What to do**:
   - Create `src/components/journey/BeatPreLaunch.tsx`
@@ -707,7 +707,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 9. Beat 2 — Ascent/Problem Content Overlay
+- [x] 9. Beat 2 — Ascent/Problem Content Overlay
 
   **What to do**:
   - Create `src/components/journey/BeatAscent.tsx`
@@ -738,7 +738,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 10. Beat 3 — Orbit/Guide Content Overlay
+- [x] 10. Beat 3 — Orbit/Guide Content Overlay
 
   **What to do**:
   - Create `src/components/journey/BeatOrbit.tsx`
@@ -766,7 +766,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 11. Beat 4 — Constellation/Proof Content Overlay
+- [x] 11. Beat 4 — Constellation/Proof Content Overlay
 
   **What to do**:
   - Create `src/components/journey/BeatConstellation.tsx`
@@ -796,7 +796,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 12. Beat 5 — Deep Space/Authority Content Overlay
+- [x] 12. Beat 5 — Deep Space/Authority Content Overlay
 
   **What to do**:
   - Create `src/components/journey/BeatAuthority.tsx`
@@ -821,7 +821,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 13. Beat 6 — CTA/Orbit Content Overlay
+- [x] 13. Beat 6 — CTA/Orbit Content Overlay
 
   **What to do**:
   - Create `src/components/journey/BeatCTA.tsx`
@@ -848,7 +848,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 14. Mobile 2D Parallax Fallback
+- [x] 14. Mobile 2D Parallax Fallback
 
   **What to do**:
   - Create `src/components/MobileExperience.tsx`
