@@ -24,11 +24,32 @@ const PROJECTS = [
     stack: ['Next.js', 'Three.js', 'GSAP'],
     year: '2026',
   },
+  {
+    name: 'Option One Plumbing',
+    status: 'DEPLOYED',
+    description: 'Full-range plumbing services platform with tight integration between Customer Service Reps and Field Workers.',
+    stack: ['Next.js', 'Real-time', 'CRM'],
+    year: '2025',
+  },
+  {
+    name: 'Sky Boss',
+    status: 'DEPLOYED',
+    description: 'Aviation operations management. Fleet tracking, maintenance scheduling, crew coordination.',
+    stack: ['React', 'Node.js', 'Real-time'],
+    year: '2025',
+  },
+  {
+    name: 'NPS.today',
+    status: 'DEPLOYED',
+    description: 'Net Promoter Score platform — automated survey distribution and customer satisfaction analytics.',
+    stack: ['Next.js', 'Analytics', 'Automation'],
+    year: '2024',
+  },
 ]
 
 const STATUS_COLORS: Record<string, string> = {
   ACTIVE: 'var(--green)',
-  DEPLOYED: 'var(--amber)',
+  DEPLOYED: 'var(--accent)',
   ARCHIVED: 'var(--text-dim)',
 }
 

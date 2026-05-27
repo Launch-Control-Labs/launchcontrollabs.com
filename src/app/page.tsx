@@ -8,6 +8,7 @@ import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
 import { SceneLoadingState } from '@/components/3d/SceneLoadingState'
 import { StaticHeroFallback } from '@/components/3d/StaticHeroFallback'
 import StatusBar from '@/components/StatusBar'
+import CompanyTicker from '@/components/CompanyTicker'
 import Capabilities from '@/components/Capabilities'
 import MissionCards from '@/components/MissionCards'
 import Contact from '@/components/Contact'
@@ -23,6 +24,7 @@ export default function Home() {
   return (
     <>
       <StatusBar />
+      <CompanyTicker />
 
       <main>
         {isMobile ? (
