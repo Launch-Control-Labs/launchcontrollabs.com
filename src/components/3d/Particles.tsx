@@ -97,26 +97,29 @@ export function Particles() {
     <group>
       <StarField />
 
-      {/* FAR LEFT — large gas giant */}
-      <VariousPlanet nodeName="planet_gas_2" worldSize={18} position={[-28, 6, -60]} rotSpeed={0.006} floatOffset={0.0} />
+      {/* === NEAR LAYER (z = -15 to -25) — flanking the shuttle === */}
+      {/* Far left near — large, bleeds off left edge */}
+      <VariousPlanet nodeName="planet_gas_2" worldSize={14} position={[-18, 4, -20]} rotSpeed={0.006} floatOffset={0.0} />
+      {/* Far right near — medium */}
+      <Planet path="/models/earth.glb" worldSize={10} position={[16, -3, -18]} rotSpeed={0.014} floatOffset={1.5} />
 
-      {/* FAR RIGHT — earth-like */}
-      <Planet path="/models/earth.glb" worldSize={12} position={[26, -4, -50]} rotSpeed={0.014} floatOffset={1.5} />
+      {/* === MID LAYER (z = -50 to -80) — fills the sides === */}
+      {/* Hard left mid */}
+      <Planet path="/models/mercury.glb" worldSize={5} position={[-36, 10, -60]} rotSpeed={0.028} floatOffset={3.0} />
+      {/* Hard right mid */}
+      <VariousPlanet nodeName="planet_lava_7" worldSize={7} position={[34, 6, -55]} rotSpeed={0.022} floatOffset={2.2} />
+      {/* Left mid-low */}
+      <VariousPlanet nodeName="planet_frozen_6" worldSize={9} position={[-28, -10, -70]} rotSpeed={0.016} floatOffset={4.0} />
+      {/* Right mid-high */}
+      <VariousPlanet nodeName="planet_barren_8" worldSize={6} position={[30, 14, -65]} rotSpeed={0.010} floatOffset={1.0} />
 
-      {/* TOP LEFT — small rocky */}
-      <Planet path="/models/mercury.glb" worldSize={4} position={[-20, 14, -35]} rotSpeed={0.028} floatOffset={3.0} />
-
-      {/* MID RIGHT — lava planet */}
-      <VariousPlanet nodeName="planet_lava_7" worldSize={5} position={[22, 8, -40]} rotSpeed={0.022} floatOffset={2.2} />
-
-      {/* BOTTOM LEFT — frozen */}
-      <VariousPlanet nodeName="planet_frozen_6" worldSize={7} position={[-16, -12, -55]} rotSpeed={0.016} floatOffset={4.0} />
-
-      {/* TOP RIGHT — barren */}
-      <VariousPlanet nodeName="planet_barren_8" worldSize={5} position={[14, 16, -80]} rotSpeed={0.010} floatOffset={1.0} />
-
-      {/* CENTER LEFT — continental, deep background */}
-      <VariousPlanet nodeName="planet_continental_4" worldSize={10} position={[-24, -1, -100]} rotSpeed={0.008} floatOffset={5.0} />
+      {/* === DEEP LAYER (z = -120 to -200) — background depth === */}
+      {/* Deep left — very large, atmospheric */}
+      <VariousPlanet nodeName="planet_continental_4" worldSize={20} position={[-70, -5, -150]} rotSpeed={0.008} floatOffset={5.0} />
+      {/* Deep right */}
+      <VariousPlanet nodeName="planet_gas_2" worldSize={16} position={[65, 8, -130]} rotSpeed={0.005} floatOffset={2.8} />
+      {/* Deep center-left — partially behind shuttle */}
+      <Planet path="/models/mercury.glb" worldSize={8} position={[-12, 18, -120]} rotSpeed={0.012} floatOffset={6.0} />
     </group>
   )
 }
