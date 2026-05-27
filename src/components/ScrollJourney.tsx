@@ -98,6 +98,24 @@ export function ScrollJourney({ children, scene }: { children?: React.ReactNode;
     { scope: containerRef }
   )
 
+  // Refresh ScrollTrigger when tab becomes visible (handles tab backgrounding)
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (!document.hidden) {
+        ScrollTrigger.refresh()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => document.removeEventListener('visibilitychange', handleVisibility)
+  }, [])
+
+  // Refresh ScrollTrigger on resize (recalculates scroll bounds)
+  useEffect(() => {
+    const handleResize = () => ScrollTrigger.refresh()
+    window.addEventListener('resize', handleResize, { passive: true })
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <div ref={containerRef} style={{ position: 'relative', height: '600vh' }}>
       {/* Fixed 3D Canvas — decorative, hidden from assistive tech */}
