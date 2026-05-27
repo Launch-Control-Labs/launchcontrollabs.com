@@ -1,44 +1,39 @@
+import { COLORS, TYPOGRAPHY, SPACING, SECTION_FLAG, STAR_BG } from '@/styles/section-constants'
+
 export default function MissionCards() {
   return (
     <div style={{ margin: 0 }}>
-      {/* RED FEATURED SECTION — Hero spread, vertically centered */}
+      {/* SPACE FEATURED SECTION — Hero spread, vertically centered */}
       <div style={{
-        background: '#C41E1E',
+        background: COLORS.navy,
         width: '100vw',
         position: 'relative',
         left: '50%',
         right: '50%',
         marginLeft: '-50vw',
         marginRight: '-50vw',
-        padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
-        minHeight: '70vh',
+        padding: SPACING.sectionPad,
+        minHeight: '80vh',
         display: 'flex',
         flexDirection: 'column' as const,
         justifyContent: 'center',
+        color: COLORS.white,
+        overflow: 'hidden',
+        backgroundImage: STAR_BG,
       }}>
         {/* Section flag */}
         <span style={{
-          display: 'inline-block',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.55rem',
-          letterSpacing: '0.25em',
-          textTransform: 'uppercase' as const,
-          color: '#FFFFFF',
-          border: '2px solid rgba(255,255,255,0.4)',
-          padding: '0.25rem 0.7rem',
-          fontWeight: 700,
-          marginBottom: '1.5rem',
-          alignSelf: 'flex-start',
+          ...SECTION_FLAG,
         }}>FEATURE</span>
 
         {/* Hero headline — display-xl */}
         <h3 style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(6rem, 18vw, 14rem)',
-          lineHeight: 0.85,
+          fontSize: TYPOGRAPHY.headline,
+          lineHeight: TYPOGRAPHY.lineHeightTight,
           letterSpacing: '-0.02em',
           textTransform: 'uppercase' as const,
-          color: '#FFFFFF',
+          color: COLORS.white,
           margin: 0,
           padding: 0,
           whiteSpace: 'nowrap' as const,
@@ -47,13 +42,13 @@ export default function MissionCards() {
 
         {/* Body text */}
         <p style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '0.875rem',
-          color: 'rgba(255,255,255,0.85)',
-          lineHeight: 1.5,
-          maxWidth: '38ch',
-          marginTop: '1.5rem',
-          marginBottom: '1.5rem',
+          fontFamily: 'var(--font-mono)',
+          fontSize: TYPOGRAPHY.deck,
+          color: COLORS.whiteDim,
+          letterSpacing: TYPOGRAPHY.letterSpacingDeck,
+          lineHeight: TYPOGRAPHY.lineHeightBody,
+          maxWidth: '60ch',
+          margin: '1.5rem 0',
         }}>
           AI-powered accounting automation for modern finance teams. Graph-native architecture processing millions of transactions.
         </p>
@@ -63,7 +58,7 @@ export default function MissionCards() {
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 0,
-          borderTop: '3px solid rgba(255,255,255,0.2)',
+          borderTop: '3px solid ' + COLORS.whiteFaint,
           paddingTop: '1.5rem',
           marginBottom: '1.5rem',
         }}>
@@ -77,7 +72,7 @@ export default function MissionCards() {
               <span style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(1.2rem, 3vw, 2rem)',
-                color: '#FFFFFF',
+                color: COLORS.white,
                 display: 'block',
                 lineHeight: 1,
               }}>{stat.value}</span>
@@ -86,7 +81,7 @@ export default function MissionCards() {
                 fontSize: '0.45rem',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase' as const,
-                color: 'rgba(255,255,255,0.6)',
+                color: COLORS.whiteDim,
                 marginTop: '0.5rem',
                 display: 'block',
               }}>{stat.label}</span>
@@ -101,13 +96,23 @@ export default function MissionCards() {
           gap: '1.5rem',
           flexWrap: 'wrap' as const,
         }}>
-          <span style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.45rem',
-            letterSpacing: '0.2em',
-            color: 'rgba(255,255,255,0.5)',
-            textTransform: 'uppercase' as const,
-          }}>NEXT.JS &middot; NEO4J &middot; LLMs</span>
+          <div style={{
+            display: 'flex',
+            gap: '0.5rem',
+            flexWrap: 'wrap' as const,
+          }}>
+            {['NEXT.JS', 'NEO4J', 'LLMs'].map((tech) => (
+              <span key={tech} style={{
+                border: '1px solid ' + COLORS.cyanDim,
+                color: COLORS.cyan,
+                fontFamily: 'var(--font-mono)',
+                fontSize: TYPOGRAPHY.label,
+                letterSpacing: TYPOGRAPHY.letterSpacingLabel,
+                padding: '0.25rem 0.6rem',
+                textTransform: 'uppercase' as const,
+              }}>{tech}</span>
+            ))}
+          </div>
 
           <span style={{
             display: 'inline-flex',
@@ -117,8 +122,8 @@ export default function MissionCards() {
             fontSize: '0.55rem',
             letterSpacing: '0.25em',
             textTransform: 'uppercase' as const,
-            color: '#FFFFFF',
-            border: '2px solid rgba(255,255,255,0.4)',
+            color: COLORS.white,
+            border: '2px solid ' + COLORS.whiteFaint,
             padding: '0.25rem 0.7rem',
             fontWeight: 700,
           }}>
@@ -128,20 +133,20 @@ export default function MissionCards() {
         </div>
       </div>
 
-      {/* CREAM SECTION — Secondary projects */}
+      {/* SECONDARY SECTION — Client work grid */}
       <div style={{
-        background: '#F5F0E8',
+        background: COLORS.navyLight,
         width: '100vw',
         position: 'relative',
         left: '50%',
         right: '50%',
         marginLeft: '-50vw',
         marginRight: '-50vw',
-        padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
+        padding: SPACING.sectionPad,
       }}>
         {/* CLIENT WORK subheader bar */}
         <div style={{
-          background: '#0A0A0A',
+          background: COLORS.navy,
           padding: '0.5rem 1rem',
           marginTop: '1.5rem',
           marginBottom: 0,
@@ -152,7 +157,7 @@ export default function MissionCards() {
             fontWeight: 700,
             letterSpacing: '0.25em',
             textTransform: 'uppercase' as const,
-            color: '#FFFFFF',
+            color: COLORS.white,
           }}>CLIENT WORK</span>
         </div>
 
@@ -160,7 +165,7 @@ export default function MissionCards() {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          border: '3px solid #0A0A0A',
+          border: '1px solid ' + COLORS.cyanDim,
           borderTop: 'none',
         }}>
           {[
@@ -169,30 +174,30 @@ export default function MissionCards() {
             { num: '04', name: 'OPTION ONE', desc: 'Full-range plumbing services. CSR and field coordination.', year: '2025' },
           ].map((project, i) => (
             <div key={project.num} style={{
-              padding: '1.5rem',
-              borderRight: i < 2 ? '3px solid #0A0A0A' : 'none',
+              padding: '2rem',
+              borderRight: i < 2 ? '1px solid ' + COLORS.cyanDim : 'none',
             }}>
               <span style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(3.5rem, 9vw, 7rem)',
-                color: '#0A0A0A',
+                color: COLORS.cyan,
                 lineHeight: 0.85,
                 display: 'block',
                 opacity: 0.15,
               }}>{project.num}</span>
               <h4 style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                color: '#0A0A0A',
+                fontSize: TYPOGRAPHY.headlineMd,
+                color: COLORS.white,
                 lineHeight: 0.85,
                 letterSpacing: '-0.02em',
                 textTransform: 'uppercase' as const,
                 margin: '0.5rem 0 0.5rem',
               }}>{project.name}</h4>
               <p style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.875rem',
-                color: '#3D3D3D',
+                fontFamily: 'var(--font-mono)',
+                fontSize: TYPOGRAPHY.body,
+                color: COLORS.whiteDim,
                 lineHeight: 1.4,
                 marginBottom: '0.5rem',
               }}>{project.desc}</p>
@@ -200,7 +205,7 @@ export default function MissionCards() {
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.45rem',
                 letterSpacing: '0.2em',
-                color: '#888888',
+                color: COLORS.cyanDim,
               }}>{project.year}</span>
             </div>
           ))}
@@ -209,7 +214,7 @@ export default function MissionCards() {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          border: '3px solid #0A0A0A',
+          border: '1px solid ' + COLORS.cyanDim,
           borderTop: 'none',
         }}>
           {[
@@ -217,30 +222,30 @@ export default function MissionCards() {
             { num: '06', name: 'NPS.TODAY', desc: 'Net Promoter Score platform. Automated surveys and analytics.', year: '2024' },
           ].map((project) => (
             <div key={project.num} style={{
-              padding: '1.5rem',
-              borderRight: '3px solid #0A0A0A',
+              padding: '2rem',
+              borderRight: '1px solid ' + COLORS.cyanDim,
             }}>
               <span style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(3.5rem, 9vw, 7rem)',
-                color: '#0A0A0A',
+                color: COLORS.cyan,
                 lineHeight: 0.85,
                 display: 'block',
                 opacity: 0.15,
               }}>{project.num}</span>
               <h4 style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                color: '#0A0A0A',
+                fontSize: TYPOGRAPHY.headlineMd,
+                color: COLORS.white,
                 lineHeight: 0.85,
                 letterSpacing: '-0.02em',
                 textTransform: 'uppercase' as const,
                 margin: '0.5rem 0 0.5rem',
               }}>{project.name}</h4>
               <p style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.875rem',
-                color: '#3D3D3D',
+                fontFamily: 'var(--font-mono)',
+                fontSize: TYPOGRAPHY.body,
+                color: COLORS.whiteDim,
                 lineHeight: 1.4,
                 marginBottom: '0.5rem',
               }}>{project.desc}</p>
@@ -248,11 +253,11 @@ export default function MissionCards() {
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.45rem',
                 letterSpacing: '0.2em',
-                color: '#888888',
+                color: COLORS.cyanDim,
               }}>{project.year}</span>
             </div>
           ))}
-          <div style={{ padding: '1.5rem' }} />
+          <div style={{ padding: '2rem' }} />
         </div>
       </div>
     </div>
