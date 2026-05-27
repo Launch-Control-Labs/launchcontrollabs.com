@@ -18,8 +18,8 @@ export default function StatusBar() {
       textTransform: 'uppercase',
       color: 'rgba(255,255,255,0.6)',
     }}>
-      <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em' }}>LAUNCH CONTROL LABS</span>
-      <span>LOS ANGELES · 2026</span>
+      <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em' }}>LAUNCH CONTROL</span>
+      <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em' }}>LABS</span>
     </header>
   )
 }

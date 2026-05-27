@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
@@ -12,6 +12,32 @@ interface ControlRoomSceneProps {
 }
 
 export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps) {
+  const overlayRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const container = containerRef.current
+    const overlay = overlayRef.current
+    if (!container || !overlay) return
+
+    const init = async () => {
+      const { gsap } = await import('gsap')
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+      gsap.registerPlugin(ScrollTrigger)
+
+      gsap.to(overlay, {
+        opacity: 0,
+        y: -40,
+        scrollTrigger: {
+          trigger: container,
+          start: 'top top',
+          end: '+=40%',
+          scrub: 1,
+        },
+      })
+    }
+    init()
+  }, [containerRef])
+
   return (
     <div style={{ width: '100%', height: '100%', background: '#080810', position: 'relative' }}>
       <Canvas
@@ -37,7 +63,7 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
         <fog attach="fog" args={['#080810', 80, 200]} />
       </Canvas>
 
-      <div style={{
+      <div ref={overlayRef} style={{
         position: 'absolute',
         bottom: 'clamp(3rem, 8vh, 6rem)',
         left: 'clamp(1.5rem, 4vw, 3rem)',
