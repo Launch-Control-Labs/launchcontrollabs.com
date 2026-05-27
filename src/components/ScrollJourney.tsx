@@ -1,0 +1,124 @@
+'use client'
+
+import { useRef } from 'react'
+import dynamic from 'next/dynamic'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import * as THREE from 'three'
+import { getCamera } from '@/config/camera-path'
+import { useSceneStore } from '@/store/scene-store'
+
+gsap.registerPlugin(ScrollTrigger)
+
+// ─── CameraController ───────────────────────────────────────────────────────────
+// Reads progressRef every frame and applies camera-path interpolation.
+// Single-writer principle: only useFrame touches the camera.
+
+function CameraController({ progressRef }: { progressRef: React.RefObject<number> }) {
+  const { camera } = useThree()
+
+  useFrame(() => {
+    const progress = progressRef.current ?? 0
+    const { position, lookAt, fov } = getCamera(progress)
+    camera.position.copy(position)
+    camera.lookAt(lookAt)
+    if (camera instanceof THREE.PerspectiveCamera) {
+      camera.fov = fov
+      camera.updateProjectionMatrix()
+    }
+  })
+
+  return null
+}
+
+// ─── Dynamic Canvas wrapper (SSR disabled) ──────────────────────────────────────
+
+const DynamicCanvas = dynamic(
+  () =>
+    Promise.resolve(function ScrollCanvas({
+      progressRef,
+    }: {
+      progressRef: React.RefObject<number>
+    }) {
+      return (
+        <Canvas
+          dpr={[1, 1.5]}
+          gl={{ antialias: true, alpha: false }}
+          camera={{ position: [0, -5, 10], fov: 60, near: 0.1, far: 2000 }}
+          style={{ width: '100%', height: '100%' }}
+        >
+          <color attach="background" args={['#020914']} />
+          <CameraController progressRef={progressRef} />
+        </Canvas>
+      )
+    }),
+  { ssr: false }
+)
+
+// ─── ScrollJourney ──────────────────────────────────────────────────────────────
+// Top-level scroll experience: a 600vh scroll container with a fixed R3F Canvas
+// whose camera is driven by GSAP ScrollTrigger via ref (Approach A from PoC).
+
+export function ScrollJourney({ children }: { children?: React.ReactNode }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const progressRef = useRef(0)
+
+  // GSAP binding: ScrollTrigger writes to progressRef + Zustand store
+  useGSAP(
+    () => {
+      if (!containerRef.current) return
+
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: true,
+        onUpdate: (self) => {
+          progressRef.current = self.progress
+          useSceneStore.getState().setScrollProgress(self.progress)
+        },
+      })
+
+      return () => {
+        ScrollTrigger.getAll().forEach((t) => t.kill())
+      }
+    },
+    { scope: containerRef }
+  )
+
+  return (
+    <div ref={containerRef} style={{ position: 'relative', height: '600vh' }}>
+      {/* Fixed 3D Canvas — decorative, hidden from assistive tech */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100vh',
+          zIndex: 0,
+        }}
+      >
+        <DynamicCanvas progressRef={progressRef} />
+      </div>
+
+      {/* Fixed content overlay */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100vh',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useSceneStore } from '@/store/scene-store'
+import { getBeatForProgress, type BeatName } from '@/config/camera-path'
 import { SECTION_THEMES } from '@/styles/section-constants'
 import gsap from 'gsap'
 import ScrollToPlugin from 'gsap/ScrollToPlugin'
@@ -19,8 +20,18 @@ const SCROLL_SECTION_IDS = [
 ]
 const THEME_KEYS = ['hero', 'problem', 'guide', 'proof', 'authority', 'orbit'] as const
 
+const BEAT_TO_INDEX: Record<BeatName, number> = {
+  preLaunch: 0,
+  ascent: 1,
+  orbit: 2,
+  constellation: 3,
+  deepSpace: 4,
+  cta: 5,
+}
+
 export default function SectionNav() {
-  const { activeSection } = useSceneStore()
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const activeSection = BEAT_TO_INDEX[getBeatForProgress(scrollProgress)]
   const [isMobile, setIsMobile] = useState(false)
   const dotsRef = useRef<(HTMLButtonElement | null)[]>([])
 

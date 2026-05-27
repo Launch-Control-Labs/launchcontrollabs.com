@@ -25,8 +25,8 @@ export function SceneRenderer() {
   const opacityRefs = useRef<number[]>(Array(SCENES.length).fill(0))
   opacityRefs.current[0] = 1
 
-  const activeSection = useSceneStore((s) => s.activeSection)
-  const loadedSections = useSceneStore((s) => s.loadedSections)
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const activeSection = Math.min(5, Math.floor(scrollProgress * SCENES.length))
 
   useFrame((_, delta) => {
     groupRefs.current.forEach((group, i) => {
@@ -52,9 +52,6 @@ export function SceneRenderer() {
   return (
     <>
       {SCENES.map((Scene, index) => {
-        const isLoaded = loadedSections.includes(index)
-        if (!isLoaded) return null
-
         return (
           <group
             key={index}

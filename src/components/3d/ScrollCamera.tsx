@@ -3,7 +3,6 @@
 import { useRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-import { useSceneStore } from '@/store/scene-store'
 
 interface ScrollCameraProps {
   containerRef: React.RefObject<HTMLElement | null>
@@ -11,14 +10,12 @@ interface ScrollCameraProps {
 
 export function ScrollCamera({ containerRef }: ScrollCameraProps) {
   const { camera } = useThree()
-  const setInteractionEnabled = useSceneStore((s) => s.setInteractionEnabled)
   
   const scrollProgress = useRef(0)
   const mouseX = useRef(0)
   const mouseY = useRef(0)
   const targetRotX = useRef(0)
   const targetRotY = useRef(0)
-  const interactionEnabledRef = useRef(false)
   const prefersReducedMotion = useRef(
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   )
@@ -37,20 +34,9 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
       const scrolled = -rect.top
       const progress = Math.max(0, Math.min(1, scrolled / (containerHeight * 0.8)))
       scrollProgress.current = progress
-      
-      // Enable interaction at 90% scroll
-      if (progress >= 0.9 && !interactionEnabledRef.current) {
-        interactionEnabledRef.current = true
-        setInteractionEnabled(true)
-      } else if (progress < 0.85 && interactionEnabledRef.current) {
-        interactionEnabledRef.current = false
-        setInteractionEnabled(false)
-        useSceneStore.getState().setActivePanel(null)
-      }
     }
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Normalize to [-1, 1]
       mouseX.current = (e.clientX / window.innerWidth) * 2 - 1
       mouseY.current = (e.clientY / window.innerHeight) * 2 - 1
     }
@@ -63,7 +49,7 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [camera, containerRef, setInteractionEnabled])
+  }, [camera, containerRef])
 
   useFrame(() => {
     const targetZ = 30 - scrollProgress.current * 10

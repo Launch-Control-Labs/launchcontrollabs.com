@@ -7,7 +7,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import * as THREE from 'three'
 import { useSceneStore, SECTION_COUNT } from '@/store/scene-store'
-import { useSceneLifecycle } from '@/hooks/useSceneLifecycle'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { useDeviceTier } from '@/hooks/useDeviceTier'
 import { SceneRenderer } from './3d/SceneRenderer'
@@ -48,9 +47,8 @@ const SECTION_HEIGHTS = [
 export function ScrollScene({ children }: { children: React.ReactNode }) {
   const canvasContainerRef = useRef<HTMLDivElement>(null)
   const sectionRefs = useRef<(HTMLDivElement | null)[]>(Array(SECTION_COUNT).fill(null))
-  const { setActiveSection, setScrollProgress } = useSceneStore()
+  const { setScrollProgress } = useSceneStore()
 
-  useSceneLifecycle()
   const prefersReducedMotion = useReducedMotion()
   const deviceTier = useDeviceTier()
 
@@ -70,41 +68,6 @@ export function ScrollScene({ children }: { children: React.ReactNode }) {
   }, { scope: canvasContainerRef })
 
   useEffect(() => {
-    const observers: IntersectionObserver[] = []
-    let lastScrollY = window.scrollY
-
-    const getScrollDirection = () => {
-      const currentY = window.scrollY
-      const direction = currentY >= lastScrollY ? 'down' : 'up'
-      lastScrollY = currentY
-      return direction
-    }
-
-    sectionRefs.current.forEach((sectionEl, index) => {
-      if (!sectionEl) return
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return
-            const direction = getScrollDirection()
-            const threshold = direction === 'up' ? 0.15 : 0.3
-            if (entry.intersectionRatio >= threshold) {
-              setActiveSection(index)
-            }
-          })
-        },
-        { threshold: [0.1, 0.15, 0.3, 0.5, 0.7] }
-      )
-
-      observer.observe(sectionEl)
-      observers.push(observer)
-    })
-
-    return () => observers.forEach((o) => o.disconnect())
-  }, [setActiveSection])
-
-  useEffect(() => {
     const triggers: ScrollTrigger[] = []
 
     sectionRefs.current.forEach((sectionEl, index) => {
@@ -116,10 +79,7 @@ export function ScrollScene({ children }: { children: React.ReactNode }) {
         end: 'bottom top',
         scrub: true,
         onUpdate: (self) => {
-          const { activeSection } = useSceneStore.getState()
-          if (activeSection === index) {
-            setScrollProgress(self.progress)
-          }
+          setScrollProgress(self.progress)
         },
       })
 

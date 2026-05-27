@@ -1,21 +1,15 @@
 'use client'
 
 import { Suspense } from 'react'
-import dynamic from 'next/dynamic'
 import { useExperienceMode } from '@/hooks/useExperienceMode'
 import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
 import { SceneLoadingState } from '@/components/3d/SceneLoadingState'
-import { StaticHeroFallback } from '@/components/3d/StaticHeroFallback'
 import StatusBar from '@/components/StatusBar'
 import SectionNav from '@/components/SectionNav'
 import CompanyTicker from '@/components/CompanyTicker'
 
 import { HeroOverlay } from '@/components/HeroOverlay'
-
-const ScrollScene = dynamic(
-  () => import('@/components/ScrollScene').then((m) => ({ default: m.ScrollScene })),
-  { ssr: false, loading: () => <SceneLoadingState /> }
-)
+import { ScrollJourney } from '@/components/ScrollJourney'
 
 export default function Home() {
   const experienceMode = useExperienceMode()
@@ -37,9 +31,7 @@ export default function Home() {
           {experienceMode === '3d' ? (
             <SceneErrorBoundary>
               <Suspense fallback={<SceneLoadingState />}>
-                <ScrollScene>
-                  <HeroOverlay />
-                </ScrollScene>
+                <ScrollJourney />
               </Suspense>
             </SceneErrorBoundary>
           ) : experienceMode === '2d-parallax' ? (

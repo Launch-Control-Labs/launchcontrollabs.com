@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useGLTF } from '@react-three/drei'
-import { useSceneStore, SECTION_COUNT } from '@/store/scene-store'
+import { SECTION_COUNT } from '@/store/scene-store'
 
 const HERO_SECTION = 0
 
@@ -16,10 +16,8 @@ export const SECTION_MODEL_URLS: Record<number, string> = {
 }
 
 export function disposeScene(scene: THREE.Object3D, url: string) {
-  // Part 1: Clear JS cache
   useGLTF.clear(url)
 
-  // Part 2: Traverse and dispose GPU resources
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
       child.geometry?.dispose()
@@ -49,27 +47,7 @@ export function computeLoadedSections(activeSection: number): number[] {
 }
 
 export function useSceneLifecycle() {
-  const activeSection = useSceneStore((s) => s.activeSection)
-  const prevLoadedRef = useRef<number[]>([HERO_SECTION])
-
-  useEffect(() => {
-    const shouldBeLoaded = computeLoadedSections(activeSection)
-    const prev = prevLoadedRef.current
-
-    const toUnload = prev.filter(
-      (s) => s !== HERO_SECTION && !shouldBeLoaded.includes(s)
-    )
-
-    for (const section of toUnload) {
-      const url = SECTION_MODEL_URLS[section]
-      if (url) {
-        useGLTF.clear(url)
-      }
-    }
-
-    useSceneStore.getState().setLoadedSections(shouldBeLoaded)
-    prevLoadedRef.current = shouldBeLoaded
-  }, [activeSection])
+  // Legacy hook — section lifecycle is now handled by ScrollJourney
 }
 
 export function useSceneDisposer(sectionIndex: number) {
