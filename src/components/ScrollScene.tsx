@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useCallback } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, extend } from '@react-three/fiber'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -11,6 +11,15 @@ import { useSceneLifecycle } from '@/hooks/useSceneLifecycle'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { useDeviceTier } from '@/hooks/useDeviceTier'
 import { SceneRenderer } from './3d/SceneRenderer'
+import { ProblemSection } from './sections/ProblemSection'
+import { GuideSection } from './sections/GuideSection'
+import { ProofSection } from './sections/ProofSection'
+import { AuthoritySection } from './sections/AuthoritySection'
+import { OrbitSection } from './sections/OrbitSection'
+
+// Register all Three.js objects with R3F's namespace
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+extend(THREE as any)
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -168,6 +177,11 @@ export function ScrollScene({ children }: { children: React.ReactNode }) {
             }}
           >
             {index === 0 && children}
+            {index === 1 && <ProblemSection />}
+            {index === 2 && <GuideSection />}
+            {index === 3 && <ProofSection />}
+            {index === 4 && <AuthoritySection />}
+            {index === 5 && <OrbitSection />}
           </div>
         ))}
       </div>

@@ -4,7 +4,6 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { Canvas } from '@react-three/fiber'
 
 useGLTF.setDecoderPath('/draco/')
 
@@ -66,11 +65,7 @@ function DriftingAstronaut() {
 
 export function ProblemScene() {
   return (
-    <Canvas
-      camera={{ position: [0, 0, 8], fov: 45 }}
-      style={{ background: 'transparent' }}
-      gl={{ alpha: true, antialias: true }}
-    >
+    <group>
       <ambientLight intensity={0.3} />
       <pointLight position={[5, 5, 5]} intensity={0.6} color="#DC2626" />
       <pointLight position={[-5, -5, 5]} intensity={0.3} color="#ff6b6b" />
@@ -82,7 +77,7 @@ export function ProblemScene() {
         color="#DC2626"
       />
       <DriftingAstronaut />
-    </Canvas>
+    </group>
   )
 }
 

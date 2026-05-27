@@ -1,14 +1,7 @@
 'use client'
 
-import { Suspense } from 'react'
-import dynamic from 'next/dynamic'
 import { SectionThemeProvider } from '@/components/SectionThemeProvider'
 import { SECTION_FLAG, TYPOGRAPHY, SPACING } from '@/styles/section-constants'
-
-const ProblemScene = dynamic(
-  () => import('@/components/3d/scenes/ProblemScene').then((m) => ({ default: m.ProblemScene })),
-  { ssr: false }
-)
 
 const CALLOUTS = [
   { label: 'INDUSTRY AVERAGE', value: '90%', suffix: 'FAIL' },
@@ -147,11 +140,7 @@ export function ProblemSection() {
             height: '100vh',
             background: 'radial-gradient(ellipse at 30% 50%, rgba(220, 38, 38, 0.08) 0%, transparent 60%)',
           }}
-        >
-          <Suspense fallback={null}>
-            <ProblemScene />
-          </Suspense>
-        </div>
+        />
 
         <div
           style={{
