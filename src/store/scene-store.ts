@@ -8,6 +8,7 @@ interface SceneState {
   activePanel: MeshGroup | null
   hoveredGroup: MeshGroup | null
   interactionEnabled: boolean
+  deviceTier: 1 | 2 | 3
 
   activeSection: number
   scrollProgress: number
@@ -17,6 +18,7 @@ interface SceneState {
   setActivePanel: (group: MeshGroup | null) => void
   setHoveredGroup: (group: MeshGroup | null) => void
   setInteractionEnabled: (enabled: boolean) => void
+  setDeviceTier: (tier: 1 | 2 | 3) => void
   setActiveSection: (section: number) => void
   setScrollProgress: (progress: number) => void
   setLoadingSection: (section: number | null) => void
@@ -27,6 +29,7 @@ export const useSceneStore = create<SceneState>((set, get) => ({
   activePanel: null,
   hoveredGroup: null,
   interactionEnabled: false,
+  deviceTier: 2,
 
   activeSection: 0,
   scrollProgress: 0,
@@ -36,6 +39,7 @@ export const useSceneStore = create<SceneState>((set, get) => ({
   setActivePanel: (group) => set({ activePanel: group }),
   setHoveredGroup: (group) => set({ hoveredGroup: group }),
   setInteractionEnabled: (enabled) => set({ interactionEnabled: enabled }),
+  setDeviceTier: (tier) => set({ deviceTier: tier }),
   setActiveSection: (section) => set({ activeSection: section }),
   setScrollProgress: (progress) => set({ scrollProgress: progress }),
   setLoadingSection: (section) => set({ loadingSection: section }),
