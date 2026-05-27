@@ -7,16 +7,16 @@ import { useSceneStore } from '@/store/scene-store'
 
 const POSITION_KEYFRAMES = [
   new THREE.Vector3(0, 35, 130),
-  new THREE.Vector3(35, 50, 80),
-  new THREE.Vector3(20, 72, 40),
-  new THREE.Vector3(5, 86, 18),
+  new THREE.Vector3(30, 50, 70),
+  new THREE.Vector3(15, 75, 30),
+  new THREE.Vector3(2, 90, 5),
 ]
 
 const LOOKAT_KEYFRAMES = [
   new THREE.Vector3(-7, 45, -8),
   new THREE.Vector3(-7, 55, -8),
-  new THREE.Vector3(-7, 75, -8),
-  new THREE.Vector3(-7, 89, -8),
+  new THREE.Vector3(-7, 80, -8),
+  new THREE.Vector3(-7, 91, -8),
 ]
 
 const positionCurve = new THREE.CatmullRomCurve3(POSITION_KEYFRAMES, false, 'centripetal', 0.5)
