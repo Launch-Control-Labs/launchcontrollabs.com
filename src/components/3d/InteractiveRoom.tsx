@@ -260,22 +260,22 @@ function Rocket({ modelPath }: { modelPath: string }) {
     const box    = new THREE.Box3().setFromObject(scene)
     const center = box.getCenter(new THREE.Vector3())
     scene.position.sub(center)
-    setScale(normalizeToHeight(scene, 12))
+    setScale(normalizeToHeight(scene, 7))
     processed.current = true
   }, [scene])
 
   useFrame((state) => {
     if (!outerRef.current) return
     const t = state.clock.elapsedTime
-    outerRef.current.position.x = Math.sin(t * 0.038) * 0.3
-    outerRef.current.position.y = 1 + Math.sin(t * 0.055) * 0.20
+    outerRef.current.position.x = 3 + Math.sin(t * 0.038) * 0.3
+    outerRef.current.position.y = 4 + Math.sin(t * 0.055) * 0.20
     outerRef.current.position.z = Math.sin(t * 0.028) * 0.30
     outerRef.current.rotation.x = Math.sin(t * 0.042) * 0.010
     outerRef.current.rotation.z = Math.sin(t * 0.033) * 0.007
   })
 
   return (
-    <group ref={outerRef} position={[0, 1, 0]}>
+    <group ref={outerRef} position={[3, 4, 0]}>
       <group rotation={[Math.PI / 4, Math.PI, 0]}>
         <group scale={scale}>
           <primitive object={scene} />
