@@ -3,32 +3,34 @@
 import { useEffect, useRef } from 'react'
 import { SectionThemeProvider } from '@/components/SectionThemeProvider'
 
-function useFitty(deps: unknown[] = []) {
-  const ref = useRef<HTMLElement>(null)
+function useFitText(deps: unknown[] = []) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const textRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    if (!ref.current) return
-    const el = ref.current
+    const container = containerRef.current
+    const text = textRef.current
+    if (!container || !text) return
 
     const fit = () => {
-      el.style.fontSize = '999px'
-      const ratio = el.parentElement!.clientWidth / el.scrollWidth
-      el.style.fontSize = Math.floor(999 * ratio) + 'px'
+      text.style.fontSize = '200px'
+      const ratio = container.clientWidth / text.scrollWidth
+      text.style.fontSize = Math.floor(200 * ratio * 0.98) + 'px'
     }
 
     fit()
     const ro = new ResizeObserver(fit)
-    ro.observe(el.parentElement!)
+    ro.observe(container)
     return () => ro.disconnect()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 
-  return ref
+  return { containerRef, textRef }
 }
 
 export function HeroOverlay() {
-  const h1Ref = useFitty()
-  const h2Ref = useFitty()
+  const h1Fit = useFitText()
+  const h2Fit = useFitText()
 
   return (
     <SectionThemeProvider sectionIndex={0}>
@@ -73,9 +75,9 @@ export function HeroOverlay() {
             </span>
           </div>
 
-          <div style={{ width: '100%', overflow: 'hidden', lineHeight: 0.82 }}>
+          <div ref={h1Fit.containerRef} style={{ width: '100%', overflow: 'hidden', lineHeight: 0.82 }}>
             <h1
-              ref={h1Ref as React.RefObject<HTMLHeadingElement>}
+              ref={h1Fit.textRef as React.RefObject<HTMLHeadingElement>}
               style={{
                 fontFamily: 'var(--font-display)',
                 lineHeight: 0.82,
@@ -111,9 +113,9 @@ export function HeroOverlay() {
             }}>
               From idea to shipped product. No guessing.
             </p>
-            <div style={{ overflow: 'hidden', lineHeight: 0.82 }}>
+            <div ref={h2Fit.containerRef} style={{ overflow: 'hidden', lineHeight: 0.82, flexShrink: 0 }}>
               <h2
-                ref={h2Ref as React.RefObject<HTMLHeadingElement>}
+                ref={h2Fit.textRef as React.RefObject<HTMLHeadingElement>}
                 style={{
                   fontFamily: 'var(--font-display)',
                   lineHeight: 0.82,

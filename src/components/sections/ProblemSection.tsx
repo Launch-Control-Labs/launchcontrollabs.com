@@ -65,7 +65,7 @@ function ProblemContent() {
         display: 'flex',
         flexDirection: 'column',
         gap: 'clamp(1.5rem, 3vw, 3rem)',
-        maxWidth: '600px',
+        maxWidth: '560px',
       }}
     >
       <div style={SECTION_FLAG}>
@@ -81,6 +81,7 @@ function ProblemContent() {
           letterSpacing: TYPOGRAPHY.sectionHeader.letterSpacing,
           color: 'var(--section-text)',
           margin: 0,
+          textShadow: '0 2px 12px rgba(0,0,0,0.9)',
         }}
       >
         LOST IN SPACE
@@ -96,6 +97,7 @@ function ProblemContent() {
           margin: 0,
           opacity: 0.85,
           maxWidth: '520px',
+          textShadow: '0 2px 12px rgba(0,0,0,0.9)',
         }}
       >
         Most products don&apos;t fail because of bad ideas. They fail because the right team 
@@ -129,25 +131,12 @@ export function ProblemSection() {
           minHeight: '100vh',
           background: 'transparent',
           position: 'relative',
-          overflow: 'hidden',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
+          alignItems: 'flex-end',
+          padding: 'clamp(3rem, 6vw, 5rem)',
         }}
       >
-        <div
-          style={{
-            width: '60%',
-            minHeight: '100vh',
-            background: 'linear-gradient(to right, transparent 0%, rgba(26,5,5,0.92) 25%, rgba(26,5,5,0.97) 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
-          }}
-        >
-          <ProblemContent />
-        </div>
+        <ProblemContent />
       </section>
     </SectionThemeProvider>
   )
