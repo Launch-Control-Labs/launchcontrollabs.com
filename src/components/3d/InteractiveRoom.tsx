@@ -57,35 +57,32 @@ function Rocket({ modelPath }: { modelPath: string }) {
   })
 
   return (
-    <group ref={groupRef} scale={[scale, scale, scale]} position={[0, 2, 0]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
-      <primitive object={scene} />
-    </group>
-  )
-}
-
-function RocketExhaust() {
-  return (
-    <group position={[0, -4.5, 0.3]}>
-      <Fire
-        texture="/fire-texture.png"
-        color={new THREE.Color(1.0, 0.5, 0.1)}
-        scale={[1.2, 3.5, 1.2]}
-        magnitude={1.4}
-        lacunarity={2.0}
-        gain={0.5}
-        iterations={18}
-        octaves={3}
-      />
-      <Fire
-        texture="/fire-texture.png"
-        color={new THREE.Color(1.0, 0.9, 0.6)}
-        scale={[0.5, 2.0, 0.5]}
-        magnitude={1.6}
-        lacunarity={2.5}
-        gain={0.4}
-        iterations={12}
-        octaves={2}
-      />
+    <group ref={groupRef} position={[0, 2, 0]}>
+      <group scale={[scale, scale, scale]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
+        <primitive object={scene} />
+      </group>
+      <group position={[0, -6.5, 0.2]}>
+        <Fire
+          texture="/fire-texture.png"
+          color={new THREE.Color(1.0, 0.45, 0.05)}
+          scale={[1.4, 4.0, 1.4]}
+          magnitude={1.4}
+          lacunarity={2.0}
+          gain={0.5}
+          iterations={18}
+          octaves={3}
+        />
+        <Fire
+          texture="/fire-texture.png"
+          color={new THREE.Color(1.0, 0.85, 0.5)}
+          scale={[0.6, 2.2, 0.6]}
+          magnitude={1.7}
+          lacunarity={2.5}
+          gain={0.4}
+          iterations={12}
+          octaves={2}
+        />
+      </group>
     </group>
   )
 }
@@ -97,7 +94,6 @@ export function InteractiveRoom() {
   return (
     <group>
       <Rocket modelPath={rocketPath} />
-      <RocketExhaust />
     </group>
   )
 }

@@ -96,19 +96,15 @@ export function Particles() {
   return (
     <group>
       <StarField />
-
-      {/* MID LAYER z=-50 to -80: viewport half-width ±39 to ±51 — push to edges */}
-      <VariousPlanet nodeName="planet_gas_2" worldSize={10} position={[-36, 4, -55]} rotSpeed={0.006} floatOffset={0.0} />
-      <Planet path="/models/earth.glb" worldSize={8} position={[34, -2, -50]} rotSpeed={0.014} floatOffset={1.5} />
-      <Planet path="/models/mercury.glb" worldSize={4} position={[-46, 10, -75]} rotSpeed={0.028} floatOffset={3.0} />
-      <VariousPlanet nodeName="planet_lava_7" worldSize={6} position={[44, 8, -70]} rotSpeed={0.022} floatOffset={2.2} />
-      <VariousPlanet nodeName="planet_frozen_6" worldSize={7} position={[-38, -8, -80]} rotSpeed={0.016} floatOffset={4.0} />
-      <VariousPlanet nodeName="planet_barren_8" worldSize={5} position={[40, 14, -65]} rotSpeed={0.010} floatOffset={1.0} />
-
-      {/* DEEP LAYER z=-130 to -200: viewport half-width ±75 to ±98 — atmospheric edges */}
-      <VariousPlanet nodeName="planet_continental_4" worldSize={18} position={[-80, -4, -180]} rotSpeed={0.008} floatOffset={5.0} />
-      <VariousPlanet nodeName="planet_gas_2" worldSize={14} position={[75, 6, -150]} rotSpeed={0.005} floatOffset={2.8} />
-      <Planet path="/models/mercury.glb" worldSize={7} position={[-20, 16, -130]} rotSpeed={0.012} floatOffset={6.0} />
+      <VariousPlanet nodeName="planet_gas_2"        worldSize={11} position={[-32,  12,  -38]} rotSpeed={0.006} floatOffset={0.0} />
+      <Planet path="/models/earth.glb"              worldSize={9}  position={[ 28, -14,  -42]} rotSpeed={0.014} floatOffset={1.5} />
+      <Planet path="/models/mercury.glb"            worldSize={4}  position={[-22,  18,  -90]} rotSpeed={0.028} floatOffset={3.0} />
+      <VariousPlanet nodeName="planet_lava_7"       worldSize={7}  position={[ 48,   4, -110]} rotSpeed={0.022} floatOffset={2.2} />
+      <VariousPlanet nodeName="planet_frozen_6"     worldSize={8}  position={[-50, -16, -130]} rotSpeed={0.016} floatOffset={4.0} />
+      <VariousPlanet nodeName="planet_barren_8"     worldSize={5}  position={[ 38,  20, -170]} rotSpeed={0.010} floatOffset={1.0} />
+      <VariousPlanet nodeName="planet_continental_4" worldSize={22} position={[-72,  -6, -280]} rotSpeed={0.008} floatOffset={5.0} />
+      <VariousPlanet nodeName="planet_gas_2"        worldSize={16} position={[ 80,   8, -220]} rotSpeed={0.005} floatOffset={2.8} />
+      <Planet path="/models/mercury.glb"            worldSize={6}  position={[-14, -20, -350]} rotSpeed={0.012} floatOffset={6.0} />
     </group>
   )
 }
