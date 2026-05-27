@@ -47,10 +47,10 @@ export function HeroOverlay() {
             </span>
           </div>
 
-          {/* LAUNCH CONTROL — full width, one line */}
+          {/* LAUNCH CONTROL — scales to exactly fit viewport width */}
           <h1 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(4.5rem, 16vw, 20rem)',
+            fontSize: 'clamp(4rem, 11.5vw, 16rem)',
             lineHeight: 0.82,
             letterSpacing: '-0.04em',
             color: '#FFFFFF',
@@ -58,6 +58,8 @@ export function HeroOverlay() {
             margin: 0,
             opacity: 0.95,
             whiteSpace: 'nowrap',
+            display: 'block',
+            width: '100%',
           }}>
             LAUNCH CONTROL
           </h1>
@@ -68,6 +70,7 @@ export function HeroOverlay() {
             alignItems: 'baseline',
             justifyContent: 'space-between',
             marginTop: '-0.06em',
+            width: '100%',
           }}>
             <p style={{
               fontFamily: 'var(--font-mono)',
@@ -83,7 +86,7 @@ export function HeroOverlay() {
             </p>
             <h2 style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(4.5rem, 16vw, 20rem)',
+              fontSize: 'clamp(4rem, 11.5vw, 16rem)',
               lineHeight: 0.82,
               letterSpacing: '-0.01em',
               color: '#FFFFFF',
@@ -91,6 +94,7 @@ export function HeroOverlay() {
               margin: 0,
               opacity: 0.95,
               textShadow: '0 0 60px rgba(34, 211, 238, 0.25)',
+              whiteSpace: 'nowrap',
             }}>
               LABS
             </h2>
