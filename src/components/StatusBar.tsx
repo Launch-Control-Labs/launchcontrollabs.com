@@ -20,13 +20,13 @@ export default function StatusBar() {
       alignItems: 'center',
       padding: '0.75rem clamp(1rem, 3vw, 2rem)',
       fontFamily: 'var(--font-mono)',
-      fontSize: '0.5rem',
+      fontSize: '0.75rem',
       letterSpacing: '0.2em',
       textTransform: 'uppercase',
       color: 'rgba(255,255,255,0.6)',
     }}>
       <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em' }}>LAUNCH CONTROL</span>
-      <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em', fontSize: '0.45rem' }}>
+      <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em', fontSize: '0.7rem' }}>
         {currentSectionName}
       </span>
       <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em' }}>LABS</span>

@@ -19,98 +19,78 @@ export function HeroOverlay() {
         <div
           style={{
             padding: '0',
-            paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)',
+            paddingBottom: 'clamp(3rem, 8vh, 6rem)',
+            paddingLeft: 'clamp(1.5rem, 4vw, 3rem)',
+            paddingRight: 'clamp(1.5rem, 4vw, 3rem)',
           }}
         >
+          <h1
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(4rem, 14vw, 12rem)',
+              lineHeight: 0.85,
+              letterSpacing: '-0.02em',
+              color: 'var(--section-text)',
+              textTransform: 'uppercase',
+              margin: 0,
+              opacity: 0.9,
+            }}
+          >
+            LAUNCH<br />CONTROL
+          </h1>
+
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              marginBottom: '0.3rem',
+              alignItems: 'baseline',
+              marginTop: '0.1em',
             }}
           >
-            <span
+            <p
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(0.65rem, 1vw, 0.9rem)',
-                letterSpacing: '0.15em',
+                fontFamily: 'var(--font-body)',
+                fontSize: 'clamp(0.85rem, 1.4vw, 1.2rem)',
+                letterSpacing: '0.02em',
+                fontWeight: 400,
                 color: 'var(--section-text)',
-                opacity: 0.4,
-                textTransform: 'uppercase',
+                opacity: 0.55,
+                margin: 0,
+                maxWidth: '30ch',
+                lineHeight: 1.5,
               }}
             >
-              Dallas · Barcelona · Miami
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(0.65rem, 1vw, 0.9rem)',
-                letterSpacing: '0.2em',
-                color: 'var(--section-accent)',
-                textTransform: 'uppercase',
-                fontWeight: 500,
-              }}
-            >
-              EST. 2024
-            </span>
-          </div>
-
-          <div style={{ position: 'relative' }}>
-            <h1
+              From idea to shipped product. No guessing.
+            </p>
+            <h2
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(4.5rem, 13vw, 13rem)',
+                fontSize: 'clamp(3rem, 8vw, 8rem)',
                 lineHeight: 0.85,
                 letterSpacing: '-0.02em',
                 color: 'var(--section-text)',
                 textTransform: 'uppercase',
                 margin: 0,
-                whiteSpace: 'nowrap',
+                opacity: 0.9,
               }}
             >
-              LAUNCH CONTROL
-            </h1>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'baseline',
-                justifyContent: 'space-between',
-                marginTop: '-0.05em',
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: 'clamp(0.9rem, 1.6vw, 1.4rem)',
-                  letterSpacing: '0.02em',
-                  fontWeight: 400,
-                  color: 'var(--section-text)',
-                  opacity: 0.6,
-                  textTransform: 'none',
-                  margin: 0,
-                  maxWidth: '32ch',
-                  lineHeight: 1.5,
-                }}
-              >
-                From idea to shipped product. No guessing.
-              </p>
-              <h2
-                style={{
-                  fontFamily: 'var(--font-display-secondary)',
-                  fontSize: 'clamp(3rem, 8vw, 8rem)',
-                  lineHeight: 0.85,
-                  letterSpacing: '-0.02em',
-                  color: 'var(--section-text)',
-                  textTransform: 'uppercase',
-                  margin: 0,
-                  textShadow: '0 0 80px rgba(34, 211, 238, 0.2)',
-                }}
-              >
-                LABS
-              </h2>
-            </div>
+              LABS
+            </h2>
           </div>
+
+          <p
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.55rem',
+              letterSpacing: '0.25em',
+              color: 'rgba(255,255,255,0.4)',
+              textTransform: 'uppercase',
+              marginTop: '1.5rem',
+              margin: '1.5rem 0 0 0',
+            }}
+          >
+            SCROLL TO LAUNCH
+          </p>
         </div>
       </div>
     </SectionThemeProvider>
