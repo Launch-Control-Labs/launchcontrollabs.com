@@ -61,25 +61,6 @@ export default function Home() {
           <Contact />
         </section>
       </main>
-
-      <footer
-        style={{
-          borderTop: '1px solid var(--border-subtle)',
-          padding: 'var(--space-5) 2rem',
-          maxWidth: '900px',
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontSize: '0.6rem',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          color: 'var(--text-muted)',
-        }}
-      >
-        <span>© 2026 Launch Control Labs</span>
-        <span>Los Angeles, CA</span>
-      </footer>
     </>
   )
 }

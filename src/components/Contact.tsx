@@ -1,69 +1,77 @@
-'use client'
-
-import { useState } from 'react'
-
 export default function Contact() {
-  const [isHovered, setIsHovered] = useState(false)
-
   return (
-    <section>
-      <div className="page">
-        <div
-          style={{
-            borderTop: '1px solid var(--border)',
-            paddingTop: 'clamp(3rem, 8vh, 5rem)',
-            paddingBottom: 'clamp(2rem, 5vh, 3rem)',
-          }}
-        >
-          <h2
-            style={{
-              fontSize: 'clamp(2.5rem, 8vw, 7.5rem)',
-              fontWeight: 700,
-              fontFamily: 'var(--font-mono)',
-              color: 'var(--text)',
-              letterSpacing: '-0.03em',
-              lineHeight: 0.95,
-              marginBottom: 'var(--space-5)',
-            }}
-          >
-            READY TO LAUNCH?
-          </h2>
+    <section style={{
+      background: '#0A0A0A',
+      color: '#FFFFFF',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
+      position: 'relative',
+    }}>
+      <span style={{
+        display: 'inline-block',
+        border: '2px solid rgba(255,255,255,0.3)',
+        padding: '0.25rem 0.7rem',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.55rem',
+        letterSpacing: '0.25em',
+        fontWeight: 700,
+        marginBottom: '2rem',
+        color: 'rgba(255,255,255,0.5)',
+        alignSelf: 'flex-start',
+      }}>OPEN CHANNEL</span>
 
-          <p
-            className="font-body"
-            style={{
-              fontSize: 'clamp(0.95rem, 1.1vw, 1.125rem)',
-              color: 'var(--text-dim)',
-              lineHeight: 1.7,
-              marginBottom: 'var(--space-6)',
-              maxWidth: '480px',
-            }}
-          >
-            We take on 2–3 new missions per quarter. If you have a project that needs serious engineering, open a channel.
-          </p>
+      <h2 style={{
+        fontFamily: 'var(--font-display)',
+        fontSize: 'clamp(5rem, 16vw, 13rem)',
+        lineHeight: 0.85,
+        letterSpacing: '-0.02em',
+        textTransform: 'uppercase',
+        margin: '0 0 2rem',
+      }}>READY TO<br/>LAUNCH?</h2>
 
-          <a
-            href="mailto:hello@launchcontrollabs.com"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 'var(--space-2)',
-              fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
-              fontFamily: 'var(--font-mono)',
-              fontWeight: 400,
-              color: isHovered ? 'var(--amber)' : 'var(--text)',
-              textDecoration: 'none',
-              borderBottom: isHovered ? '1px solid var(--amber)' : '1px solid transparent',
-              transition: 'color 150ms ease-out, border-color 150ms ease-out',
-              cursor: 'pointer',
-            }}
-          >
-            <span style={{ color: 'var(--amber)' }}>&gt;</span>
-            hello@launchcontrollabs.com
-          </a>
-        </div>
+      <p style={{
+        fontFamily: 'var(--font-body)',
+        fontSize: '1rem',
+        lineHeight: 1.6,
+        maxWidth: '40ch',
+        color: 'rgba(255,255,255,0.6)',
+        marginBottom: '2.5rem',
+      }}>We take on 2–3 new missions per quarter. If you have a project that needs serious engineering, open a channel.</p>
+
+      <a
+        href="mailto:hello@launchcontrollabs.com"
+        style={{
+          display: 'inline-block',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.7rem',
+          letterSpacing: '0.15em',
+          color: '#FFFFFF',
+          textDecoration: 'none',
+          border: '2px solid #FFFFFF',
+          padding: '0.8rem 2rem',
+          textTransform: 'uppercase',
+          fontWeight: 700,
+        }}
+      >HELLO@LAUNCHCONTROLLABS.COM</a>
+
+      <div style={{
+        position: 'absolute',
+        bottom: 'clamp(1.5rem, 3vw, 2.5rem)',
+        left: 'clamp(1.5rem, 4vw, 3rem)',
+        right: 'clamp(1.5rem, 4vw, 3rem)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.45rem',
+        letterSpacing: '0.2em',
+        color: 'rgba(255,255,255,0.3)',
+        textTransform: 'uppercase',
+      }}>
+        <span>&copy; 2026 LAUNCH CONTROL LABS</span>
+        <span>LOS ANGELES, CA</span>
       </div>
     </section>
   )
