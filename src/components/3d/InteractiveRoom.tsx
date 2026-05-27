@@ -8,7 +8,7 @@ import * as THREE from 'three'
 useGLTF.setDecoderPath('/draco/')
 
 const ROCKET_PATH = '/models/space-shuttle.glb'
-const ASTRONAUT_PATH = '/models/astronaut-converted.glb'
+const ASTRONAUT_PATH = '/models/astronaut-converted.glb?v=2'
 
 const HIDE_NODES = [
   'Small_Rocket_Group_02', 'Small_Rocket_Group_01',
@@ -27,6 +27,7 @@ function Rocket() {
   const processed = useRef(false)
   const [scale, setScale] = useState(1)
   const groupRef = useRef<THREE.Group>(null)
+  const zOffset = useRef(0)
 
   useLayoutEffect(() => {
     if (!scene || processed.current) return
@@ -39,25 +40,27 @@ function Rocket() {
         child.material.needsUpdate = true
       }
     })
-    setScale(normalizeToHeight(scene, 8))
-    const box2 = new THREE.Box3().setFromObject(scene)
-    const size2 = box2.getSize(new THREE.Vector3())
-    console.log('SHUTTLE_BBOX:', JSON.stringify({
-      x: { min: box2.min.x.toFixed(2), max: box2.max.x.toFixed(2), size: size2.x.toFixed(2) },
-      y: { min: box2.min.y.toFixed(2), max: box2.max.y.toFixed(2), size: size2.y.toFixed(2) },
-      z: { min: box2.min.z.toFixed(2), max: box2.max.z.toFixed(2), size: size2.z.toFixed(2) },
-      longestAxis: size2.x > size2.y && size2.x > size2.z ? 'X' : size2.y > size2.z ? 'Y' : 'Z',
-      scale: normalizeToHeight(scene, 8).toFixed(4)
-    }))
+    const box = new THREE.Box3().setFromObject(scene)
+    const center = box.getCenter(new THREE.Vector3())
+    scene.position.sub(center)
+    setScale(normalizeToHeight(scene, 7))
     processed.current = true
   }, [scene])
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     if (!groupRef.current) return
+    const t = state.clock.elapsedTime
+
+    zOffset.current += delta * 0.12
+    if (zOffset.current > 3.5) zOffset.current = 0
+
+    groupRef.current.position.z = zOffset.current
+    groupRef.current.position.x = Math.sin(t * 0.07) * 0.15
+    groupRef.current.position.y = -1 + Math.sin(t * 0.11) * 0.08
   })
 
   return (
-    <group ref={groupRef} scale={[scale, scale, scale]} position={[0, -4, 0]} rotation={[-0.1, 0, 0]}>
+    <group ref={groupRef} scale={[scale, scale, scale]} position={[0, -1, 0]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
       <primitive object={scene} />
     </group>
   )
@@ -67,47 +70,58 @@ function Astronaut() {
   const { scene, animations } = useGLTF(ASTRONAUT_PATH)
   const groupRef = useRef<THREE.Group>(null)
   const { actions } = useAnimations(animations, groupRef)
-  const driftRef = useRef(0)
+  const t = useRef(0)
+  const origin = useRef(new THREE.Vector3(5, 0, -12))
+
+  useLayoutEffect(() => {
+    if (!scene) return
+    scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.visible = true
+        child.frustumCulled = false
+        if (child.material) {
+          const mat = child.material as THREE.MeshStandardMaterial
+          mat.opacity = 1
+          mat.transparent = false
+          mat.depthWrite = true
+          mat.needsUpdate = true
+        }
+      }
+    })
+  }, [scene])
 
   useEffect(() => {
     const clip = actions['floating'] ?? actions[Object.keys(actions)[0]]
     if (clip) clip.reset().fadeIn(0.5).play()
   }, [actions])
 
-  useLayoutEffect(() => {
-    if (!scene) return
-    const mats: object[] = []
-    scene.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        const m = child.material as THREE.MeshStandardMaterial
-        mats.push({
-          name: child.name,
-          matType: m?.type,
-          opacity: m?.opacity,
-          visible: child.visible,
-          transparent: m?.transparent,
-          hasMap: !!m?.map,
-          hasNormalMap: !!m?.normalMap,
-          color: m?.color?.getHexString?.()
-        })
-      }
-    })
-    console.log('ASTRO_MATERIALS:', JSON.stringify(mats))
-    console.log('ASTRO_ANIM_CLIPS:', JSON.stringify(Object.keys(actions)))
-  }, [scene, actions])
-
   useFrame((_, delta) => {
     if (!groupRef.current) return
-    driftRef.current += delta
-    groupRef.current.position.y = 3 + Math.sin(driftRef.current * 0.25) * 0.6
-    groupRef.current.rotation.y += delta * 0.03
+    t.current += delta
+
+    const s = t.current
+
+    groupRef.current.position.x = origin.current.x
+      + Math.sin(s * 0.057) * 0.4
+      + Math.sin(s * 0.031) * 0.2
+
+    groupRef.current.position.y = origin.current.y
+      + Math.sin(s * 0.071) * 0.5
+      + Math.sin(s * 0.043) * 0.25
+
+    groupRef.current.position.z = origin.current.z
+      + Math.sin(s * 0.047) * 0.3
+
+    groupRef.current.rotation.y += delta * 0.018
+    groupRef.current.rotation.x = Math.sin(s * 0.037) * 0.08
+    groupRef.current.rotation.z = Math.sin(s * 0.029) * 0.05
   })
 
   return (
-    <group ref={groupRef} position={[7, 3, -15]}>
+    <group ref={groupRef} position={[5, 0, -12]}>
       <primitive
         object={scene}
-        scale={[0.022, 0.022, 0.022]}
+        scale={[1.5, 1.5, 1.5]}
         rotation={[0.05, 0.4, 0.08]}
       />
     </group>
