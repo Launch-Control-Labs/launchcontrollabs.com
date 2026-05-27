@@ -4,11 +4,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useDeviceTier } from '@/hooks/useDeviceTier'
 
 useGLTF.setDecoderPath('/draco/')
 
-const ROCKET_PATH = '/models/space-shuttle.glb'
-const ASTRONAUT_PATH = '/models/astronaut-converted.glb?v=2'
+const ROCKET_PATH_FULL = '/models/space-shuttle.glb'
+const ROCKET_PATH_OPT = '/models/optimized/space-shuttle.glb'
+const ASTRONAUT_PATH_FULL = '/models/astronaut-converted.glb?v=2'
+const ASTRONAUT_PATH_OPT = '/models/optimized/astronaut-converted.glb'
 const SMOKE_PATH = '/models/smoke.glb'
 
 const HIDE_NODES = [
@@ -23,8 +26,8 @@ function normalizeToHeight(scene: THREE.Object3D, targetHeight: number): number 
   return targetHeight / maxDim
 }
 
-function Rocket() {
-  const { scene } = useGLTF(ROCKET_PATH)
+function Rocket({ modelPath }: { modelPath: string }) {
+  const { scene } = useGLTF(modelPath)
   const processed = useRef(false)
   const [scale, setScale] = useState(1)
   const groupRef = useRef<THREE.Group>(null)
@@ -67,8 +70,8 @@ function Rocket() {
   )
 }
 
-function Astronaut() {
-  const { scene, animations } = useGLTF(ASTRONAUT_PATH)
+function Astronaut({ modelPath }: { modelPath: string }) {
+  const { scene, animations } = useGLTF(modelPath)
   const groupRef = useRef<THREE.Group>(null)
   const { actions } = useAnimations(animations, groupRef)
   const t = useRef(0)
@@ -150,15 +153,19 @@ function Smoke() {
 }
 
 export function InteractiveRoom() {
+  const tier = useDeviceTier()
+  const rocketPath = tier >= 3 ? ROCKET_PATH_FULL : ROCKET_PATH_OPT
+  const astronautPath = tier >= 3 ? ASTRONAUT_PATH_FULL : ASTRONAUT_PATH_OPT
+
   return (
     <group>
-      <Rocket />
-      <Astronaut />
-      <Smoke />
+      <Rocket modelPath={rocketPath} />
+      <Astronaut modelPath={astronautPath} />
+      {tier >= 3 && <Smoke />}
     </group>
   )
 }
 
-useGLTF.preload(ROCKET_PATH)
-useGLTF.preload(ASTRONAUT_PATH)
+useGLTF.preload(ROCKET_PATH_OPT)
+useGLTF.preload(ASTRONAUT_PATH_OPT)
 useGLTF.preload(SMOKE_PATH)

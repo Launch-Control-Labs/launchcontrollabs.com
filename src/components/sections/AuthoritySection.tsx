@@ -22,6 +22,7 @@ export function AuthoritySection() {
   return (
     <SectionThemeProvider sectionIndex={4}>
       <section
+        data-section="authority"
         style={{
           width: '100%',
           minHeight: '100vh',

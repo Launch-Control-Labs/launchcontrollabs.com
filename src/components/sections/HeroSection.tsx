@@ -132,7 +132,7 @@ export function HeroSection() {
           {/* Headline: LAUNCH CONTROL */}
           <h1
             style={{
-              fontFamily: 'var(--font-display)', // Anton
+              fontFamily: 'var(--font-display)',
               fontSize: 'clamp(4.5rem, 13vw, 13rem)',
               fontWeight: 400,
               lineHeight: 0.85,
@@ -140,7 +140,7 @@ export function HeroSection() {
               color: 'var(--section-text)',
               textTransform: 'uppercase',
               margin: 0,
-              whiteSpace: 'nowrap',
+              overflow: 'hidden',
             }}
           >
             LAUNCH CONTROL
@@ -148,11 +148,14 @@ export function HeroSection() {
 
           {/* Secondary line: LABS + Tagline */}
           <div
+            className="hero-secondary-row"
             style={{
               display: 'flex',
               alignItems: 'baseline',
               justifyContent: 'space-between',
               marginTop: '-0.05em',
+              flexWrap: 'wrap',
+              gap: '0.5rem',
             }}
           >
             <p

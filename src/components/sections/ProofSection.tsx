@@ -132,6 +132,7 @@ export function ProofSection() {
           </p>
 
           <div
+            className="proof-stats-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
@@ -247,6 +248,7 @@ export function ProofSection() {
         </div>
 
         <div
+          className="proof-projects-wrap"
           style={{
             display: 'flex',
             flexWrap: 'wrap',

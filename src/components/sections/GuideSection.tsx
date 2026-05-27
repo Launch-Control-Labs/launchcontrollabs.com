@@ -230,6 +230,7 @@ export function GuideSection() {
 
         {/* 3D scene container - shuttle rendered here via GuideScene */}
         <div
+          className="guide-annotation-desktop"
           style={{
             position: 'relative',
             width: '100%',

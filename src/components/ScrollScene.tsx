@@ -9,9 +9,14 @@ import * as THREE from 'three'
 import { useSceneStore, SECTION_COUNT } from '@/store/scene-store'
 import { useSceneLifecycle } from '@/hooks/useSceneLifecycle'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { useDeviceTier } from '@/hooks/useDeviceTier'
 import { SceneRenderer } from './3d/SceneRenderer'
 
 gsap.registerPlugin(ScrollTrigger)
+
+ScrollTrigger.config({
+  ignoreMobileResize: true,
+})
 
 const SECTION_IDS = [
   'section-hero',
@@ -38,6 +43,7 @@ export function ScrollScene({ children }: { children: React.ReactNode }) {
 
   useSceneLifecycle()
   const prefersReducedMotion = useReducedMotion()
+  const deviceTier = useDeviceTier()
 
   const setSectionRef = useCallback((index: number) => (el: HTMLDivElement | null) => {
     sectionRefs.current[index] = el
@@ -132,6 +138,7 @@ export function ScrollScene({ children }: { children: React.ReactNode }) {
         }}
       >
         <Canvas
+          dpr={deviceTier >= 3 ? [1, 2] : [1, 2]}
           gl={{
             antialias: true,
             alpha: false,

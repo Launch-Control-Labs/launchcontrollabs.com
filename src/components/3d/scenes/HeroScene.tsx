@@ -5,9 +5,11 @@ import { Environment } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { InteractiveRoom } from '../InteractiveRoom'
 import { Particles } from '../Particles'
+import { useDeviceTier } from '@/hooks/useDeviceTier'
 
-/** Section 0 — Control room with falcon-9 + astronaut models */
 export function HeroScene() {
+  const tier = useDeviceTier()
+
   return (
     <group>
       <directionalLight position={[80, 40, 60]} intensity={1.8} color="#ffffff" />
@@ -18,14 +20,16 @@ export function HeroScene() {
       <Suspense fallback={null}>
         <Environment preset="night" background={false} />
         <InteractiveRoom />
-        <Particles />
+        {tier >= 3 && <Particles />}
       </Suspense>
 
       <fogExp2 attach="fog" args={['#020914', 0.003]} />
 
-      <EffectComposer>
-        <Bloom luminanceThreshold={0.85} luminanceSmoothing={0.9} intensity={0.2} mipmapBlur />
-      </EffectComposer>
+      {tier >= 3 && (
+        <EffectComposer>
+          <Bloom luminanceThreshold={0.85} luminanceSmoothing={0.9} intensity={0.2} mipmapBlur />
+        </EffectComposer>
+      )}
     </group>
   )
 }
