@@ -16,7 +16,7 @@ export function HeroOverlay() {
           justifyContent: 'flex-end',
         }}
       >
-        <div style={{ padding: '0', paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)', overflow: 'hidden', width: '100%' }}>
+        <div style={{ padding: '0', paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)' }}>
 
           {/* Metadata row: PRODUCT STUDIO · DALLAS · BARCELONA · MIAMI  |  EST. 2021 */}
           <div style={{
@@ -50,7 +50,7 @@ export function HeroOverlay() {
           {/* LAUNCH CONTROL — scales to exactly fit viewport width */}
           <h1 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(3.5rem, 9.5vw, 14rem)',
+            fontSize: 'clamp(4.5rem, 16vw, 20rem)',
             lineHeight: 0.82,
             letterSpacing: '-0.04em',
             color: '#FFFFFF',
@@ -58,8 +58,7 @@ export function HeroOverlay() {
             margin: 0,
             opacity: 0.95,
             whiteSpace: 'nowrap',
-            display: 'block',
-            width: '100%',
+            overflow: 'hidden',
           }}>
             LAUNCH CONTROL
           </h1>
@@ -86,7 +85,7 @@ export function HeroOverlay() {
             </p>
             <h2 style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3.5rem, 9.5vw, 14rem)',
+              fontSize: 'clamp(4.5rem, 16vw, 20rem)',
               lineHeight: 0.82,
               letterSpacing: '-0.01em',
               color: '#FFFFFF',
@@ -94,7 +93,6 @@ export function HeroOverlay() {
               margin: 0,
               opacity: 0.95,
               textShadow: '0 0 60px rgba(34, 211, 238, 0.25)',
-              whiteSpace: 'nowrap',
             }}>
               LABS
             </h2>
