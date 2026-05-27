@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useCallback } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { EffectComposer, Bloom, Noise, Vignette, ToneMapping } from '@react-three/postprocessing'
+import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import { ScrollCamera } from './ScrollCamera'
 import { InteractiveRoom } from './InteractiveRoom'
@@ -89,7 +90,7 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
           outputColorSpace: THREE.SRGBColorSpace,
           toneMapping: THREE.NoToneMapping,
         }}
-        camera={{ position: [50, 400, 50], fov: 55, near: 0.5, far: 2500 }}
+        camera={{ position: [0, 500, 180], fov: 55, near: 0.5, far: 2500 }}
       >
         <SceneContent containerRef={containerRef} />
       </Canvas>

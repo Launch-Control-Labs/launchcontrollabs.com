@@ -5,12 +5,10 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useSceneStore } from '@/store/scene-store'
 
-// Soma04 model (Z-up, rotated to Y-up): 622×622×1097 units, center [0, 548, 0]
-// Bounding box after rotation: X[-311,311], Y[0,1097], Z[-311,311]
-// Start: inside ship, slightly off-axis for cinematic entry → End: centered in cockpit
+// Cockpit geometry: screens at Y=607 center, walls at Y=364-827, X/Z within ±200
 const CAMERA_PATH = {
-  start: { x: 50, y: 400, z: 50, lookAtX: 0, lookAtY: 350, lookAtZ: -100 },
-  end:   { x: 0, y: 250, z: -50, lookAtX: 0, lookAtY: 250, lookAtZ: -250 },
+  start: { x: 0, y: 500, z: 180, lookAtX: 0, lookAtY: 600, lookAtZ: 0 },
+  end:   { x: 0, y: 580, z: 20, lookAtX: 0, lookAtY: 600, lookAtZ: -150 },
 }
 
 interface ScrollCameraProps {

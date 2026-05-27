@@ -28,6 +28,12 @@ export function InteractiveRoom({ onGroupClick, onGroupHover }: InteractiveRoomP
       if (!child.geometry || !child.geometry.getAttribute('position')) return
       if (!(child.material instanceof THREE.MeshStandardMaterial)) return
 
+      // HIDE the exterior hull — camera is INSIDE, hull backfaces look blown out
+      if (child.name === 'Object_2') {
+        child.visible = false
+        return
+      }
+
       const matName = child.material.name.toLowerCase()
       child.userData.materialName = matName
 

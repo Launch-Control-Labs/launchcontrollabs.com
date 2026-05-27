@@ -32,7 +32,7 @@ void main() {
   vec3 color = texColor.rgb;
 
   // Ambient floor — surfaces must never be pure black
-  color = max(color, vec3(0.06));
+  color = max(color, vec3(0.18));
 
   // Emissive (screens, lamps — additive glow on top of base)
   if (hasEmissiveMap > 0.5) {
