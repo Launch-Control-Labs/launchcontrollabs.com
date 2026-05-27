@@ -15,7 +15,7 @@ function StarField() {
     for (let i = 0; i < STAR_COUNT; i++) {
       const theta = Math.random() * Math.PI * 2
       const phi = Math.acos(2 * Math.random() - 1)
-      const r = 50 + Math.random() * 150
+      const r = 80 + Math.random() * 200
       positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta)
       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
       positions[i * 3 + 2] = r * Math.cos(phi)
@@ -45,14 +45,14 @@ function StarField() {
 
   useFrame((_, delta) => {
     if (!groupRef.current) return
-    groupRef.current.rotation.y += delta * 0.004
-    groupRef.current.rotation.x += delta * 0.001
+    groupRef.current.rotation.y += delta * 0.003
+    groupRef.current.rotation.x += delta * 0.0008
   })
 
   return (
     <group ref={groupRef}>
       <points geometry={geometry} frustumCulled={false}>
-        <pointsMaterial map={starTexture} size={1.5} sizeAttenuation={false}
+        <pointsMaterial map={starTexture} size={1.2} sizeAttenuation={false}
           transparent alphaTest={0.005} color="#ffffff" depthWrite={false} fog={false} />
       </points>
     </group>
@@ -75,11 +75,11 @@ function Planet({ path, worldSize, position, rotSpeed = 0.02, floatOffset = 0, d
   useFrame(({ clock }, delta) => {
     if (!ref.current) return
     ref.current.rotation.y += rotSpeed * 0.016
-    ref.current.position.y = position[1] + Math.sin(clock.getElapsedTime() * 0.3 + floatOffset) * 0.5
+    ref.current.position.y = position[1] + Math.sin(clock.getElapsedTime() * 0.25 + floatOffset) * 0.4
     if (driftSpeed > 0) {
       ref.current.position.z += driftSpeed * delta
-      if (ref.current.position.z > 35) {
-        ref.current.position.z = originZ.current - 20
+      if (ref.current.position.z > 32) {
+        ref.current.position.z = originZ.current - 40
       }
     }
   })
@@ -104,11 +104,11 @@ function VariousPlanet({ nodeName, worldSize, position, rotSpeed, floatOffset, d
   useFrame(({ clock }, delta) => {
     if (!ref.current) return
     ref.current.rotation.y += rotSpeed * 0.016
-    ref.current.position.y = position[1] + Math.sin(clock.getElapsedTime() * 0.25 + floatOffset) * 0.5
+    ref.current.position.y = position[1] + Math.sin(clock.getElapsedTime() * 0.22 + floatOffset) * 0.4
     if (driftSpeed > 0) {
       ref.current.position.z += driftSpeed * delta
-      if (ref.current.position.z > 35) {
-        ref.current.position.z = originZ.current - 20
+      if (ref.current.position.z > 32) {
+        ref.current.position.z = originZ.current - 40
       }
     }
   })
@@ -117,18 +117,28 @@ function VariousPlanet({ nodeName, worldSize, position, rotSpeed, floatOffset, d
 }
 
 export function Particles() {
+  const sceneRef = useRef<THREE.Group>(null)
+
+  useFrame((_, delta) => {
+    if (!sceneRef.current) return
+    sceneRef.current.position.z += delta * 0.5
+    if (sceneRef.current.position.z > 10) {
+      sceneRef.current.position.z = 0
+    }
+  })
+
   return (
-    <group>
+    <group ref={sceneRef}>
       <StarField />
-      <VariousPlanet nodeName="planet_gas_2"          worldSize={11} position={[-32,  12,  -38]} rotSpeed={0.006} floatOffset={0.0} driftSpeed={2.2} />
-      <Planet        path="/models/earth.glb"          worldSize={9}  position={[ 28, -14,  -42]} rotSpeed={0.014} floatOffset={1.5} driftSpeed={2.0} />
-      <Planet        path="/models/mercury.glb"        worldSize={4}  position={[-22,  18,  -90]} rotSpeed={0.028} floatOffset={3.0} driftSpeed={1.2} />
-      <VariousPlanet nodeName="planet_lava_7"          worldSize={7}  position={[ 48,   4, -110]} rotSpeed={0.022} floatOffset={2.2} driftSpeed={1.0} />
-      <VariousPlanet nodeName="planet_frozen_6"        worldSize={8}  position={[-50, -16, -130]} rotSpeed={0.016} floatOffset={4.0} driftSpeed={0.8} />
-      <VariousPlanet nodeName="planet_barren_8"        worldSize={5}  position={[ 38,  20, -170]} rotSpeed={0.010} floatOffset={1.0} driftSpeed={0.6} />
-      <VariousPlanet nodeName="planet_continental_4"   worldSize={22} position={[-72,  -6, -280]} rotSpeed={0.008} floatOffset={5.0} driftSpeed={0.3} />
-      <VariousPlanet nodeName="planet_gas_2"           worldSize={16} position={[ 80,   8, -220]} rotSpeed={0.005} floatOffset={2.8} driftSpeed={0.4} />
-      <Planet        path="/models/mercury.glb"        worldSize={6}  position={[-14, -20, -350]} rotSpeed={0.012} floatOffset={6.0} driftSpeed={0.15} />
+      <VariousPlanet nodeName="planet_gas_2"          worldSize={10} position={[-34,  10,  -65]} rotSpeed={0.006} floatOffset={0.0} driftSpeed={0.55} />
+      <Planet        path="/models/earth.glb"          worldSize={8}  position={[ 30, -12,  -72]} rotSpeed={0.014} floatOffset={1.5} driftSpeed={0.48} />
+      <Planet        path="/models/mercury.glb"        worldSize={4}  position={[-24,  16,  -95]} rotSpeed={0.028} floatOffset={3.0} driftSpeed={0.35} />
+      <VariousPlanet nodeName="planet_lava_7"          worldSize={7}  position={[ 50,   6, -120]} rotSpeed={0.022} floatOffset={2.2} driftSpeed={0.28} />
+      <VariousPlanet nodeName="planet_frozen_6"        worldSize={8}  position={[-52, -14, -145]} rotSpeed={0.016} floatOffset={4.0} driftSpeed={0.22} />
+      <VariousPlanet nodeName="planet_barren_8"        worldSize={5}  position={[ 40,  18, -180]} rotSpeed={0.010} floatOffset={1.0} driftSpeed={0.16} />
+      <VariousPlanet nodeName="planet_continental_4"   worldSize={20} position={[-70,  -4, -290]} rotSpeed={0.008} floatOffset={5.0} driftSpeed={0.08} />
+      <VariousPlanet nodeName="planet_gas_2"           worldSize={15} position={[ 78,   6, -230]} rotSpeed={0.005} floatOffset={2.8} driftSpeed={0.11} />
+      <Planet        path="/models/mercury.glb"        worldSize={6}  position={[-16, -18, -360]} rotSpeed={0.012} floatOffset={6.0} driftSpeed={0.04} />
     </group>
   )
 }
