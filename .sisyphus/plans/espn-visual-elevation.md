@@ -403,7 +403,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
 
 ### Wave 1 — Foundation (design system + infrastructure)
 
-- [ ] 4. Typography System Swap
+- [x] 4. Typography System Swap
 
   **What to do**:
   - Replace Bebas Neue with Space Grotesk (variable) in `src/app/layout.tsx` via `next/font/google`
@@ -463,7 +463,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(typography): swap Bebas Neue → Space Grotesk + Anton display system`
   - Files: `src/app/layout.tsx`, `src/app/globals.css`, `src/styles/section-constants.ts`
 
-- [ ] 5. Color Theme System (6 Section Palettes)
+- [x] 5. Color Theme System (6 Section Palettes)
 
   **What to do**:
   - Define 6 section color palettes in `src/styles/section-constants.ts`:
@@ -523,7 +523,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(design-system): 6-section color theme system with WCAG AA compliance`
   - Files: `src/styles/section-constants.ts`, `src/components/SectionThemeProvider.tsx`
 
-- [ ] 6. Single-Canvas Scroll Architecture Scaffold
+- [x] 6. Single-Canvas Scroll Architecture Scaffold
 
   **What to do**:
   - Refactor `src/components/3d/ControlRoomScene.tsx` into a **persistent single Canvas** that spans the full page height
@@ -590,7 +590,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(3d): single-canvas scroll architecture with scene swapping`
   - Files: `src/components/ScrollScene.tsx`, `src/components/3d/scenes/`, `src/store/scene-store.ts`
 
-- [ ] 7. Section Loading Skeleton + Reduced-Motion Fallback
+- [x] 7. Section Loading Skeleton + Reduced-Motion Fallback
 
   **What to do**:
   - Create `src/components/SectionSkeleton.tsx` — loading state visible while 3D initializes per section
@@ -639,7 +639,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(a11y): loading skeleton + reduced-motion static fallback`
   - Files: `src/components/SectionSkeleton.tsx`, `src/components/ReducedMotionFallback.tsx`
 
-- [ ] 8. Mobile Detection + 3D Tier System
+- [x] 8. Mobile Detection + 3D Tier System
 
   **What to do**:
   - Create `src/hooks/useDeviceTier.ts` — detects device capability:

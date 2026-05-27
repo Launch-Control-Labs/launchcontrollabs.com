@@ -7,6 +7,7 @@ import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
 import { SceneLoadingState } from '@/components/3d/SceneLoadingState'
 import { StaticHeroFallback } from '@/components/3d/StaticHeroFallback'
 import StatusBar from '@/components/StatusBar'
+import SectionNav from '@/components/SectionNav'
 import CompanyTicker from '@/components/CompanyTicker'
 import Capabilities from '@/components/Capabilities'
 import MissionCards from '@/components/MissionCards'
@@ -26,6 +27,7 @@ export default function Home() {
   return (
     <>
       <StatusBar />
+      <SectionNav />
       <CompanyTicker />
 
       <main>
