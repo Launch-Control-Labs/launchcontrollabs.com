@@ -174,6 +174,7 @@ export function ScrollScene({ children }: { children: React.ReactNode }) {
               minHeight: SECTION_HEIGHTS[index],
               position: 'relative',
               background: 'transparent',
+              overflow: index === 0 ? 'hidden' : 'visible',
             }}
           >
             {index === 0 && children}

@@ -224,20 +224,20 @@ function Rocket({ modelPath }: { modelPath: string }) {
     if (!groupRef.current) return
     const t = state.clock.elapsedTime
     groupRef.current.position.x = Math.sin(t * 0.038) * 0.3
-    groupRef.current.position.y = 2 + Math.sin(t * 0.055) * 0.22
+    groupRef.current.position.y = 5 + Math.sin(t * 0.055) * 0.22
     groupRef.current.position.z = Math.sin(t * 0.028) * 0.35
     groupRef.current.rotation.x = Math.sin(t * 0.042) * 0.012
     groupRef.current.rotation.z = Math.sin(t * 0.033) * 0.008
   })
 
   return (
-    <group ref={groupRef} position={[0, 2, 0]}>
-      <group scale={[scale, scale, scale]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
+    <group ref={groupRef} position={[0, 5, 0]}>
+      <group scale={[scale, scale, scale]} rotation={[Math.PI / 3, Math.PI, 0]}>
         <primitive object={scene} />
       </group>
-      <PlumeStream config={SMOKE_CONFIG} position={[0, -2.5, 5.7]} />
-      <PlumeStream config={MID_CONFIG}   position={[0, -2.5, 5.7]} />
-      <PlumeStream config={CORE_CONFIG}  position={[0, -2.5, 5.7]} />
+      <PlumeStream config={SMOKE_CONFIG} position={[0, -3.5, 5.2]} />
+      <PlumeStream config={MID_CONFIG}   position={[0, -3.5, 5.2]} />
+      <PlumeStream config={CORE_CONFIG}  position={[0, -3.5, 5.2]} />
     </group>
   )
 }
