@@ -2,10 +2,11 @@
 
 import { Suspense, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { ScrollCamera } from './ScrollCamera'
 import { InteractiveRoom } from './InteractiveRoom'
+import { Particles } from './Particles'
 
 interface ControlRoomSceneProps {
   containerRef: React.RefObject<HTMLElement | null>
@@ -23,7 +24,6 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
       const { gsap } = await import('gsap')
       const { ScrollTrigger } = await import('gsap/ScrollTrigger')
       gsap.registerPlugin(ScrollTrigger)
-
       gsap.to(overlay, {
         opacity: 0,
         y: -40,
@@ -39,55 +39,119 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
   }, [containerRef])
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#080810', position: 'relative' }}>
+    <div style={{ width: '100%', height: '100%', background: '#020914', position: 'relative' }}>
       <Canvas
         gl={{
           antialias: true,
           alpha: false,
           outputColorSpace: THREE.SRGBColorSpace,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.0,
+          toneMappingExposure: 0.7,
         }}
-        camera={{ position: [0, 4, 30], fov: 50, near: 0.1, far: 500 }}
+        camera={{ position: [0, -4, 28], fov: 40, near: 0.1, far: 2000 }}
       >
-        <Environment preset="sunset" background={false} />
-        <ambientLight intensity={0.3} />
-        <directionalLight position={[10, 80, 30]} intensity={1.5} />
+        <color attach="background" args={['#020914']} />
+
+        {/* Sun key light */}
+        <directionalLight position={[80, 40, 60]} intensity={1.8} color="#ffffff" />
+        {/* Deep space fill — very subtle */}
+        <hemisphereLight args={['#0d1a3a', '#020914', 0.2]} />
+        {/* Cyan rim accent */}
+        <pointLight position={[-40, 20, 40]} intensity={0.7} color="#22d3ee" distance={120} />
 
         <ScrollCamera containerRef={containerRef} />
 
         <Suspense fallback={null}>
           <InteractiveRoom />
+          <Particles />
         </Suspense>
 
-        <fog attach="fog" args={['#080810', 80, 200]} />
+        {/* Fog only affects close range — planets/stars use fog={false} on their materials */}
+        <fogExp2 attach="fog" args={['#020914', 0.003]} />
+
+        <EffectComposer>
+          <Bloom luminanceThreshold={0.85} luminanceSmoothing={0.9} intensity={0.2} mipmapBlur />
+        </EffectComposer>
       </Canvas>
 
       <div ref={overlayRef} style={{
         position: 'absolute',
-        bottom: 'clamp(3rem, 8vh, 6rem)',
-        left: 'clamp(1.5rem, 4vw, 3rem)',
-        right: 'clamp(1.5rem, 4vw, 3rem)',
+        inset: 0,
         pointerEvents: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
       }}>
-        <h1 style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(4rem, 14vw, 12rem)',
-          lineHeight: 0.85,
-          letterSpacing: '-0.02em',
-          color: '#FFFFFF',
-          textTransform: 'uppercase',
-          margin: 0,
-          opacity: 0.9,
-        }}>LAUNCH<br />CONTROL</h1>
-        <p style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.55rem',
-          letterSpacing: '0.25em',
-          color: 'rgba(255,255,255,0.5)',
-          textTransform: 'uppercase',
-          marginTop: '1rem',
-        }}>SCROLL TO LAUNCH</p>
+        <div style={{
+          padding: '0 clamp(1.2rem, 3vw, 2.5rem)',
+          paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)',
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            marginBottom: '0.3rem',
+          }}>
+            <span style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.5rem',
+              letterSpacing: '0.3em',
+              color: 'rgba(255,255,255,0.35)',
+              textTransform: 'uppercase',
+            }}>Product Studio · Los Angeles</span>
+            <span style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.5rem',
+              letterSpacing: '0.2em',
+              color: 'rgba(34,211,238,0.5)',
+              textTransform: 'uppercase',
+            }}>Est. 2021</span>
+          </div>
+
+          <div style={{ position: 'relative' }}>
+            <h1 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(4.5rem, 13.5vw, 13rem)',
+              lineHeight: 0.82,
+              letterSpacing: '-0.04em',
+              color: '#FFFFFF',
+              textTransform: 'uppercase',
+              margin: 0,
+              opacity: 0.95,
+              whiteSpace: 'nowrap',
+            }}>
+              LAUNCH CONTROL
+            </h1>
+            <div style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+              marginTop: '-0.06em',
+            }}>
+              <p style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 'clamp(0.5rem, 0.9vw, 0.75rem)',
+                letterSpacing: '0.15em',
+                color: 'rgba(255,255,255,0.5)',
+                textTransform: 'uppercase',
+                margin: 0,
+                maxWidth: '28ch',
+                lineHeight: 1.4,
+              }}>We ship products founders actually want to build.</p>
+              <h2 style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(4.5rem, 13.5vw, 13rem)',
+                lineHeight: 0.82,
+                letterSpacing: '-0.01em',
+                color: '#FFFFFF',
+                textTransform: 'uppercase',
+                margin: 0,
+                opacity: 0.95,
+                textShadow: '0 0 60px rgba(34, 211, 238, 0.25)',
+              }}>LABS</h2>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
