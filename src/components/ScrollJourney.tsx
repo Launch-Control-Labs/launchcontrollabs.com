@@ -130,7 +130,9 @@ export function ScrollJourney({ children, scene }: { children?: React.ReactNode;
           zIndex: 0,
         }}
       >
-        <DynamicCanvas progressRef={progressRef} scene={scene} />
+        <SceneErrorBoundary>
+          <DynamicCanvas progressRef={progressRef} scene={scene} />
+        </SceneErrorBoundary>
       </div>
 
       {/* Fixed content overlay */}
