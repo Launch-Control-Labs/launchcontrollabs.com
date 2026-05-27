@@ -11,6 +11,7 @@ import CompanyTicker from '@/components/CompanyTicker'
 import { HeroOverlay } from '@/components/HeroOverlay'
 import { ScrollJourney } from '@/components/ScrollJourney'
 import { JourneyScene } from '@/components/journey/JourneyScene'
+import { MobileExperience } from '@/components/MobileExperience'
 
 export default function Home() {
   const experienceMode = useExperienceMode()
@@ -36,9 +37,7 @@ export default function Home() {
               </Suspense>
             </SceneErrorBoundary>
           ) : experienceMode === '2d-parallax' ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: '#22D3EE' }}>
-              Mobile Experience — Coming in Task 14
-            </div>
+            <MobileExperience />
           ) : (
             <div style={{ padding: '2rem', textAlign: 'center', color: '#22D3EE' }}>
               Static Content — Coming in Task 17
