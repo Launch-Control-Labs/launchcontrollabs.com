@@ -16,7 +16,7 @@ export function HeroOverlay() {
           justifyContent: 'flex-end',
         }}
       >
-        <div style={{ padding: '0', paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)' }}>
+        <div style={{ padding: '0', paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)', overflow: 'hidden', width: '100%' }}>
 
           {/* Metadata row: PRODUCT STUDIO · DALLAS · BARCELONA · MIAMI  |  EST. 2021 */}
           <div style={{
@@ -50,7 +50,7 @@ export function HeroOverlay() {
           {/* LAUNCH CONTROL — scales to exactly fit viewport width */}
           <h1 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(4rem, 11.5vw, 16rem)',
+            fontSize: 'clamp(3.5rem, 9.5vw, 14rem)',
             lineHeight: 0.82,
             letterSpacing: '-0.04em',
             color: '#FFFFFF',
@@ -86,7 +86,7 @@ export function HeroOverlay() {
             </p>
             <h2 style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(4rem, 11.5vw, 16rem)',
+              fontSize: 'clamp(3.5rem, 9.5vw, 14rem)',
               lineHeight: 0.82,
               letterSpacing: '-0.01em',
               color: '#FFFFFF',
