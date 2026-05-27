@@ -89,7 +89,7 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
           outputColorSpace: THREE.SRGBColorSpace,
           toneMapping: THREE.NoToneMapping,
         }}
-        camera={{ position: [6, 3, 8], fov: 50 }}
+        camera={{ position: [0, 900, 1400], fov: 50 }}
       >
         <SceneContent containerRef={containerRef} />
       </Canvas>
