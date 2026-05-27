@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import { useLayoutEffect, useRef, useState, useMemo } from 'react'
+import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useDeviceTier } from '@/hooks/useDeviceTier'
@@ -10,7 +10,6 @@ useGLTF.setDecoderPath('/draco/')
 
 const ROCKET_PATH_FULL = '/models/space-shuttle.glb'
 const ROCKET_PATH_OPT = '/models/optimized/space-shuttle.glb'
-const SMOKE_PATH = '/models/evanescent-smoke.glb'
 
 const HIDE_NODES = [
   'Small_Rocket_Group_02', 'Small_Rocket_Group_01',
@@ -29,7 +28,6 @@ function Rocket({ modelPath }: { modelPath: string }) {
   const processed = useRef(false)
   const [scale, setScale] = useState(1)
   const groupRef = useRef<THREE.Group>(null)
-  const zOffset = useRef(0)
 
   useLayoutEffect(() => {
     if (!scene || processed.current) return
@@ -49,10 +47,9 @@ function Rocket({ modelPath }: { modelPath: string }) {
     processed.current = true
   }, [scene])
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (!groupRef.current) return
     const t = state.clock.elapsedTime
-
     groupRef.current.position.x = Math.sin(t * 0.04) * 0.4
     groupRef.current.position.y = 2 + Math.sin(t * 0.07) * 0.3
     groupRef.current.position.z = Math.sin(t * 0.05) * 0.5
@@ -65,46 +62,88 @@ function Rocket({ modelPath }: { modelPath: string }) {
   )
 }
 
-function Smoke() {
-  const { scene, animations } = useGLTF(SMOKE_PATH)
-  const groupRef = useRef<THREE.Group>(null)
-  const { actions } = useAnimations(animations, groupRef)
-  const materialFixed = useRef(false)
+const PARTICLE_COUNT = 120
 
-  useFrame(() => {
-    // Fix materials on first frame — more reliable than useLayoutEffect for GLB scenes
-    if (materialFixed.current || !scene) return
-    scene.traverse((child) => {
-      if (!(child instanceof THREE.Mesh)) return
-      const mats = Array.isArray(child.material) ? child.material : [child.material]
-      mats.forEach((m) => {
-        const mat = m as THREE.MeshStandardMaterial
-        mat.color.set('#aabbcc')
-        mat.emissive.set('#223344')
-        mat.emissiveIntensity = 0.5
-        mat.transparent = true
-        mat.opacity = 0.7
-        mat.depthWrite = false
-        mat.side = THREE.DoubleSide
-        mat.fog = false
-        mat.needsUpdate = true
-      })
-    })
-    materialFixed.current = true
+function ExhaustSmoke() {
+  const pointsRef = useRef<THREE.Points>(null)
+
+  const { positions, velocities, lifetimes, maxLifetimes } = useMemo(() => {
+    const positions = new Float32Array(PARTICLE_COUNT * 3)
+    const velocities = new Float32Array(PARTICLE_COUNT * 3)
+    const lifetimes = new Float32Array(PARTICLE_COUNT)
+    const maxLifetimes = new Float32Array(PARTICLE_COUNT)
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      lifetimes[i] = Math.random() * 2.5
+      maxLifetimes[i] = 2.0 + Math.random() * 1.5
+      positions[i * 3]     = (Math.random() - 0.5) * 0.8
+      positions[i * 3 + 1] = -Math.random() * 3
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.8
+      velocities[i * 3]     = (Math.random() - 0.5) * 0.025
+      velocities[i * 3 + 1] = -(0.015 + Math.random() * 0.02)
+      velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.025
+    }
+    return { positions, velocities, lifetimes, maxLifetimes }
+  }, [])
+
+  const geometry = useMemo(() => {
+    const geo = new THREE.BufferGeometry()
+    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3))
+    return geo
+  }, [positions])
+
+  const texture = useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.width = 128; canvas.height = 128
+    const ctx = canvas.getContext('2d')!
+    const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64)
+    g.addColorStop(0,   'rgba(255,255,255,1.0)')
+    g.addColorStop(0.2, 'rgba(220,230,240,0.8)')
+    g.addColorStop(0.5, 'rgba(180,200,220,0.4)')
+    g.addColorStop(1,   'rgba(0,0,0,0)')
+    ctx.fillStyle = g
+    ctx.fillRect(0, 0, 128, 128)
+    return new THREE.CanvasTexture(canvas)
+  }, [])
+
+  useFrame((_, delta) => {
+    if (!pointsRef.current) return
+    const pos = pointsRef.current.geometry.attributes.position as THREE.BufferAttribute
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      lifetimes[i] += delta
+      if (lifetimes[i] > maxLifetimes[i]) {
+        lifetimes[i] = 0
+        positions[i * 3]     = (Math.random() - 0.5) * 0.8
+        positions[i * 3 + 1] = 0
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 0.8
+        velocities[i * 3]     = (Math.random() - 0.5) * 0.025
+        velocities[i * 3 + 1] = -(0.015 + Math.random() * 0.02)
+        velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.025
+      }
+      positions[i * 3]     += velocities[i * 3]
+      positions[i * 3 + 1] += velocities[i * 3 + 1]
+      positions[i * 3 + 2] += velocities[i * 3 + 2]
+      velocities[i * 3]     *= 1.01
+      velocities[i * 3 + 2] *= 1.01
+    }
+
+    pos.array.set(positions)
+    pos.needsUpdate = true
   })
 
-  useEffect(() => {
-    const clip = actions['Animation'] ?? actions[Object.keys(actions)[0]]
-    if (clip) {
-      clip.reset().play()
-      clip.setLoop(THREE.LoopRepeat, Infinity)
-    }
-  }, [actions])
-
   return (
-    <group ref={groupRef} position={[0, -4, 1]} scale={[4, 4, 4]}>
-      <primitive object={scene} />
-    </group>
+    <points ref={pointsRef} geometry={geometry} position={[0, -4.5, 0.5]}>
+      <pointsMaterial
+        map={texture}
+        size={2.5}
+        sizeAttenuation
+        transparent
+        opacity={0.7}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+        fog={false}
+      />
+    </points>
   )
 }
 
@@ -115,7 +154,7 @@ export function InteractiveRoom() {
   return (
     <group>
       <Rocket modelPath={rocketPath} />
-      <Smoke />
+      <ExhaustSmoke />
     </group>
   )
 }
