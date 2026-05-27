@@ -41,21 +41,42 @@ export function InteractiveRoom({ onGroupClick, onGroupHover }: InteractiveRoomP
   useEffect(() => {
     if (!scene || !lightmap || shadersApplied.current) return
     scene.traverse((child) => {
-      if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
-        const matName = child.material.name.toLowerCase()
-        child.userData.materialName = matName
-        if (!child.geometry.hasAttribute('uv2')) {
-          const uvAttr = child.geometry.getAttribute('uv')
-          if (uvAttr) {
-            child.geometry.setAttribute('uv2', uvAttr)
-          }
+      if (!(child instanceof THREE.Mesh)) return
+      if (!child.geometry || !child.geometry.getAttribute('position')) return
+      if (!(child.material instanceof THREE.MeshStandardMaterial)) return
+      
+      const matName = child.material.name.toLowerCase()
+      child.userData.materialName = matName
+      
+      // Ensure uv2 ALWAYS exists so shader attribute binding never crashes
+      if (!child.geometry.hasAttribute('uv2')) {
+        const uvAttr = child.geometry.getAttribute('uv')
+        if (uvAttr) {
+          child.geometry.setAttribute('uv2', uvAttr)
+        } else {
+          // No UVs at all — create zeroed dummy so shader can bind safely
+          const count = child.geometry.getAttribute('position').count
+          child.geometry.setAttribute(
+            'uv2',
+            new THREE.BufferAttribute(new Float32Array(count * 2), 2)
+          )
         }
-        child.material = createControlRoomShader(child.material, lightmap, {
-          isScreen: SCREEN_MATERIALS.has(matName),
-          isLight: LIGHT_MATERIALS.has(matName),
-        })
-        child.userData.hasCustomShader = true
       }
+      
+      // Also ensure uv exists (shader reads it unconditionally)
+      if (!child.geometry.hasAttribute('uv')) {
+        const count = child.geometry.getAttribute('position').count
+        child.geometry.setAttribute(
+          'uv',
+          new THREE.BufferAttribute(new Float32Array(count * 2), 2)
+        )
+      }
+      
+      child.material = createControlRoomShader(child.material, lightmap, {
+        isScreen: SCREEN_MATERIALS.has(matName),
+        isLight: LIGHT_MATERIALS.has(matName),
+      })
+      child.userData.hasCustomShader = true
     })
     
     screenTextures.current = applyScreenTextures(scene)
