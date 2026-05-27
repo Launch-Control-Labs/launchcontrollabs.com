@@ -8,9 +8,9 @@ import StatusBar from '@/components/StatusBar'
 import SectionNav from '@/components/SectionNav'
 import CompanyTicker from '@/components/CompanyTicker'
 
-import { HeroOverlay } from '@/components/HeroOverlay'
 import { ScrollJourney } from '@/components/ScrollJourney'
 import { JourneyScene } from '@/components/journey/JourneyScene'
+import { BeatOverlays } from '@/components/journey/BeatOverlays'
 import { MobileExperience } from '@/components/MobileExperience'
 
 export default function Home() {
@@ -33,7 +33,9 @@ export default function Home() {
           {experienceMode === '3d' ? (
             <SceneErrorBoundary>
               <Suspense fallback={<SceneLoadingState />}>
-                <ScrollJourney scene={<JourneyScene />} />
+                <ScrollJourney scene={<JourneyScene />}>
+                  <BeatOverlays />
+                </ScrollJourney>
               </Suspense>
             </SceneErrorBoundary>
           ) : experienceMode === '2d-parallax' ? (
