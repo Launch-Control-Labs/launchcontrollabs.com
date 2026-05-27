@@ -33,13 +33,20 @@ export function ProofSection() {
         style={{
           width: '100%',
           minHeight: '100vh',
-          background: theme.bg,
+          background: 'transparent',
           color: theme.text,
           position: 'relative',
           overflow: 'hidden',
-          backgroundImage: STAR_BG,
         }}
       >
+        <div
+          style={{
+            background: 'rgba(10,10,15,0.88)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            minHeight: '100vh',
+          }}
+        >
         <div
           style={{
             padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem) 0',
@@ -326,6 +333,7 @@ export function ProofSection() {
               </span>
             </div>
           ))}
+        </div>
         </div>
       </div>
     </SectionThemeProvider>

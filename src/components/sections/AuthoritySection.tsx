@@ -26,28 +26,20 @@ export function AuthoritySection() {
         style={{
           width: '100%',
           minHeight: '100vh',
-          background: 'var(--section-bg)',
+          background: 'transparent',
           color: 'var(--section-text)',
           display: 'flex',
-          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
         <div
           style={{
-            flex: '0 0 40%',
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-        </div>
-
-        <div
-          style={{
-            flex: '1 1 60%',
+            width: '58%',
+            minHeight: '100vh',
+            background: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.88) 20%, rgba(0,0,0,0.95) 100%)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
@@ -80,31 +72,18 @@ export function AuthoritySection() {
             PROVEN<br />CREW
           </h2>
 
-          <div
-            style={{
-              marginBottom: '3rem',
-            }}
-          >
-            <p
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
-                letterSpacing: '0.25em',
-                textTransform: 'uppercase',
-                color: 'var(--section-muted)',
-                marginBottom: '1.5rem',
-              }}
-            >
+          <div style={{ marginBottom: '3rem' }}>
+            <p style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+              color: 'var(--section-muted)',
+              marginBottom: '1.5rem',
+            }}>
               Flight History
             </p>
-
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.25rem',
-              }}
-            >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
               {COMPANIES.map((company, i) => (
                 <div
                   key={company}
@@ -128,33 +107,28 @@ export function AuthoritySection() {
           </div>
 
           <div>
-            <p
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
-                letterSpacing: '0.25em',
-                textTransform: 'uppercase',
-                color: 'var(--section-muted)',
-                marginBottom: '1rem',
-              }}
-            >
+            <p style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+              color: 'var(--section-muted)',
+              marginBottom: '1rem',
+            }}>
               Recognition
             </p>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: '1px',
-                background: 'var(--section-border)',
-                maxWidth: '600px',
-              }}
-            >
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '1px',
+              background: 'var(--section-border)',
+              maxWidth: '600px',
+            }}>
               {AWARDS.map((award) => (
                 <div
                   key={award.org}
                   style={{
-                    background: 'var(--section-bg)',
+                    background: 'rgba(0,0,0,0.9)',
                     padding: '1.5rem 1rem',
                     textAlign: 'center',
                     display: 'flex',
@@ -163,41 +137,9 @@ export function AuthoritySection() {
                     minHeight: '120px',
                   }}
                 >
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 'clamp(0.75rem, 1.2vw, 1rem)',
-                      letterSpacing: '0.15em',
-                      color: 'var(--section-muted)',
-                      marginBottom: '0.5rem',
-                    }}
-                  >
-                    {award.year}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 'clamp(1.25rem, 2.5vw, 2rem)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '-0.02em',
-                      color: 'var(--section-text)',
-                      lineHeight: 1.1,
-                      marginBottom: '0.25rem',
-                    }}
-                  >
-                    {award.achievement}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 'clamp(0.6rem, 0.8vw, 0.75rem)',
-                      letterSpacing: '0.2em',
-                      textTransform: 'uppercase',
-                      color: 'var(--section-muted)',
-                    }}
-                  >
-                    {award.org}
-                  </span>
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(0.75rem, 1.2vw, 1rem)', letterSpacing: '0.15em', color: 'var(--section-muted)', marginBottom: '0.5rem' }}>{award.year}</span>
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.25rem, 2.5vw, 2rem)', textTransform: 'uppercase', letterSpacing: '-0.02em', color: 'var(--section-text)', lineHeight: 1.1, marginBottom: '0.25rem' }}>{award.achievement}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(0.6rem, 0.8vw, 0.75rem)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--section-muted)' }}>{award.org}</span>
                 </div>
               ))}
             </div>

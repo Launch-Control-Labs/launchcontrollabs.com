@@ -127,46 +127,27 @@ export function ProblemSection() {
         style={{
           width: '100%',
           minHeight: '100vh',
-          background: 'var(--section-bg)',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          position: 'relative' as const,
-          overflow: 'hidden' as const,
+          background: 'transparent',
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
         }}
       >
         <div
           style={{
-            position: 'relative' as const,
-            height: '100vh',
-            background: 'radial-gradient(ellipse at 30% 50%, rgba(220, 38, 38, 0.08) 0%, transparent 60%)',
-          }}
-        />
-
-        <div
-          style={{
+            width: '60%',
+            minHeight: '100vh',
+            background: 'linear-gradient(to right, transparent 0%, rgba(26,5,5,0.92) 25%, rgba(26,5,5,0.97) 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-start',
-            padding: SPACING.sectionPad,
-            position: 'relative' as const,
-            zIndex: 1,
+            padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
           }}
         >
           <ProblemContent />
         </div>
-
-        <div
-          style={{
-            position: 'absolute' as const,
-            top: '50%',
-            left: '30%',
-            transform: 'translate(-50%, -50%)',
-            width: '60vw',
-            height: '60vw',
-            background: 'radial-gradient(circle, rgba(220, 38, 38, 0.06) 0%, transparent 50%)',
-            pointerEvents: 'none' as const,
-          }}
-        />
       </section>
     </SectionThemeProvider>
   )

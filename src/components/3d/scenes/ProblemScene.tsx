@@ -14,6 +14,7 @@ function DriftingAstronaut() {
   const groupRef = useRef<THREE.Group>(null)
   const { actions } = useAnimations(animations, groupRef)
   const time = useRef(0)
+  const origin = useRef(new THREE.Vector3(-8, 0, 0))
 
   useLayoutEffect(() => {
     if (!scene) return
@@ -44,9 +45,9 @@ function DriftingAstronaut() {
 
     const t = time.current
 
-    groupRef.current.position.x = 0 + Math.sin(t * 0.057) * 0.4 + Math.sin(t * 0.031) * 0.2
+    groupRef.current.position.x = -8 + Math.sin(t * 0.057) * 0.4 + Math.sin(t * 0.031) * 0.2
     groupRef.current.position.y = 0 + Math.sin(t * 0.071) * 0.5 + Math.sin(t * 0.043) * 0.25
-    groupRef.current.position.z = -2 + Math.sin(t * 0.047) * 0.3
+    groupRef.current.position.z = 0 + Math.sin(t * 0.047) * 0.3
 
     groupRef.current.rotation.y += delta * 0.018
     groupRef.current.rotation.x = Math.sin(t * 0.037) * 0.08
@@ -54,10 +55,10 @@ function DriftingAstronaut() {
   })
 
   return (
-    <group ref={groupRef} position={[0, 0, -2]}>
+    <group ref={groupRef} position={[-8, 0, 0]}>
       <primitive
         object={scene}
-        scale={[2.8, 2.8, 2.8]}
+        scale={[4.0, 4.0, 4.0]}
         rotation={[0.05, 0.4, 0.08]}
       />
     </group>

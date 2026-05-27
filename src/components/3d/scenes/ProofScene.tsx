@@ -5,60 +5,56 @@ import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
-export function ProofScene() {
-  const groupRef = useRef<THREE.Group>(null)
-  
-  const { scene } = useGLTF('/models/optimized/various-planets.glb')
-  
-  const planets = useMemo(() => {
-    const clonedScene = scene.clone(true)
-    const planetMeshes: THREE.Object3D[] = []
-    
-    clonedScene.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        const mesh = child.clone() as THREE.Mesh
-        mesh.scale.setScalar(0.3)
-        mesh.position.set(
-          (Math.random() - 0.5) * 8,
-          (Math.random() - 0.5) * 4,
-          (Math.random() - 0.5) * 6 - 3
-        )
-        mesh.rotation.set(
-          Math.random() * Math.PI,
-          Math.random() * Math.PI,
-          Math.random() * Math.PI
-        )
-        planetMeshes.push(mesh)
-      }
-    })
-    
-    return planetMeshes.slice(0, 5)
-  }, [scene])
+const PLANET_NODES = [
+  { name: 'planet_gas_2',        pos: [-10, 5, -8]  as [number,number,number], scale: 2.5, speed: 0.03 },
+  { name: 'planet_lava_7',       pos: [8, -3, -5]   as [number,number,number], scale: 1.8, speed: 0.05 },
+  { name: 'planet_continental_4',pos: [12, 8, -12]  as [number,number,number], scale: 3.0, speed: 0.02 },
+  { name: 'planet_frozen_6',     pos: [-6, -6, -10] as [number,number,number], scale: 2.0, speed: 0.04 },
+]
+
+function ProofPlanet({ nodeName, position, worldScale, rotSpeed }: {
+  nodeName: string
+  position: [number, number, number]
+  worldScale: number
+  rotSpeed: number
+}) {
+  const { scene } = useGLTF('/models/various-planets.glb')
+  const ref = useRef<THREE.Group>(null)
+  const clone = useMemo(() => {
+    const node = scene.getObjectByName(nodeName)
+    if (!node) return null
+    return node.clone(true)
+  }, [scene, nodeName])
 
   useFrame((_, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.02
-    }
-    
-    planets.forEach((planet, i) => {
-      if (planet instanceof THREE.Mesh) {
-        planet.rotation.y += delta * (0.05 + i * 0.01)
-        planet.rotation.x += delta * 0.02
-      }
-    })
+    if (ref.current) ref.current.rotation.y += delta * rotSpeed
   })
 
+  if (!clone) return null
   return (
-    <group ref={groupRef}>
+    <group ref={ref} position={position} scale={[worldScale, worldScale, worldScale]}>
+      <primitive object={clone} />
+    </group>
+  )
+}
+
+export function ProofScene() {
+  return (
+    <group>
       <ambientLight intensity={0.15} />
       <pointLight position={[5, 3, 5]} intensity={0.8} color="#F59E0B" />
       <pointLight position={[-3, -2, 3]} intensity={0.4} color="#FCD34D" />
-      
-      {planets.map((planet, i) => (
-        <primitive key={i} object={planet} />
+      {PLANET_NODES.map((p) => (
+        <ProofPlanet
+          key={p.name}
+          nodeName={p.name}
+          position={p.pos}
+          worldScale={p.scale}
+          rotSpeed={p.speed}
+        />
       ))}
     </group>
   )
 }
 
-useGLTF.preload('/models/optimized/various-planets.glb')
+useGLTF.preload('/models/various-planets.glb')

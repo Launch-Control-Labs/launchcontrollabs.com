@@ -99,7 +99,9 @@ function AnnotationCallout({
         style={{
           border: '1px solid var(--section-accent)',
           padding: '12px 16px',
-          background: 'var(--section-bg)',
+          background: 'rgba(10, 10, 15, 0.85)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
           maxWidth: '220px',
         }}
       >
@@ -166,7 +168,7 @@ export function GuideSection() {
         style={{
           width: '100%',
           minHeight: '100vh',
-          background: 'var(--section-bg)',
+          background: 'transparent',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
@@ -189,6 +191,9 @@ export function GuideSection() {
             fontWeight: 700,
             textTransform: 'uppercase',
             color: 'var(--section-accent)',
+            background: 'rgba(10, 10, 15, 0.8)',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
           }}
         >
           THE GUIDE
@@ -202,10 +207,11 @@ export function GuideSection() {
             lineHeight: 0.85,
             letterSpacing: '-0.02em',
             textTransform: 'uppercase',
-            color: 'var(--section-text)',
+            color: '#FFFFFF',
             margin: 0,
             textAlign: 'center',
             marginBottom: '1rem',
+            textShadow: '0 2px 20px rgba(0,0,0,0.8)',
           }}
         >
           MISSION CAPABLE
@@ -216,7 +222,7 @@ export function GuideSection() {
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)',
-            color: 'var(--section-muted)',
+            color: 'rgba(255,255,255,0.7)',
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
             textAlign: 'center',

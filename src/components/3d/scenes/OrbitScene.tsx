@@ -5,46 +5,32 @@ import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
-/** Section 6 — Earth model with overview effect */
 export function OrbitScene() {
   const earthRef = useRef<THREE.Group>(null)
-  
-  // Load the optimized Earth model
   const { scene } = useGLTF('/models/optimized/earth.glb')
 
   useFrame((_, delta) => {
     if (earthRef.current) {
-      // Slow continuous rotation for overview effect
-      earthRef.current.rotation.y += delta * 0.08
+      earthRef.current.rotation.y += delta * 0.06
     }
   })
 
   return (
     <group>
-      {/* Ambient light for base illumination */}
-      <ambientLight intensity={0.15} />
-      
-      {/* Key light from upper left */}
-      <pointLight position={[-5, 3, 5]} intensity={1.5} color="#ffffff" />
-      
-      {/* Fill light from lower right */}
-      <pointLight position={[5, -2, 3]} intensity={0.5} color="#4ADE80" />
-      
-      {/* Earth model */}
-      <group ref={earthRef} position={[0, 0, 0]}>
-        <primitive 
-          object={scene.clone()} 
-          scale={2}
-        />
+      <ambientLight intensity={0.1} />
+      <pointLight position={[15, 8, 10]} intensity={2.0} color="#ffffff" />
+      <pointLight position={[-8, 3, 8]} intensity={0.4} color="#4ADE80" />
+
+      <group ref={earthRef} position={[0, -10, 0]}>
+        <primitive object={scene.clone()} scale={14} />
       </group>
-      
-      {/* Atmospheric glow */}
-      <mesh position={[0, 0, 0]}>
-        <sphereGeometry args={[2.15, 64, 64]} />
-        <meshStandardMaterial
+
+      <mesh position={[0, -10, 0]}>
+        <sphereGeometry args={[14.3, 64, 64]} />
+        <meshBasicMaterial
           color="#4ADE80"
           transparent
-          opacity={0.08}
+          opacity={0.06}
           side={THREE.BackSide}
         />
       </mesh>
@@ -52,5 +38,4 @@ export function OrbitScene() {
   )
 }
 
-// Preload the Earth model
 useGLTF.preload('/models/optimized/earth.glb')
