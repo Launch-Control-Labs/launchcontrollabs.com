@@ -11,6 +11,7 @@ import StatusBar from '@/components/StatusBar'
 import CompanyTicker from '@/components/CompanyTicker'
 import Capabilities from '@/components/Capabilities'
 import MissionCards from '@/components/MissionCards'
+import Awards from '@/components/Awards'
 import Contact from '@/components/Contact'
 
 const ControlRoomScene = dynamic(
@@ -45,6 +46,10 @@ export default function Home() {
 
         <section id="projects">
           <MissionCards />
+        </section>
+
+        <section id="awards">
+          <Awards />
         </section>
 
         <section id="contact">
