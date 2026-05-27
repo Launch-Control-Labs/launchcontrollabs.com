@@ -12,7 +12,7 @@ const ROCKET_PATH_FULL = '/models/space-shuttle.glb'
 const ROCKET_PATH_OPT = '/models/optimized/space-shuttle.glb'
 const ASTRONAUT_PATH_FULL = '/models/astronaut-converted.glb?v=2'
 const ASTRONAUT_PATH_OPT = '/models/optimized/astronaut-converted.glb'
-const SMOKE_PATH = '/models/smoke.glb'
+const SMOKE_PATH = '/models/evanescent-smoke.glb'
 
 const HIDE_NODES = [
   'Small_Rocket_Group_02', 'Small_Rocket_Group_01',
@@ -72,7 +72,7 @@ function Astronaut({ modelPath }: { modelPath: string }) {
   const groupRef = useRef<THREE.Group>(null)
   const { actions } = useAnimations(animations, groupRef)
   const t = useRef(0)
-  const origin = useRef(new THREE.Vector3(4, 3, -14))
+  const origin = useRef(new THREE.Vector3(7, 5, -18))
 
   useLayoutEffect(() => {
     if (!scene) return
@@ -120,7 +120,7 @@ function Astronaut({ modelPath }: { modelPath: string }) {
   })
 
   return (
-    <group ref={groupRef} position={[4, 3, -14]}>
+    <group ref={groupRef} position={[7, 5, -18]}>
       <primitive
         object={scene}
         scale={[1.8, 1.8, 1.8]}
@@ -159,7 +159,7 @@ export function InteractiveRoom() {
     <group>
       <Rocket modelPath={rocketPath} />
       <Astronaut modelPath={astronautPath} />
-      {tier >= 3 && <Smoke />}
+      <Smoke />
     </group>
   )
 }

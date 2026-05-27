@@ -12,24 +12,25 @@ export function HeroScene() {
 
   return (
     <group>
-      <directionalLight position={[80, 40, 60]} intensity={1.8} color="#ffffff" />
-      <hemisphereLight args={['#0d1a3a', '#020914', 0.2]} />
-      <pointLight position={[-40, 20, 40]} intensity={0.7} color="#22d3ee" distance={120} />
-      <pointLight position={[7, 3, -10]} intensity={1.2} color="#ffffff" distance={40} />
+      {/* Cinematic 3-light setup */}
+      <directionalLight position={[80, 40, 60]} intensity={2.5} color="#ffffff" />
+      <hemisphereLight args={['#1a1a3e', '#020914', 0.4]} />
+      <pointLight position={[-40, 20, 40]} intensity={1.2} color="#22d3ee" distance={200} />
+      {/* Back rim — separates shuttle from background */}
+      <pointLight position={[0, -5, -25]} intensity={0.6} color="#22d3ee" distance={60} />
 
       <Suspense fallback={null}>
         <Environment preset="night" background={false} />
         <InteractiveRoom />
-        {tier >= 3 && <Particles />}
+        <Particles />
       </Suspense>
 
-      <fogExp2 attach="fog" args={['#020914', 0.003]} />
+      {/* Atmospheric depth fog */}
+      <fogExp2 attach="fog" args={['#020914', 0.008]} />
 
-      {tier >= 3 && (
-        <EffectComposer>
-          <Bloom luminanceThreshold={0.85} luminanceSmoothing={0.9} intensity={0.2} mipmapBlur />
-        </EffectComposer>
-      )}
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.6} luminanceSmoothing={0.9} intensity={0.4} mipmapBlur />
+      </EffectComposer>
     </group>
   )
 }

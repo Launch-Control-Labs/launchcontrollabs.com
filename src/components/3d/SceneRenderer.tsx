@@ -13,7 +13,7 @@ import { AuthorityScene } from './scenes/AuthorityScene'
 import { OrbitScene } from './scenes/OrbitScene'
 
 const SCENES = [HeroScene, ProblemScene, GuideScene, ProofScene, AuthorityScene, OrbitScene]
-const CROSSFADE_DURATION = 0.2
+const CROSSFADE_DURATION = 0.4
 
 function DisposableScene({ index, children }: { index: number; children: React.ReactNode }) {
   const groupRef = useSceneDisposer(index)

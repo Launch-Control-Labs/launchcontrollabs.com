@@ -147,15 +147,15 @@ export function ScrollScene({ children }: { children: React.ReactNode }) {
         }}
       >
         <Canvas
-          dpr={deviceTier >= 3 ? [1, 2] : [1, 2]}
+          dpr={deviceTier >= 3 ? [1, 1.5] : [1, 1]}
           gl={{
             antialias: true,
             alpha: false,
             outputColorSpace: THREE.SRGBColorSpace,
             toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: 0.7,
+            toneMappingExposure: 0.85,
           }}
-          camera={{ position: [0, -6, 28], fov: 42, near: 0.1, far: 2000 }}
+          camera={{ position: [0, 3, 30], fov: 50, near: 0.1, far: 2000 }}
           style={{ width: '100%', height: '100%' }}
         >
           <color attach="background" args={['#020914']} />
