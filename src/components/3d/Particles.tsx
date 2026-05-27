@@ -97,26 +97,26 @@ export function Particles() {
     <group>
       <StarField />
 
-      {/* FAR LEFT — large gas giant, deep background */}
-      <VariousPlanet nodeName="planet_gas_2" worldSize={22} position={[-55, 8, -180]} rotSpeed={0.006} floatOffset={0.0} />
+      {/* FAR LEFT — large gas giant */}
+      <VariousPlanet nodeName="planet_gas_2" worldSize={18} position={[-28, 6, -60]} rotSpeed={0.006} floatOffset={0.0} />
 
-      {/* FAR RIGHT — earth-like, mid distance */}
-      <Planet path="/models/earth.glb" worldSize={14} position={[52, -6, -120]} rotSpeed={0.014} floatOffset={1.5} />
+      {/* FAR RIGHT — earth-like */}
+      <Planet path="/models/earth.glb" worldSize={12} position={[26, -4, -50]} rotSpeed={0.014} floatOffset={1.5} />
 
-      {/* TOP LEFT — small rocky, near */}
-      <Planet path="/models/mercury.glb" worldSize={4} position={[-38, 22, -70]} rotSpeed={0.028} floatOffset={3.0} />
+      {/* TOP LEFT — small rocky */}
+      <Planet path="/models/mercury.glb" worldSize={4} position={[-20, 14, -35]} rotSpeed={0.028} floatOffset={3.0} />
 
-      {/* MID RIGHT — lava planet, near */}
-      <VariousPlanet nodeName="planet_lava_7" worldSize={5} position={[44, 14, -80]} rotSpeed={0.022} floatOffset={2.2} />
+      {/* MID RIGHT — lava planet */}
+      <VariousPlanet nodeName="planet_lava_7" worldSize={5} position={[22, 8, -40]} rotSpeed={0.022} floatOffset={2.2} />
 
-      {/* BOTTOM LEFT — frozen, mid */}
-      <VariousPlanet nodeName="planet_frozen_6" worldSize={8} position={[-30, -18, -140]} rotSpeed={0.016} floatOffset={4.0} />
+      {/* BOTTOM LEFT — frozen */}
+      <VariousPlanet nodeName="planet_frozen_6" worldSize={7} position={[-16, -12, -55]} rotSpeed={0.016} floatOffset={4.0} />
 
-      {/* TOP RIGHT — barren, deep */}
-      <VariousPlanet nodeName="planet_barren_8" worldSize={6} position={[28, 26, -200]} rotSpeed={0.010} floatOffset={1.0} />
+      {/* TOP RIGHT — barren */}
+      <VariousPlanet nodeName="planet_barren_8" worldSize={5} position={[14, 16, -80]} rotSpeed={0.010} floatOffset={1.0} />
 
-      {/* CENTER LEFT — continental, very deep */}
-      <VariousPlanet nodeName="planet_continental_4" worldSize={11} position={[-48, -2, -260]} rotSpeed={0.008} floatOffset={5.0} />
+      {/* CENTER LEFT — continental, deep background */}
+      <VariousPlanet nodeName="planet_continental_4" worldSize={10} position={[-24, -1, -100]} rotSpeed={0.008} floatOffset={5.0} />
     </group>
   )
 }

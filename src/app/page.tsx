@@ -9,11 +9,7 @@ import { StaticHeroFallback } from '@/components/3d/StaticHeroFallback'
 import StatusBar from '@/components/StatusBar'
 import SectionNav from '@/components/SectionNav'
 import CompanyTicker from '@/components/CompanyTicker'
-import Capabilities from '@/components/Capabilities'
-import MissionCards from '@/components/MissionCards'
-import Awards from '@/components/Awards'
-import TeamPedigree from '@/components/TeamPedigree'
-import Contact from '@/components/Contact'
+
 import { HeroOverlay } from '@/components/HeroOverlay'
 
 const ScrollScene = dynamic(
@@ -50,26 +46,6 @@ export default function Home() {
             </SceneErrorBoundary>
           )}
         </div>
-
-        <section id="capabilities" style={{ marginTop: 0 }}>
-          <Capabilities />
-        </section>
-
-        <section id="projects" style={{ marginTop: 0 }}>
-          <MissionCards />
-        </section>
-
-        <section id="team" style={{ marginTop: 0 }}>
-          <TeamPedigree />
-        </section>
-
-        <section id="awards" style={{ marginTop: 0 }}>
-          <Awards />
-        </section>
-
-        <section id="contact">
-          <Contact />
-        </section>
       </main>
     </>
   )

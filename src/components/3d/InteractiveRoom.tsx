@@ -54,12 +54,12 @@ function Rocket({ modelPath }: { modelPath: string }) {
     const t = state.clock.elapsedTime
 
     groupRef.current.position.x = Math.sin(t * 0.04) * 0.4
-    groupRef.current.position.y = -2 + Math.sin(t * 0.07) * 0.3
+    groupRef.current.position.y = 2 + Math.sin(t * 0.07) * 0.3
     groupRef.current.position.z = Math.sin(t * 0.05) * 0.5
   })
 
   return (
-    <group ref={groupRef} scale={[scale, scale, scale]} position={[0, -2, 0]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
+    <group ref={groupRef} scale={[scale, scale, scale]} position={[0, 2, 0]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
       <primitive object={scene} />
     </group>
   )
@@ -79,7 +79,7 @@ function Smoke() {
   }, [actions])
 
   return (
-    <group ref={groupRef} position={[0, -8, 2]} scale={[0.25, 0.25, 0.25]}>
+    <group ref={groupRef} position={[0, -4, 1]} scale={[0.25, 0.25, 0.25]}>
       <primitive object={scene} />
     </group>
   )
