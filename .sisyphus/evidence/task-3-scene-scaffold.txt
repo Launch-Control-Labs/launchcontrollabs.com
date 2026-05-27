@@ -1,0 +1,69 @@
+# TASK 3: Scene Scaffold — Cinematic 3-Light Setup
+## Evidence Report
+
+### File Modified
+- src/components/3d/ControlRoomScene.tsx
+
+### Changes Applied
+
+#### 1. Background Color
+✓ Set to #020914 via <color attach="background" args={['#020914']} />
+
+#### 2. Fog Configuration
+✓ Replaced linear fog with exponential fog
+✓ fogExp2 with color #0a0e27 and density 0.008
+✓ Line 69: <fogExp2 attach="fog" args={['#0a0e27', 0.008]} />
+
+#### 3. 3-Light Cinematic Setup
+✓ Key Light (Directional): position=[80, 40, 60], intensity=2.5, color=#ffffff
+  Line 55: <directionalLight position={[80, 40, 60]} intensity={2.5} color="#ffffff" castShadow={false} />
+
+✓ Fill Light (Hemisphere): sky=#1a1a3e, ground=#020914, intensity=0.4
+  Line 58: <hemisphereLight args={['#1a1a3e', '#020914', 0.4]} />
+
+✓ Rim Light (Point): position=[-40, 20, 40], intensity=1.2, color=#22d3ee, distance=100
+  Line 61: <pointLight position={[-40, 20, 40]} intensity={1.2} color="#22d3ee" distance={100} />
+
+#### 4. Removed Elements
+✓ Environment import removed (line 5 in original)
+✓ <Environment preset="sunset" background={false} /> removed
+✓ <ambientLight intensity={0.3} /> removed (replaced by hemisphere fill light)
+✓ Old directionalLight removed (replaced by new key light)
+
+#### 5. Preserved Elements
+✓ Canvas gl settings (antialias, colorSpace, toneMapping)
+✓ Camera configuration
+✓ ScrollCamera component
+✓ InteractiveRoom component
+✓ Suspense boundary
+✓ HTML overlay with LAUNCH CONTROL text
+
+### Verification Results
+
+#### Element Presence Check
+```
+52:        <color attach="background" args={['#020914']} />
+55:        <directionalLight position={[80, 40, 60]} intensity={2.5} color="#ffffff" castShadow={false} />
+58:        <hemisphereLight args={['#1a1a3e', '#020914', 0.4]} />
+61:        <pointLight position={[-40, 20, 40]} intensity={1.2} color="#22d3ee" distance={100} />
+69:        <fogExp2 attach="fog" args={['#0a0e27', 0.008]} />
+```
+✓ All 5 required elements present
+
+#### Removed Elements Check
+✓ No "Environment" import found
+✓ No "sunset" preset found
+✓ No old ambientLight found
+
+### Build Status
+⚠ Pre-existing TypeScript error in Falcon-9.tsx (duplicate identifier 'Parts')
+✓ ControlRoomScene.tsx compiles without errors
+✓ No new errors introduced by this task
+
+### Summary
+✅ Task 3 COMPLETE
+- Background: #020914 ✓
+- Fog: exponential with #0a0e27, density 0.008 ✓
+- 3 Lights: key (directional), fill (hemisphere), rim (point cyan) ✓
+- No sunset Environment ✓
+- Build passes (pre-existing error unrelated) ✓

@@ -1,0 +1,42 @@
+## Verification Evidence — shuttle-stars-fix
+
+### Fix 1: HIDE_NODES logic present
+```
+20:    const HIDE_NODES = [
+21:      'Small_Rocket_Group_02', 'Small_Rocket_Group_01',
+22:      'Turbine_Group1', 'Rocket_01', 'Rocket_Details_01'
+26:      if (HIDE_NODES.some(name => child.name.startsWith(name))) {
+```
+
+### Fix 2: FOV updated
+```
+52:        camera={{ position: [0, 3, 25], fov: 40, near: 0.1, far: 2000 }}
+```
+
+### Fix 3: StarField component exists
+```
+9:function StarField() {
+49:    return new THREE.CanvasTexture(canvas)
+92:      <StarField />
+```
+
+### Fix 4: Planets exist
+```
+68:function Moon({ position, radius, color }: { position: [number, number, number], radius: number, color: string }) {
+79:      <sphereGeometry args={[radius, 32, 32]} />
+93:      <Moon position={[-120, 60, -400]} radius={18} color="#8a8a9a" />
+94:      <Moon position={[200, -40, -600]} radius={45} color="#4a3a6a" />
+```
+
+### Build Result
+```
+✓ Compiled successfully in 1254ms
+✓ Generating static pages (5/5) in 180ms
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ƒ /api/telemetry
+```
+
+All checks PASS.

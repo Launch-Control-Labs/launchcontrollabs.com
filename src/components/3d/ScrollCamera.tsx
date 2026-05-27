@@ -1,120 +1,88 @@
 'use client'
 
+import { useRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useSceneStore } from '@/store/scene-store'
-
-const POSITION_KEYFRAMES = [
-  new THREE.Vector3(0, 4, 30),
-  new THREE.Vector3(-5, 5, 18),
-  new THREE.Vector3(-4, 4, 8),
-  new THREE.Vector3(-3, 3.5, 3.5),
-]
-
-const LOOKAT_KEYFRAMES = [
-  new THREE.Vector3(0, 5, 0),
-  new THREE.Vector3(-3, 4, 5),
-  new THREE.Vector3(-3, 3.5, 8),
-  new THREE.Vector3(-3, 3.2, 10),
-]
-
-const positionCurve = new THREE.CatmullRomCurve3(POSITION_KEYFRAMES, false, 'centripetal', 0.5)
-const lookAtCurve = new THREE.CatmullRomCurve3(LOOKAT_KEYFRAMES, false, 'centripetal', 0.5)
 
 interface ScrollCameraProps {
   containerRef: React.RefObject<HTMLElement | null>
 }
 
-const _targetPos = new THREE.Vector3()
-const _lookTarget = new THREE.Vector3()
-const _currentLook = new THREE.Vector3()
-
 export function ScrollCamera({ containerRef }: ScrollCameraProps) {
   const { camera } = useThree()
   const setInteractionEnabled = useSceneStore((s) => s.setInteractionEnabled)
-  const progress = useRef(0)
-  const mouseRef = useRef({ x: 0, y: 0 })
+  
+  const scrollProgress = useRef(0)
+  const mouseX = useRef(0)
+  const mouseY = useRef(0)
+  const targetRotX = useRef(0)
+  const targetRotY = useRef(0)
   const interactionEnabledRef = useRef(false)
+  const prefersReducedMotion = useRef(
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
 
   useEffect(() => {
-    const startPos = positionCurve.getPoint(0)
-    const startLook = lookAtCurve.getPoint(0)
-    camera.position.copy(startPos)
-    camera.lookAt(startLook)
-    _currentLook.copy(startLook)
+    camera.rotation.order = 'YXZ'
+    camera.position.set(0, -6, 28)
+    camera.lookAt(0, -2, 0)
 
-    const handleMouse = (e: MouseEvent) => {
-      mouseRef.current = {
-        x: (e.clientX / window.innerWidth - 0.5) * 2,
-        y: (e.clientY / window.innerHeight - 0.5) * 2,
+    const container = containerRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      const rect = container.getBoundingClientRect()
+      const containerHeight = container.scrollHeight || window.innerHeight * 1.5
+      const scrolled = -rect.top
+      const progress = Math.max(0, Math.min(1, scrolled / (containerHeight * 0.8)))
+      scrollProgress.current = progress
+      
+      // Enable interaction at 90% scroll
+      if (progress >= 0.9 && !interactionEnabledRef.current) {
+        interactionEnabledRef.current = true
+        setInteractionEnabled(true)
+      } else if (progress < 0.85 && interactionEnabledRef.current) {
+        interactionEnabledRef.current = false
+        setInteractionEnabled(false)
+        useSceneStore.getState().setActivePanel(null)
       }
     }
-    window.addEventListener('mousemove', handleMouse, { passive: true })
 
-    let ctx: { revert: () => void } | null = null
-    let cancelled = false
-
-    const init = async () => {
-      const { gsap } = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      if (cancelled) return
-      gsap.registerPlugin(ScrollTrigger)
-
-      ctx = gsap.context(() => {
-        const proxy = { p: 0 }
-
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top top',
-            end: '+=150%',
-            pin: true,
-            scrub: 2.5,
-            onUpdate: (self) => {
-              if (self.progress >= 0.9 && !interactionEnabledRef.current) {
-                interactionEnabledRef.current = true
-                setInteractionEnabled(true)
-              } else if (self.progress < 0.85 && interactionEnabledRef.current) {
-                interactionEnabledRef.current = false
-                setInteractionEnabled(false)
-                useSceneStore.getState().setActivePanel(null)
-              }
-            },
-          },
-        }).to(proxy, {
-          p: 1,
-          ease: 'power2.inOut',
-          onUpdate: () => {
-            progress.current = proxy.p
-          },
-        })
-      })
+    const handleMouseMove = (e: MouseEvent) => {
+      // Normalize to [-1, 1]
+      mouseX.current = (e.clientX / window.innerWidth) * 2 - 1
+      mouseY.current = (e.clientY / window.innerHeight) * 2 - 1
     }
 
-    init()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    handleScroll()
 
     return () => {
-      cancelled = true
-      ctx?.revert()
-      window.removeEventListener('mousemove', handleMouse)
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [camera, containerRef, setInteractionEnabled])
 
   useFrame(() => {
-    const t = progress.current
+    // Z drift: from 25 (far) to 18 (closer) as user scrolls
+    const targetZ = 28 - scrollProgress.current * 4
+    camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.05)
+    camera.position.x = THREE.MathUtils.lerp(camera.position.x, 0, 0.05)
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, -6, 0.05)
 
-    positionCurve.getPoint(t, _targetPos)
-    lookAtCurve.getPoint(t, _lookTarget)
-
-    camera.position.lerp(_targetPos, 0.06)
-    _currentLook.lerp(_lookTarget, 0.06)
-    camera.lookAt(_currentLook)
-
-    if (t > 0.05) {
-      camera.rotation.y += mouseRef.current.x * 0.008 * (Math.PI / 180)
-      camera.rotation.x += mouseRef.current.y * 0.004 * (Math.PI / 180)
+    // Mouse parallax — subtle rotation (skip if prefers-reduced-motion)
+    if (!prefersReducedMotion.current) {
+      targetRotY.current = mouseX.current * 0.005
+      targetRotX.current = -mouseY.current * 0.003
+    } else {
+      targetRotY.current = 0
+      targetRotX.current = 0
     }
+
+    camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, targetRotY.current, 0.05)
+    camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, targetRotX.current, 0.05)
   })
 
   return null

@@ -1,0 +1,52 @@
+# Task 9: Bloom Post-Processing — VERIFICATION REPORT
+
+## Status: ✓ COMPLETE
+
+## Changes Applied
+
+### 1. Imports Added
+- Line 6: `import { EffectComposer, Bloom } from '@react-three/postprocessing'`
+
+### 2. Component Added
+- Lines 72-79: EffectComposer with Bloom inside Canvas
+  ```tsx
+  <EffectComposer>
+    <Bloom
+      luminanceThreshold={0.6}
+      luminanceSmoothing={0.9}
+      intensity={0.4}
+      mipmapBlur
+    />
+  </EffectComposer>
+  ```
+
+## Verification Checklist
+
+✓ @react-three/postprocessing installed: ^3.0.4
+✓ EffectComposer imported from @react-three/postprocessing
+✓ Bloom imported from @react-three/postprocessing
+✓ EffectComposer placed inside Canvas (after fog)
+✓ Bloom intensity: 0.4 (≤ 0.5 requirement met)
+✓ Bloom luminanceThreshold: 0.6 (≥ 0.5 requirement met)
+✓ mipmapBlur enabled for quality
+✓ luminanceSmoothing: 0.9 for smooth transitions
+✓ No additional effects added (Bloom only)
+✓ npm run build: PASSED ✓
+
+## Build Output
+✓ Compiled successfully in 1427ms
+✓ TypeScript check passed
+✓ All pages generated successfully
+✓ No errors or warnings
+
+## File Modified
+- src/components/3d/ControlRoomScene.tsx (121 → 129 lines)
+
+## Expected Behavior
+- Bright elements (cyan rim light #22d3ee at intensity 1.2, shuttle highlights) will glow cinematically
+- Bloom threshold 0.6 ensures only bright areas bloom
+- Intensity 0.4 provides subtle, cinematic effect
+- mipmapBlur provides high-quality bloom with minimal performance cost
+
+## Next Steps
+- Task complete. Ready for visual testing in live scene.

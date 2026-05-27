@@ -1,0 +1,16 @@
+=== Verification: composition-fix ===
+
+--- Shuttle rotation ---
+39:      rotation={[-Math.PI / 2, 0, 0]}
+
+--- FOV ---
+52:        camera={{ position: [0, -2, 20], fov: 35, near: 0.1, far: 500 }}
+
+--- Camera position ---
+29:    camera.position.set(0, -2, 20)
+
+--- Build result ---
+✓ Compiled successfully
+✓ TypeScript passed
+✓ Static pages generated (5/5)
+✓ npm run build exit 0

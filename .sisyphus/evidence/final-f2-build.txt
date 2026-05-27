@@ -1,0 +1,66 @@
+
+> launchcontrollabs.com@0.1.0 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/chikochingaya/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/chikochingaya/Projects/launchcontrollabs.com/pnpm-workspace.yaml
+
+▲ Next.js 16.2.6 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1269ms
+  Running TypeScript ...
+  Finished TypeScript in 1581ms ...
+  Collecting page data using 6 workers ...
+  Generating static pages using 6 workers (0/5) ...
+  Generating static pages using 6 workers (1/5) 
+  Generating static pages using 6 workers (2/5) 
+  Generating static pages using 6 workers (3/5) 
+✓ Generating static pages using 6 workers (5/5) in 187ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ƒ /api/telemetry
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+=== FINAL BUILD VERIFICATION REPORT ===
+
+BUILD EXIT CODE: 0
+
+MODEL FILES PRESENT:
+total 143072
+-rw-r--r--@ 1 chikochingaya  staff   689K May 26 23:33 apollo-saturn-v.glb
+-rw-r--r--@ 1 chikochingaya  staff   3.7M May 27 00:18 astronaut.glb
+-rw-r--r--@ 1 chikochingaya  staff    33M May 27 00:44 falcon-9.glb
+drwxr-xr-x@ 5 chikochingaya  staff   160B May 27 01:01 floating-astronaut
+-rw-r--r--@ 1 chikochingaya  staff    19M May 27 00:44 floating-astronaut.glb
+-rw-r--r--@ 1 chikochingaya  staff    13M May 27 00:49 space-shuttle.glb
+
+ASTRONAUT MODEL DIRECTORY:
+total 26872
+-rw-r--r--@  1 chikochingaya  staff    13M May 27 01:01 scene.bin
+-rw-r--r--@  1 chikochingaya  staff   191K May 27 01:01 scene.gltf
+drwxr-xr-x@ 10 chikochingaya  staff   320B May 27 01:01 textures
+
+MOBILE FALLBACK CHECK:
+9:import { StaticHeroFallback } from '@/components/3d/StaticHeroFallback'
+24:  const isMobile = useIsMobile()
+32:        {isMobile ? (
+33:          <StaticHeroFallback />
+
+SCOPE CHECK - MODIFIED FILES:
+ .sisyphus/boulder.json                 |   9 +-
+ public/models/astronaut.glb            | Bin 0 -> 3923512 bytes
+ src/components/3d/ControlRoomScene.tsx |  86 +++++++++++++------
+ src/components/3d/InteractiveRoom.tsx  | 100 +++++++++++++++++++---
+ src/components/3d/ScrollCamera.tsx     | 147 +++++++++++++--------------------
+ 5 files changed, 214 insertions(+), 128 deletions(-)

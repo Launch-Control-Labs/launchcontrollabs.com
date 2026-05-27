@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useMemo } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
@@ -40,9 +40,6 @@ function StarField() {
     ctx.fillRect(0, 0, 64, 64)
     return new THREE.CanvasTexture(canvas)
   }, [])
-
-  const { gl } = useThree()
-  console.log('STAR_DPR:', gl.getPixelRatio(), 'STAR_COUNT:', STAR_COUNT, 'SIZE:', 1.5)
 
   return (
     <points geometry={geometry} frustumCulled={false}>
@@ -86,7 +83,6 @@ function VariousPlanet({ nodeName, worldSize, position, rotSpeed, floatOffset }:
     const maxDim = Math.max(size.x, size.y, size.z)
     return { clone: cloned, scale: maxDim > 0 ? worldSize / maxDim : 1 }
   }, [scene, nodeName, worldSize])
-  console.log('PLANET_CLONE:', nodeName, clone ? 'SUCCESS scale=' + scale.toFixed(3) : 'NULL - node not found')
   useFrame(({ clock }) => {
     if (!ref.current) return
     ref.current.rotation.y += rotSpeed * 0.016

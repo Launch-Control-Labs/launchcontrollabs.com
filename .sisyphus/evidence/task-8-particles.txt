@@ -1,0 +1,21 @@
+=== Task 8: Foreground Particles Layer ===
+Date: 2026-05-27
+
+--- File Created ---
+-rw-r--r-- src/components/3d/Particles.tsx (1776 bytes)
+
+--- InstancedMesh Verification ---
+7:const PARTICLE_COUNT = 150
+10:  const meshRef = useRef<THREE.InstancedMesh>(null)
+14:  Array.from({ length: PARTICLE_COUNT }, ...)
+56:  <instancedMesh ref={meshRef} args={[undefined, undefined, PARTICLE_COUNT]}>
+
+--- Integration in ControlRoomScene.tsx ---
+9:import { Particles } from './Particles'
+69:          <Particles />
+
+--- Build Result ---
+✓ Compiled successfully
+✓ TypeScript passed
+✓ Static pages generated (5/5)
+No errors.

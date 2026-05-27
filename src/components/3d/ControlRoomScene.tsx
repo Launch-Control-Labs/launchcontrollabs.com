@@ -99,7 +99,7 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
               letterSpacing: '0.2em',
               color: 'rgba(255,255,255,0.35)',
               textTransform: 'uppercase',
-            }}>Product Studio · Los Angeles</span>
+            }}>Product Studio · Dallas · Barcelona · Miami</span>
             <span style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 'clamp(0.75rem, 1.2vw, 1.1rem)',
