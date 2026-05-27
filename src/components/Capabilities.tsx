@@ -29,8 +29,8 @@ export default function Capabilities() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <section className="section-editorial" style={{ padding: '0' }}>
-      <div style={{ borderTop: '3px solid #0A0A0A', padding: 'clamp(4rem, 8vh, 7rem) 0 0' }}>
+    <section className="section-editorial" style={{ padding: '0', background: '#F5F0E8' }}>
+      <div style={{ borderTop: '3px solid #0A0A0A', padding: 'clamp(4rem, 8vh, 7rem) 0 0', background: '#F5F0E8' }}>
         <div className="page">
           
           <p style={{
@@ -51,7 +51,7 @@ export default function Capabilities() {
                 style={{
                   borderTop: hoveredIndex === index ? '3px solid #C41E1E' : '1px solid #0A0A0A',
                   padding: 'clamp(2rem, 4vh, 3rem) clamp(1.5rem, 3vw, 2.5rem)',
-                  background: hoveredIndex === index ? '#EDE9DF' : 'transparent',
+                  background: hoveredIndex === index ? '#EDE9DF' : '#F5F0E8',
                   transition: 'border-color 120ms ease-out, background 120ms ease-out',
                   cursor: 'default',
                 }}

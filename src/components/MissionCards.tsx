@@ -2,12 +2,13 @@
 
 export default function MissionCards() {
   return (
-    <section className="section-editorial" style={{ padding: '0' }}>
+    <section className="section-editorial" style={{ padding: '0', background: '#F5F0E8' }}>
       
       {/* Section header — full bleed thick rule */}
       <div style={{
         borderTop: '3px solid #0A0A0A',
         padding: 'clamp(4rem, 8vh, 7rem) 0 0',
+        background: '#F5F0E8',
       }}>
         <div className="page">
           
