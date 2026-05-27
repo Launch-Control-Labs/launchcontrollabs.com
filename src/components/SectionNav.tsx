@@ -9,11 +9,18 @@ import ScrollToPlugin from 'gsap/ScrollToPlugin'
 gsap.registerPlugin(ScrollToPlugin)
 
 const SECTION_NAMES = ['THE PROMISE', 'THE PROBLEM', 'THE GUIDE', 'THE PROOF', 'THE AUTHORITY', 'THE ORBIT']
-const SECTION_IDS = ['hero', 'capabilities', 'projects', 'team', 'awards', 'contact']
+const SCROLL_SECTION_IDS = [
+  'section-hero',
+  'section-problem',
+  'section-guide',
+  'section-proof',
+  'section-authority',
+  'section-orbit',
+]
 const THEME_KEYS = ['hero', 'problem', 'guide', 'proof', 'authority', 'orbit'] as const
 
 export default function SectionNav() {
-  const { activeSection, setActiveSection } = useSceneStore()
+  const { activeSection } = useSceneStore()
   const [isMobile, setIsMobile] = useState(false)
   const dotsRef = useRef<(HTMLButtonElement | null)[]>([])
 
@@ -25,31 +32,8 @@ export default function SectionNav() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Track scroll position and update active section
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = SECTION_IDS.map((id) => document.getElementById(id))
-      let currentSection = 0
-
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i]
-        if (section) {
-          const rect = section.getBoundingClientRect()
-          if (rect.top <= window.innerHeight / 2) {
-            currentSection = i
-          }
-        }
-      }
-
-      setActiveSection(currentSection)
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [setActiveSection])
-
   const handleDotClick = (index: number) => {
-    const sectionId = SECTION_IDS[index]
+    const sectionId = SCROLL_SECTION_IDS[index]
     const element = document.getElementById(sectionId)
 
     if (element) {
@@ -58,7 +42,6 @@ export default function SectionNav() {
         duration: 1,
         ease: 'power2.inOut',
       })
-      setActiveSection(index)
     }
   }
 
