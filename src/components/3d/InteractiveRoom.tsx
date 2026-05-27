@@ -70,6 +70,19 @@ function Smoke() {
   const groupRef = useRef<THREE.Group>(null)
   const { actions } = useAnimations(animations, groupRef)
 
+  useLayoutEffect(() => {
+    if (!scene) return
+    scene.traverse((child) => {
+      if (child instanceof THREE.Mesh && child.material) {
+        const mat = child.material as THREE.MeshStandardMaterial
+        mat.transparent = true
+        mat.opacity = 0.55
+        mat.depthWrite = false
+        mat.needsUpdate = true
+      }
+    })
+  }, [scene])
+
   useEffect(() => {
     const clip = actions['Animation'] ?? actions[Object.keys(actions)[0]]
     if (clip) {
