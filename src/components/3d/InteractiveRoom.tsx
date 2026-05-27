@@ -73,11 +73,12 @@ interface StreamConfig {
   innerColor: string
   outerColor: string
   opacity: number
+  dir: [number, number, number]
 }
 
 function PlumeStream({ config, position }: { config: StreamConfig; position: [number, number, number] }) {
   const meshRef = useRef<THREE.Points>(null)
-  const { count, spawnRadius, speed, spread, lifetime, size, color, innerColor, outerColor, opacity } = config
+  const { count, spawnRadius, speed, spread, lifetime, size, color, innerColor, outerColor, opacity, dir } = config
 
   const arrays = useMemo(() => {
     const pos  = new Float32Array(count * 3)
@@ -92,15 +93,16 @@ function PlumeStream({ config, position }: { config: StreamConfig; position: [nu
       sz[i]   = size[0] + Math.random() * (size[1] - size[0])
       const r = Math.random() * spawnRadius
       const th = Math.random() * Math.PI * 2
+      const spd = speed[0] + Math.random() * (speed[1] - speed[0])
       pos[i*3]   = r * Math.cos(th)
-      pos[i*3+1] = -Math.random() * (speed[1] * maxA[i])
-      pos[i*3+2] = r * Math.sin(th)
+      pos[i*3+1] = -(dir[1] * spd * maxA[i])
+      pos[i*3+2] = dir[2] * spd * maxA[i]
       vel[i*3]   = (Math.random() - 0.5) * spread
-      vel[i*3+1] = -(speed[0] + Math.random() * (speed[1] - speed[0]))
-      vel[i*3+2] = (Math.random() - 0.5) * spread
+      vel[i*3+1] = dir[1] * spd
+      vel[i*3+2] = dir[2] * spd + (Math.random() - 0.5) * spread
     }
     return { pos, vel, ages, maxA, sz }
-  }, [count, spawnRadius, speed, spread, lifetime, size])
+  }, [count, spawnRadius, speed, spread, lifetime, size, dir])
 
   const geo = useMemo(() => {
     const g = new THREE.BufferGeometry()
@@ -135,12 +137,13 @@ function PlumeStream({ config, position }: { config: StreamConfig; position: [nu
         ages[i] = 0
         const r = Math.random() * spawnRadius
         const th = Math.random() * Math.PI * 2
+        const spd = speed[0] + Math.random() * (speed[1] - speed[0])
         pos[i*3]   = r * Math.cos(th)
         pos[i*3+1] = 0
-        pos[i*3+2] = r * Math.sin(th)
+        pos[i*3+2] = 0
         vel[i*3]   = (Math.random() - 0.5) * spread
-        vel[i*3+1] = -(speed[0] + Math.random() * (speed[1] - speed[0]))
-        vel[i*3+2] = (Math.random() - 0.5) * spread
+        vel[i*3+1] = dir[1] * spd
+        vel[i*3+2] = dir[2] * spd + (Math.random() - 0.5) * spread
       }
       pos[i*3]   += vel[i*3]   * delta * 60
       pos[i*3+1] += vel[i*3+1] * delta * 60
@@ -168,6 +171,7 @@ const CORE_CONFIG: StreamConfig = {
   innerColor: 'rgba(255,255,255,1)',
   outerColor: 'rgba(255,240,180,0.4)',
   opacity: 1.0,
+  dir: [0, -0.5, 0.866],
 }
 
 const MID_CONFIG: StreamConfig = {
@@ -181,6 +185,7 @@ const MID_CONFIG: StreamConfig = {
   innerColor: 'rgba(255,200,80,0.9)',
   outerColor: 'rgba(255,80,10,0.3)',
   opacity: 0.9,
+  dir: [0, -0.5, 0.866],
 }
 
 const SMOKE_CONFIG: StreamConfig = {
@@ -194,6 +199,7 @@ const SMOKE_CONFIG: StreamConfig = {
   innerColor: 'rgba(180,120,60,0.5)',
   outerColor: 'rgba(60,40,20,0.0)',
   opacity: 0.6,
+  dir: [0, -0.5, 0.866],
 }
 
 function Rocket({ modelPath }: { modelPath: string }) {
@@ -224,20 +230,20 @@ function Rocket({ modelPath }: { modelPath: string }) {
     if (!groupRef.current) return
     const t = state.clock.elapsedTime
     groupRef.current.position.x = Math.sin(t * 0.038) * 0.3
-    groupRef.current.position.y = 5 + Math.sin(t * 0.055) * 0.22
+    groupRef.current.position.y = 3 + Math.sin(t * 0.055) * 0.22
     groupRef.current.position.z = Math.sin(t * 0.028) * 0.35
     groupRef.current.rotation.x = Math.sin(t * 0.042) * 0.012
     groupRef.current.rotation.z = Math.sin(t * 0.033) * 0.008
   })
 
   return (
-    <group ref={groupRef} position={[0, 5, 0]}>
+    <group ref={groupRef} position={[0, 3, 0]}>
       <group scale={[scale, scale, scale]} rotation={[Math.PI / 3, Math.PI, 0]}>
         <primitive object={scene} />
       </group>
-      <PlumeStream config={SMOKE_CONFIG} position={[0, -3.5, 5.2]} />
-      <PlumeStream config={MID_CONFIG}   position={[0, -3.5, 5.2]} />
-      <PlumeStream config={CORE_CONFIG}  position={[0, -3.5, 5.2]} />
+      <PlumeStream config={SMOKE_CONFIG} position={[0, -3.0, 5.2]} />
+      <PlumeStream config={MID_CONFIG}   position={[0, -3.0, 5.2]} />
+      <PlumeStream config={CORE_CONFIG}  position={[0, -3.0, 5.2]} />
     </group>
   )
 }
