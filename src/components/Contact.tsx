@@ -1,33 +1,26 @@
+import { COLORS, TYPOGRAPHY, SPACING, SECTION_FLAG, SECTION_BASE, STAR_BG } from '@/styles/section-constants'
+
 export default function Contact() {
   return (
     <section style={{
-      background: '#0A0A0A',
-      color: '#FFFFFF',
+      ...SECTION_BASE,
+      background: COLORS.navy,
+      backgroundImage: STAR_BG,
       minHeight: '100vh',
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
-      padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
-      position: 'relative',
       gap: '3rem',
       alignContent: 'center',
     }}>
       <div>
         <span style={{
-          display: 'inline-block',
-          border: '2px solid rgba(255,255,255,0.3)',
-          padding: '0.25rem 0.7rem',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.55rem',
-          letterSpacing: '0.25em',
-          fontWeight: 700,
-          marginBottom: '1.5rem',
-          color: 'rgba(255,255,255,0.5)',
+          ...SECTION_FLAG,
         }}>OPEN CHANNEL</span>
 
         <h2 style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(4rem, 12vw, 10rem)',
-          lineHeight: 0.85,
+          fontSize: TYPOGRAPHY.headline,
+          lineHeight: TYPOGRAPHY.lineHeightTight,
           letterSpacing: '-0.02em',
           textTransform: 'uppercase',
           margin: '0 0 1.5rem',
@@ -35,10 +28,10 @@ export default function Contact() {
 
         <p style={{
           fontFamily: 'var(--font-body)',
-          fontSize: '0.9rem',
-          lineHeight: 1.6,
+          fontSize: TYPOGRAPHY.body,
+          lineHeight: TYPOGRAPHY.lineHeightBody,
           maxWidth: '35ch',
-          color: 'rgba(255,255,255,0.6)',
+          color: COLORS.whiteDim,
           marginBottom: '2rem',
         }}>We take on 2–3 new missions per quarter. If you have a project that needs serious engineering, open a channel.</p>
 
@@ -47,12 +40,12 @@ export default function Contact() {
           style={{
             display: 'inline-block',
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.65rem',
-            letterSpacing: '0.15em',
-            color: '#FFFFFF',
+            fontSize: TYPOGRAPHY.label,
+            letterSpacing: TYPOGRAPHY.letterSpacingLabel,
+            color: COLORS.white,
             textDecoration: 'none',
-            border: '2px solid #FFFFFF',
-            padding: '0.8rem 1.5rem',
+            border: '2px solid ' + COLORS.cyan,
+            padding: '0.75rem 2rem',
             textTransform: 'uppercase',
             fontWeight: 700,
           }}
