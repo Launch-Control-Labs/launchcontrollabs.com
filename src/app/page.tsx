@@ -10,6 +10,7 @@ import CompanyTicker from '@/components/CompanyTicker'
 
 import { HeroOverlay } from '@/components/HeroOverlay'
 import { ScrollJourney } from '@/components/ScrollJourney'
+import { JourneyScene } from '@/components/journey/JourneyScene'
 
 export default function Home() {
   const experienceMode = useExperienceMode()
@@ -31,7 +32,7 @@ export default function Home() {
           {experienceMode === '3d' ? (
             <SceneErrorBoundary>
               <Suspense fallback={<SceneLoadingState />}>
-                <ScrollJourney />
+                <ScrollJourney scene={<JourneyScene />} />
               </Suspense>
             </SceneErrorBoundary>
           ) : experienceMode === '2d-parallax' ? (

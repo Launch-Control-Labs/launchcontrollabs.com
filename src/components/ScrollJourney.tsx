@@ -39,8 +39,10 @@ const DynamicCanvas = dynamic(
   () =>
     Promise.resolve(function ScrollCanvas({
       progressRef,
+      scene,
     }: {
       progressRef: React.RefObject<number>
+      scene?: React.ReactNode
     }) {
       return (
         <Canvas
@@ -51,6 +53,7 @@ const DynamicCanvas = dynamic(
         >
           <color attach="background" args={['#020914']} />
           <CameraController progressRef={progressRef} />
+          {scene}
         </Canvas>
       )
     }),
@@ -61,7 +64,7 @@ const DynamicCanvas = dynamic(
 // Top-level scroll experience: a 600vh scroll container with a fixed R3F Canvas
 // whose camera is driven by GSAP ScrollTrigger via ref (Approach A from PoC).
 
-export function ScrollJourney({ children }: { children?: React.ReactNode }) {
+export function ScrollJourney({ children, scene }: { children?: React.ReactNode; scene?: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef(0)
 
@@ -102,7 +105,7 @@ export function ScrollJourney({ children }: { children?: React.ReactNode }) {
           zIndex: 0,
         }}
       >
-        <DynamicCanvas progressRef={progressRef} />
+        <DynamicCanvas progressRef={progressRef} scene={scene} />
       </div>
 
       {/* Fixed content overlay */}
