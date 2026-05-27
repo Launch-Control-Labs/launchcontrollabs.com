@@ -26,19 +26,19 @@ export default function MissionCards() {
           ...SECTION_FLAG,
         }}>FEATURE</span>
 
-        {/* Hero headline — display-xl */}
-        <h3 style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: TYPOGRAPHY.headline,
-          lineHeight: TYPOGRAPHY.lineHeightTight,
-          letterSpacing: '-0.02em',
-          textTransform: 'uppercase' as const,
-          color: COLORS.white,
-          margin: 0,
-          padding: 0,
-          whiteSpace: 'nowrap' as const,
-          overflow: 'hidden',
-        }}>TALISMAN</h3>
+         {/* Hero headline — display-xl */}
+         <h3 style={{
+           fontFamily: 'var(--font-display)',
+           fontSize: TYPOGRAPHY.display.size,
+           lineHeight: TYPOGRAPHY.lineHeightTight,
+           letterSpacing: '-0.02em',
+           textTransform: 'uppercase' as const,
+           color: COLORS.white,
+           margin: 0,
+           padding: 0,
+           whiteSpace: 'nowrap' as const,
+           overflow: 'hidden',
+         }}>TALISMAN</h3>
 
         {/* Body text */}
         <p style={{
@@ -168,32 +168,32 @@ export default function MissionCards() {
           border: '1px solid ' + COLORS.cyanDim,
           borderTop: 'none',
         }}>
-          {[
-            { num: '02', name: 'OBWS', desc: 'E-commerce marketplace connecting consumers with Black-owned businesses.', year: '2024' },
-            { num: '03', name: 'HOMEMEDS', desc: 'Pharmacy medication management. Automated dose packaging.', year: '2024' },
-            { num: '04', name: 'OPTION ONE', desc: 'Full-range plumbing services. CSR and field coordination.', year: '2025' },
-          ].map((project, i) => (
-            <div key={project.num} style={{
-              padding: '2rem',
-              borderRight: i < 2 ? '1px solid ' + COLORS.cyanDim : 'none',
-            }}>
-              <span style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(3.5rem, 9vw, 7rem)',
-                color: COLORS.cyan,
-                lineHeight: 0.85,
-                display: 'block',
-                opacity: 0.15,
-              }}>{project.num}</span>
-              <h4 style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: TYPOGRAPHY.headlineMd,
-                color: COLORS.white,
-                lineHeight: 0.85,
-                letterSpacing: '-0.02em',
-                textTransform: 'uppercase' as const,
-                margin: '0.5rem 0 0.5rem',
-              }}>{project.name}</h4>
+           {[
+             { num: '02', name: 'OBWS', desc: 'E-commerce marketplace connecting consumers with Black-owned businesses.', year: '2024' },
+             { num: '03', name: 'HOMEMEDS', desc: 'Pharmacy medication management. Automated dose packaging.', year: '2024' },
+             { num: '04', name: 'OPTION ONE', desc: 'Full-range plumbing services. CSR and field coordination.', year: '2025' },
+           ].map((project, i) => (
+             <div key={project.num} style={{
+               padding: '2rem',
+               borderRight: i < 2 ? '1px solid ' + COLORS.cyanDim : 'none',
+             }}>
+               <span style={{
+                 fontFamily: 'var(--font-display)',
+                 fontSize: 'clamp(3.5rem, 9vw, 7rem)',
+                 color: COLORS.cyan,
+                 lineHeight: 0.85,
+                 display: 'block',
+                 opacity: 0.15,
+               }}>{project.num}</span>
+               <h4 style={{
+                 fontFamily: 'var(--font-display)',
+                 fontSize: TYPOGRAPHY.sectionHeader.size,
+                 color: COLORS.white,
+                 lineHeight: 0.85,
+                 letterSpacing: '-0.02em',
+                 textTransform: 'uppercase' as const,
+                 margin: '0.5rem 0 0.5rem',
+               }}>{project.name}</h4>
               <p style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: TYPOGRAPHY.body,
@@ -217,31 +217,31 @@ export default function MissionCards() {
           border: '1px solid ' + COLORS.cyanDim,
           borderTop: 'none',
         }}>
-          {[
-            { num: '05', name: 'SKY BOSS', desc: 'Aviation operations management. Fleet tracking, maintenance.', year: '2025' },
-            { num: '06', name: 'NPS.TODAY', desc: 'Net Promoter Score platform. Automated surveys and analytics.', year: '2024' },
-          ].map((project) => (
-            <div key={project.num} style={{
-              padding: '2rem',
-              borderRight: '1px solid ' + COLORS.cyanDim,
-            }}>
-              <span style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(3.5rem, 9vw, 7rem)',
-                color: COLORS.cyan,
-                lineHeight: 0.85,
-                display: 'block',
-                opacity: 0.15,
-              }}>{project.num}</span>
-              <h4 style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: TYPOGRAPHY.headlineMd,
-                color: COLORS.white,
-                lineHeight: 0.85,
-                letterSpacing: '-0.02em',
-                textTransform: 'uppercase' as const,
-                margin: '0.5rem 0 0.5rem',
-              }}>{project.name}</h4>
+           {[
+             { num: '05', name: 'SKY BOSS', desc: 'Aviation operations management. Fleet tracking, maintenance.', year: '2025' },
+             { num: '06', name: 'NPS.TODAY', desc: 'Net Promoter Score platform. Automated surveys and analytics.', year: '2024' },
+           ].map((project) => (
+             <div key={project.num} style={{
+               padding: '2rem',
+               borderRight: '1px solid ' + COLORS.cyanDim,
+             }}>
+               <span style={{
+                 fontFamily: 'var(--font-display)',
+                 fontSize: 'clamp(3.5rem, 9vw, 7rem)',
+                 color: COLORS.cyan,
+                 lineHeight: 0.85,
+                 display: 'block',
+                 opacity: 0.15,
+               }}>{project.num}</span>
+               <h4 style={{
+                 fontFamily: 'var(--font-display)',
+                 fontSize: TYPOGRAPHY.sectionHeader.size,
+                 color: COLORS.white,
+                 lineHeight: 0.85,
+                 letterSpacing: '-0.02em',
+                 textTransform: 'uppercase' as const,
+                 margin: '0.5rem 0 0.5rem',
+               }}>{project.name}</h4>
               <p style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: TYPOGRAPHY.body,

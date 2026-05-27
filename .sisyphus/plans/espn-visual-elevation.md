@@ -204,7 +204,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
 
 ### Wave 0 — Spike (MUST PASS before any section work)
 
-- [ ] 1. GSAP ScrollTrigger + R3F Pinned Scene Spike
+- [x] 1. GSAP ScrollTrigger + R3F Pinned Scene Spike
 
   **What to do**:
   - Create a proof-of-concept at `src/components/spike/ScrollPinSpike.tsx`
@@ -277,7 +277,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `spike(scroll): validate GSAP ScrollTrigger + R3F pin architecture`
   - Files: `src/components/spike/ScrollPinSpike.tsx`, `src/app/spike/page.tsx`
 
-- [ ] 2. Font Validation — Space Grotesk at 13vw Display Scale
+- [x] 2. Font Validation — Space Grotesk at 13vw Display Scale
 
   **What to do**:
   - Create test page at `src/app/spike/fonts/page.tsx`
@@ -338,7 +338,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `spike(fonts): validate Space Grotesk + Anton at editorial scale`
   - Files: `src/app/spike/fonts/page.tsx`
 
-- [ ] 3. 3D Asset Audit + Compression Pipeline
+- [x] 3. 3D Asset Audit + Compression Pipeline
 
   **What to do**:
   - Inventory ALL models in `/public/models/` — record: filename, file size, face count, texture count+resolution

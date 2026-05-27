@@ -19,15 +19,15 @@ export default function Capabilities() {
           ...SECTION_FLAG,
         }}>STAT FACTORY</span>
 
-        <h2 style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: TYPOGRAPHY.headline,
-          lineHeight: TYPOGRAPHY.lineHeightTight,
-          letterSpacing: '-0.02em',
-          textTransform: 'uppercase' as const,
-          color: COLORS.white,
-          margin: 0,
-        }}>WHAT WE BUILD</h2>
+         <h2 style={{
+           fontFamily: 'var(--font-display)',
+           fontSize: TYPOGRAPHY.display.size,
+           lineHeight: TYPOGRAPHY.lineHeightTight,
+           letterSpacing: '-0.02em',
+           textTransform: 'uppercase' as const,
+           color: COLORS.white,
+           margin: 0,
+         }}>WHAT WE BUILD</h2>
 
         <p style={{
           fontFamily: 'var(--font-mono)',
@@ -54,14 +54,14 @@ export default function Capabilities() {
             }}>
               <span style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: TYPOGRAPHY.dataNum,
+                fontSize: TYPOGRAPHY.stat.size,
                 color: COLORS.cyanDim,
                 lineHeight: 1,
                 display: 'block',
               }}>{s.num}</span>
               <h3 style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: TYPOGRAPHY.headlineMd,
+                fontSize: TYPOGRAPHY.sectionHeader.size,
                 textTransform: 'uppercase' as const,
                 color: COLORS.white,
                 lineHeight: TYPOGRAPHY.lineHeightTight,

@@ -18,20 +18,20 @@ export default function TeamPedigree() {
       }}>CREW MANIFEST</span>
 
       <div>
-        {companies.map((company, i) => (
-          <h3 key={company} style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: TYPOGRAPHY.headline,
-            textTransform: 'uppercase',
-            lineHeight: TYPOGRAPHY.lineHeightTight,
-            letterSpacing: '-0.02em',
-            color: COLORS.white,
-            borderBottom: i < companies.length - 1 ? '1px solid ' + COLORS.cyanDim : 'none',
-            paddingBottom: '0.3rem',
-            paddingTop: '0.3rem',
-            margin: 0,
-          }}>{company}</h3>
-        ))}
+         {companies.map((company, i) => (
+           <h3 key={company} style={{
+             fontFamily: 'var(--font-display)',
+             fontSize: TYPOGRAPHY.display.size,
+             textTransform: 'uppercase',
+             lineHeight: TYPOGRAPHY.lineHeightTight,
+             letterSpacing: '-0.02em',
+             color: COLORS.white,
+             borderBottom: i < companies.length - 1 ? '1px solid ' + COLORS.cyanDim : 'none',
+             paddingBottom: '0.3rem',
+             paddingTop: '0.3rem',
+             margin: 0,
+           }}>{company}</h3>
+         ))}
       </div>
 
       <p style={{

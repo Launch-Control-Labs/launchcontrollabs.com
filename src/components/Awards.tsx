@@ -9,10 +9,10 @@ export default function Awards() {
       <span style={SECTION_FLAG}>HONORS</span>
 
       <h2 style={{
-        fontFamily: 'var(--font-display)',
-        fontSize: TYPOGRAPHY.headline,
-        lineHeight: TYPOGRAPHY.lineHeightTight,
-        letterSpacing: '-0.02em',
+        fontFamily: TYPOGRAPHY.sectionHeader.font,
+        fontSize: TYPOGRAPHY.sectionHeader.size,
+        lineHeight: TYPOGRAPHY.sectionHeader.lineHeight,
+        letterSpacing: TYPOGRAPHY.sectionHeader.letterSpacing,
         textTransform: 'uppercase' as const,
         margin: '0 0 0.5rem',
         color: COLORS.white,
@@ -20,9 +20,9 @@ export default function Awards() {
 
       <p style={{
         fontFamily: 'var(--font-mono)',
-        fontSize: TYPOGRAPHY.deck,
+        fontSize: TYPOGRAPHY.body,
         color: COLORS.whiteDim,
-        letterSpacing: TYPOGRAPHY.letterSpacingDeck,
+        letterSpacing: TYPOGRAPHY.letterSpacingLabel,
         textTransform: 'uppercase' as const,
         marginBottom: '1.5rem',
       }}>Awards and features earned since launch</p>
@@ -50,19 +50,19 @@ export default function Awards() {
             minHeight: '180px',
           }}>
             <span style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: TYPOGRAPHY.dataNum,
+              fontFamily: TYPOGRAPHY.stat.font,
+              fontSize: TYPOGRAPHY.stat.size,
               color: COLORS.cyan,
               lineHeight: 1,
               display: 'block',
               marginBottom: '0.75rem',
             }}>{award.year}</span>
             <span style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: TYPOGRAPHY.headlineMd,
+              fontFamily: TYPOGRAPHY.sectionHeader.font,
+              fontSize: TYPOGRAPHY.sectionHeader.size,
               textTransform: 'uppercase' as const,
               color: COLORS.white,
-              lineHeight: TYPOGRAPHY.lineHeightTight,
+              lineHeight: TYPOGRAPHY.sectionHeader.lineHeight,
               display: 'block',
               marginBottom: '0.5rem',
             }}>{award.achievement}</span>

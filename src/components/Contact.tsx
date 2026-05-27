@@ -17,14 +17,14 @@ export default function Contact() {
           ...SECTION_FLAG,
         }}>OPEN CHANNEL</span>
 
-        <h2 style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: TYPOGRAPHY.headline,
-          lineHeight: TYPOGRAPHY.lineHeightTight,
-          letterSpacing: '-0.02em',
-          textTransform: 'uppercase',
-          margin: '0 0 1.5rem',
-        }}>READY TO<br/>LAUNCH?</h2>
+         <h2 style={{
+           fontFamily: 'var(--font-display)',
+           fontSize: TYPOGRAPHY.display.size,
+           lineHeight: TYPOGRAPHY.lineHeightTight,
+           letterSpacing: '-0.02em',
+           textTransform: 'uppercase',
+           margin: '0 0 1.5rem',
+         }}>READY TO<br/>LAUNCH?</h2>
 
         <p style={{
           fontFamily: 'var(--font-body)',

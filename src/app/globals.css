@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700&family=Inter:wght@300;400;500&family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700&family=Inter:wght@300;400;500&display=swap');
 
 @import "tailwindcss";
 
@@ -20,6 +20,13 @@
   --green: #34D399;
   --green-dim: rgba(52, 211, 153, 0.1);
   --red: #F87171;
+
+  /* Section theme variables (overridden per section) */
+  --section-bg: #080810;
+  --section-text: #E5EBF2;
+  --section-accent: #22D3EE;
+  --section-muted: #4B5563;
+  --section-border: #1F2937;
 
   /* Typography */
   --font-mono: 'IBM Plex Mono', 'SF Mono', ui-monospace, monospace;
