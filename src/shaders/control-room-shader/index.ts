@@ -2,12 +2,10 @@ import * as THREE from 'three'
 
 const vertexShader = /* glsl */ `
 varying vec2 vUv;
-varying vec2 vUv2;
 varying vec3 vWorldPosition;
 
 void main() {
   vUv = uv;
-  vUv2 = uv2;
   vec4 worldPos = modelMatrix * vec4(position, 1.0);
   vWorldPosition = worldPos.xyz;
   gl_Position = projectionMatrix * viewMatrix * worldPos;
@@ -16,9 +14,8 @@ void main() {
 
 const fragmentShader = /* glsl */ `
 uniform sampler2D map;
-uniform sampler2D lightMap;
-uniform float lightMapIntensity;
-uniform vec3 baseColor;
+uniform sampler2D emissiveMap;
+uniform float hasEmissiveMap;
 uniform vec3 emissiveColor;
 uniform float emissiveIntensity;
 uniform float opacity;
@@ -27,59 +24,60 @@ uniform float fogDensity;
 uniform float fogDepth;
 
 varying vec2 vUv;
-varying vec2 vUv2;
 varying vec3 vWorldPosition;
 
 void main() {
-  // Base color from texture
+  // Base color directly from PBR texture — model materials are white so texture IS the color
   vec4 texColor = texture2D(map, vUv);
-  vec3 color = baseColor * texColor.rgb;
+  vec3 color = texColor.rgb;
 
-  // Baked lighting from lightmap (this is THE lighting — no runtime lights)
-  vec3 irradiance = color;
-  if (lightMapIntensity > 0.0) {
-    vec3 lightMapSample = texture2D(lightMap, vUv2).rgb;
-    irradiance *= lightMapSample * lightMapIntensity;
+  // Ambient floor — surfaces must never be pure black
+  color = max(color, vec3(0.06));
+
+  // Emissive (screens, lamps — additive glow on top of base)
+  if (hasEmissiveMap > 0.5) {
+    vec3 emTex = texture2D(emissiveMap, vUv).rgb;
+    color += emTex * emissiveColor * emissiveIntensity;
+  } else if (emissiveIntensity > 0.0) {
+    color += emissiveColor * emissiveIntensity;
   }
-
-  // Emissive (screens, lights — additive glow)
-  irradiance += emissiveColor * emissiveIntensity;
 
   // Exponential squared fog (basement.studio formula — view-depth based)
   float fogDepthValue = min(-length(vWorldPosition) + fogDepth, 0.0);
   float fogFactor = 1.0 - exp(-(fogDensity * fogDensity) * (fogDepthValue * fogDepthValue));
   fogFactor = clamp(fogFactor, 0.0, 1.0);
   if (fogFactor > 0.0) {
-    irradiance = irradiance * (1.0 - fogFactor) + fogColor * fogFactor;
+    color = color * (1.0 - fogFactor) + fogColor * fogFactor;
   }
 
-  // NO tone mapping here — that goes in postprocessing only (basement approach)
-  gl_FragColor = vec4(irradiance, opacity * texColor.a);
+  // NO tone mapping here — handled by postprocessing ToneMapping(mode=7)
+  gl_FragColor = vec4(color, opacity * texColor.a);
 }
 `
 
 export interface ControlRoomShaderOptions {
   isScreen?: boolean
-  isLight?: boolean
-  isAmbient?: boolean
 }
 
 export function createControlRoomShader(
   baseMaterial: THREE.MeshStandardMaterial,
-  lightmap: THREE.Texture | null,
   options: ControlRoomShaderOptions = {}
 ): THREE.ShaderMaterial {
-  const { isScreen = false, isLight = false } = options
+  const { isScreen = false } = options
 
-  let emissiveColor = new THREE.Color(0, 0, 0)
-  let emissiveIntensity = 0
+  // Extract emissive map from the loaded GLTF material
+  const emissiveMap = baseMaterial.emissiveMap || null
+  const hasEmissiveMap = emissiveMap !== null ? 1.0 : 0.0
+
+  // Emissive color + intensity — only screens/lamps glow
+  let emissiveColor = new THREE.Color(1, 1, 1)
+  let emissiveIntensity = 0.0
 
   if (isScreen) {
-    emissiveColor = new THREE.Color('#E5A832')
-    emissiveIntensity = 2.0
-  } else if (isLight) {
-    emissiveColor = new THREE.Color('#FF4D00')
-    emissiveIntensity = 4.0
+    // White multiplier — emissive texture provides the actual color
+    // Intensity 3.0 ensures bloom threshold (0.85) is exceeded for glow
+    emissiveColor = new THREE.Color(1, 1, 1)
+    emissiveIntensity = 3.0
   }
 
   return new THREE.ShaderMaterial({
@@ -87,15 +85,16 @@ export function createControlRoomShader(
     fragmentShader,
     uniforms: {
       map: { value: baseMaterial.map || new THREE.Texture() },
-      lightMap: { value: lightmap },
-      lightMapIntensity: { value: lightmap ? 1.8 : 0.0 },
-      baseColor: { value: baseMaterial.color || new THREE.Color(1, 1, 1) },
+      emissiveMap: { value: emissiveMap || new THREE.Texture() },
+      hasEmissiveMap: { value: hasEmissiveMap },
       emissiveColor: { value: emissiveColor },
       emissiveIntensity: { value: emissiveIntensity },
       opacity: { value: baseMaterial.opacity ?? 1.0 },
-      fogColor: { value: new THREE.Color(0.2, 0.2, 0.2) },
-      fogDensity: { value: 0.05 },
-      fogDepth: { value: 9.0 },
+      // Fog: dark, starts beyond 400 units from origin (inside the ship)
+      // Tuned for soma04 bounding box: 622×622×1097 units
+      fogColor: { value: new THREE.Color(0.02, 0.02, 0.04) },
+      fogDensity: { value: 0.003 },
+      fogDepth: { value: 400.0 },
     },
     transparent: baseMaterial.transparent || false,
     side: baseMaterial.side ?? THREE.FrontSide,
@@ -103,5 +102,7 @@ export function createControlRoomShader(
   })
 }
 
-export const SCREEN_MATERIALS = new Set(['screen', 'screens', 'wall_screen'])
-export const LIGHT_MATERIALS = new Set(['lights', 'projector1'])
+// Soma04 material names (lowercased — matched against child.material.name.toLowerCase())
+// Object_3 node → Space_ship_chair_screens_lamps material → has emissive texture
+export const SCREEN_MATERIALS = new Set(['space_ship_chair_screens_lamps'])
+export const LIGHT_MATERIALS = new Set<string>()

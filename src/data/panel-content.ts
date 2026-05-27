@@ -19,27 +19,7 @@ export const PANEL_CONTENT: Partial<Record<MeshGroup, PanelContent>> = {
     ],
     cta: { text: 'START A MISSION', href: 'mailto:hello@launchcontrollabs.com' },
   },
-  CONSOLES: {
-    title: 'STACK',
-    subtitle: 'Mission-critical tools',
-    items: [
-      { label: 'FRONTEND', value: 'Next.js · React · Three.js' },
-      { label: 'BACKEND', value: 'Node · Python · Go' },
-      { label: 'AI/ML', value: 'LLMs · RAG · Agents' },
-      { label: 'INFRA', value: 'AWS · Vercel · Docker' },
-    ],
-  },
-  STATIONS: {
-    title: 'CONTACT',
-    subtitle: 'Open a channel',
-    items: [
-      { label: 'EMAIL', value: 'hello@launchcontrollabs.com' },
-      { label: 'GITHUB', value: 'Launch-Control-Labs' },
-      { label: 'STATUS', value: 'ACCEPTING MISSIONS' },
-    ],
-    cta: { text: 'INITIATE CONTACT', href: 'mailto:hello@launchcontrollabs.com' },
-  },
-  KEYBOARDS: {
+  CONTROLS: {
     title: 'PROCESS',
     subtitle: 'How we operate',
     items: [
@@ -49,22 +29,9 @@ export const PANEL_CONTENT: Partial<Record<MeshGroup, PanelContent>> = {
       { label: 'PHASE 4', value: 'Monitor & Iterate' },
     ],
   },
-  LIGHTS: {
-    title: 'SYSTEMS',
-    subtitle: 'All systems nominal',
-    items: [
-       { label: 'UPTIME', value: 'Monitored · 30d' },
-      { label: 'DEPLOYMENTS', value: '24/7 CI/CD' },
-      { label: 'MONITORING', value: 'Real-time alerts' },
-      { label: 'SECURITY', value: 'SOC2 practices' },
-    ],
-  },
 }
 
 export const PANEL_POSITIONS: Partial<Record<MeshGroup, [number, number, number]>> = {
-  SCREENS: [0, 3, -1],
-  CONSOLES: [-2, 2.5, 0],
-  STATIONS: [2, 2.5, 0],
-  KEYBOARDS: [0, 2, 1],
-  LIGHTS: [0, 4, -2],
+  SCREENS:  [0, 300, 200],
+  CONTROLS: [150, 200, 100],
 }
