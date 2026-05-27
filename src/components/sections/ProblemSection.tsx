@@ -10,7 +10,6 @@ const ProblemScene = dynamic(
   { ssr: false }
 )
 
-// Data annotation callouts - ESPN editorial style
 const CALLOUTS = [
   { label: 'INDUSTRY AVERAGE', value: '90%', suffix: 'FAIL' },
   { label: 'TIME TO FAILURE', value: '18', suffix: 'MONTHS' },
@@ -27,7 +26,6 @@ function CalloutCard({ label, value, suffix }: { label: string; value: string; s
         position: 'relative' as const,
       }}
     >
-      {/* Small label */}
       <span
         style={{
           fontFamily: 'var(--font-mono)',
@@ -42,7 +40,6 @@ function CalloutCard({ label, value, suffix }: { label: string; value: string; s
         {label}
       </span>
       
-      {/* Large stat */}
       <div
         style={{
           fontFamily: 'var(--font-display)',
@@ -78,12 +75,10 @@ function ProblemContent() {
         maxWidth: '600px',
       }}
     >
-      {/* Section flag */}
       <div style={SECTION_FLAG}>
         THE PROBLEM
       </div>
 
-      {/* Headline */}
       <h2
         style={{
           fontFamily: 'var(--font-display)',
@@ -98,7 +93,6 @@ function ProblemContent() {
         LOST IN SPACE
       </h2>
 
-      {/* Body copy */}
       <p
         style={{
           fontFamily: 'var(--font-body)',
@@ -116,7 +110,6 @@ function ProblemContent() {
         been to orbit and back, even the best missions drift into the void.
       </p>
 
-      {/* Callout grid */}
       <div
         style={{
           display: 'grid',
@@ -148,7 +141,6 @@ export function ProblemSection() {
           overflow: 'hidden' as const,
         }}
       >
-        {/* 3D Scene - Left side */}
         <div
           style={{
             position: 'relative' as const,
@@ -161,7 +153,6 @@ export function ProblemSection() {
           </Suspense>
         </div>
 
-        {/* Content - Right side */}
         <div
           style={{
             display: 'flex',
@@ -175,7 +166,6 @@ export function ProblemSection() {
           <ProblemContent />
         </div>
 
-        {/* Ambient glow */}
         <div
           style={{
             position: 'absolute' as const,
