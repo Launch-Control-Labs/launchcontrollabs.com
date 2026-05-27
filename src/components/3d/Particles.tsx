@@ -117,9 +117,6 @@ export function Particles() {
 
       {/* CENTER LEFT — continental, very deep */}
       <VariousPlanet nodeName="planet_continental_4" worldSize={11} position={[-48, -2, -260]} rotSpeed={0.008} floatOffset={5.0} />
-
-      {/* BOTTOM RIGHT — smac, mid */}
-      <VariousPlanet nodeName="planet_smac_0" worldSize={7} position={[36, -22, -100]} rotSpeed={0.018} floatOffset={2.8} />
     </group>
   )
 }

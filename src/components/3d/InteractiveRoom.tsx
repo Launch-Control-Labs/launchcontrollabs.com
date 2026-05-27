@@ -75,7 +75,7 @@ function Astronaut({ modelPath }: { modelPath: string }) {
   const groupRef = useRef<THREE.Group>(null)
   const { actions } = useAnimations(animations, groupRef)
   const t = useRef(0)
-  const origin = useRef(new THREE.Vector3(5, 0, -12))
+  const origin = useRef(new THREE.Vector3(6, 2, -4))
 
   useLayoutEffect(() => {
     if (!scene) return
@@ -122,10 +122,10 @@ function Astronaut({ modelPath }: { modelPath: string }) {
   })
 
   return (
-    <group ref={groupRef} position={[5, 0, -12]}>
+    <group ref={groupRef} position={[6, 2, -4]}>
       <primitive
         object={scene}
-        scale={[1.5, 1.5, 1.5]}
+        scale={[2.2, 2.2, 2.2]}
         rotation={[0.05, 0.4, 0.08]}
       />
     </group>
