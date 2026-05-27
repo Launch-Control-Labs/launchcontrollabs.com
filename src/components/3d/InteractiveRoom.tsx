@@ -6,7 +6,7 @@ import * as THREE from 'three'
 
 useGLTF.setDecoderPath('/draco/')
 
-const MODEL_PATH = '/models/soma04-interior.glb'
+const MODEL_PATH = '/models/apollo-saturn-v.glb'
 
 export function InteractiveRoom() {
   const { scene } = useGLTF(MODEL_PATH)
@@ -21,7 +21,7 @@ export function InteractiveRoom() {
 
       if (child.material instanceof THREE.MeshStandardMaterial) {
         child.material.side = THREE.DoubleSide
-        child.material.envMapIntensity = 0
+        child.material.envMapIntensity = 1.0
         child.material.needsUpdate = true
       }
     })
@@ -30,10 +30,7 @@ export function InteractiveRoom() {
   }, [scene])
 
   return (
-    <primitive
-      object={scene}
-      rotation={[-Math.PI / 2, 0, 0]}
-    />
+    <primitive object={scene} />
   )
 }
 

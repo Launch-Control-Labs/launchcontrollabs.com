@@ -22,10 +22,11 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.0,
         }}
-        camera={{ position: [0, 580, 500], fov: 60, near: 1, far: 3000 }}
+        camera={{ position: [0, 30, 60], fov: 50, near: 0.1, far: 500 }}
       >
-        <Environment preset="warehouse" background={false} />
+        <Environment preset="sunset" background={false} />
         <ambientLight intensity={0.3} />
+        <directionalLight position={[10, 80, 30]} intensity={1.5} />
 
         <ScrollCamera containerRef={containerRef} />
 
@@ -33,7 +34,7 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
           <InteractiveRoom />
         </Suspense>
 
-        <fog attach="fog" args={['#080810', 500, 1200]} />
+        <fog attach="fog" args={['#080810', 80, 200]} />
       </Canvas>
     </div>
   )

@@ -6,8 +6,8 @@ import * as THREE from 'three'
 import { useSceneStore } from '@/store/scene-store'
 
 const CAMERA_PATH = {
-  start: { x: 0, y: 580, z: 500, lookAtX: 0, lookAtY: 580, lookAtZ: 0 },
-  end:   { x: 0, y: 580, z: 30, lookAtX: 0, lookAtY: 600, lookAtZ: -100 },
+  start: { x: 0, y: 30, z: 60, lookAtX: 0, lookAtY: 45, lookAtZ: 0 },
+  end:   { x: 0, y: 80, z: 15, lookAtX: 0, lookAtY: 85, lookAtZ: 0 },
 }
 
 interface ScrollCameraProps {
