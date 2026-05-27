@@ -69,26 +69,29 @@ function Smoke() {
   const { scene, animations } = useGLTF(SMOKE_PATH)
   const groupRef = useRef<THREE.Group>(null)
   const { actions } = useAnimations(animations, groupRef)
+  const materialFixed = useRef(false)
 
-  useLayoutEffect(() => {
-    if (!scene) return
+  useFrame(() => {
+    // Fix materials on first frame — more reliable than useLayoutEffect for GLB scenes
+    if (materialFixed.current || !scene) return
     scene.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return
       const mats = Array.isArray(child.material) ? child.material : [child.material]
       mats.forEach((m) => {
         const mat = m as THREE.MeshStandardMaterial
-        // GLB bakes near-zero alpha into baseColorFactor — replace with visible white smoke
-        mat.color.set('#c8d8e8')
-        mat.emissive.set('#334455')
-        mat.emissiveIntensity = 0.3
+        mat.color.set('#aabbcc')
+        mat.emissive.set('#223344')
+        mat.emissiveIntensity = 0.5
         mat.transparent = true
-        mat.opacity = 0.6
+        mat.opacity = 0.7
         mat.depthWrite = false
         mat.side = THREE.DoubleSide
+        mat.fog = false
         mat.needsUpdate = true
       })
     })
-  }, [scene])
+    materialFixed.current = true
+  })
 
   useEffect(() => {
     const clip = actions['Animation'] ?? actions[Object.keys(actions)[0]]
@@ -99,7 +102,7 @@ function Smoke() {
   }, [actions])
 
   return (
-    <group ref={groupRef} position={[0, -4, 1]} scale={[0.3, 0.3, 0.3]}>
+    <group ref={groupRef} position={[0, -4, 1]} scale={[4, 4, 4]}>
       <primitive object={scene} />
     </group>
   )
