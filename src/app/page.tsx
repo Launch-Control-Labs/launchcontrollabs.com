@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import { useIsMobile } from '@/hooks/useIsMobile'
+import { useExperienceMode } from '@/hooks/useExperienceMode'
 import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
 import { SceneLoadingState } from '@/components/3d/SceneLoadingState'
 import { StaticHeroFallback } from '@/components/3d/StaticHeroFallback'
@@ -18,7 +18,7 @@ const ScrollScene = dynamic(
 )
 
 export default function Home() {
-  const isMobile = useIsMobile()
+  const experienceMode = useExperienceMode()
 
   return (
     <>
@@ -32,11 +32,9 @@ export default function Home() {
       <SectionNav />
       <CompanyTicker />
 
-      <main id="main-content">
+      <main id="main-content" data-experience-mode={experienceMode}>
         <div style={{ minHeight: '100vh', position: 'relative' }}>
-          {isMobile ? (
-            <StaticHeroFallback />
-          ) : (
+          {experienceMode === '3d' ? (
             <SceneErrorBoundary>
               <Suspense fallback={<SceneLoadingState />}>
                 <ScrollScene>
@@ -44,6 +42,14 @@ export default function Home() {
                 </ScrollScene>
               </Suspense>
             </SceneErrorBoundary>
+          ) : experienceMode === '2d-parallax' ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#22D3EE' }}>
+              Mobile Experience — Coming in Task 14
+            </div>
+          ) : (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#22D3EE' }}>
+              Static Content — Coming in Task 17
+            </div>
           )}
         </div>
       </main>
