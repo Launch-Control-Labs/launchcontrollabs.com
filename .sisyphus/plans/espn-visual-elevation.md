@@ -695,7 +695,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
 
 ### Wave 2 — Sections (MAX PARALLEL — each section is independent)
 
-- [ ] 9. Section 1 "THE PROMISE" — Hero Enhancement
+- [x] 9. Section 1 "THE PROMISE" — Hero Enhancement
 
   **What to do**:
   - Enhance existing hero section to match ESPN editorial energy
@@ -758,7 +758,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(sections): hero enhancement — ESPN editorial typography + callouts`
   - Files: `src/components/Hero.tsx`, `src/components/sections/HeroSection.tsx`
 
-- [ ] 10. Section 2 "THE PROBLEM" — Lost Founders Narrative
+- [x] 10. Section 2 "THE PROBLEM" — Lost Founders Narrative
 
   **What to do**:
   - Create `src/components/sections/ProblemSection.tsx`
@@ -820,7 +820,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(sections): "The Problem" — drifting astronaut + red ESPN editorial`
   - Files: `src/components/sections/ProblemSection.tsx`, `src/components/3d/scenes/ProblemScene.tsx`
 
-- [ ] 11. Section 3 "THE GUIDE" — Capabilities with Annotation Callouts
+- [x] 11. Section 3 "THE GUIDE" — Capabilities with Annotation Callouts
 
   **What to do**:
   - Create `src/components/sections/GuideSection.tsx`
@@ -878,7 +878,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(sections): "The Guide" — shuttle with capability annotation callouts`
   - Files: `src/components/sections/GuideSection.tsx`, `src/components/3d/scenes/GuideScene.tsx`
 
-- [ ] 12. Section 4 "THE PROOF" — Portfolio as Mission Patches
+- [x] 12. Section 4 "THE PROOF" — Portfolio as Mission Patches
 
   **What to do**:
   - Create `src/components/sections/ProofSection.tsx`
@@ -932,7 +932,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(sections): "The Proof" — portfolio as mission patches + planets`
   - Files: `src/components/sections/ProofSection.tsx`, `src/components/3d/scenes/ProofScene.tsx`
 
-- [ ] 13. Section 5 "THE AUTHORITY" — Pedigree + Awards Editorial
+- [x] 13. Section 5 "THE AUTHORITY" — Pedigree + Awards Editorial
 
   **What to do**:
   - Create `src/components/sections/AuthoritySection.tsx`
@@ -988,7 +988,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(sections): "The Authority" — Apollo Saturn V + pedigree + awards`
   - Files: `src/components/sections/AuthoritySection.tsx`, `src/components/3d/scenes/AuthorityScene.tsx`
 
-- [ ] 14. Section 6 "THE ORBIT" — Contact with Earth Overview Effect
+- [x] 14. Section 6 "THE ORBIT" — Contact with Earth Overview Effect
 
   **What to do**:
   - Create `src/components/sections/OrbitSection.tsx`
@@ -1042,7 +1042,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `feat(sections): "The Orbit" — Earth overview effect + contact CTA`
   - Files: `src/components/sections/OrbitSection.tsx`, `src/components/3d/scenes/OrbitScene.tsx`
 
-- [ ] 15. Section Navigation + Progress Indicator
+- [x] 15. Section Navigation + Progress Indicator
 
   **What to do**:
   - Create `src/components/SectionNav.tsx` — fixed position navigation dots (right side)
@@ -1097,7 +1097,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
 
 ### Wave 3 — Integration + Polish
 
-- [ ] 16. Scroll Continuity — But/Therefore Narrative Flow
+- [x] 16. Scroll Continuity — But/Therefore Narrative Flow
 
   **What to do**:
   - Review all 6 sections in sequence — ensure the narrative flows with causality
@@ -1148,7 +1148,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `fix(scroll): tune section timing + transition continuity`
   - Files: `src/components/ScrollScene.tsx` (timing adjustments)
 
-- [ ] 17. GPU Memory Management — Dispose/Create Lifecycle
+- [x] 17. GPU Memory Management — Dispose/Create Lifecycle
 
   **What to do**:
   - Implement dispose-on-exit for all 3D scenes:
@@ -1203,7 +1203,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `fix(perf): GPU memory management — dispose on exit, priority loading`
   - Files: `src/components/ScrollScene.tsx`, `src/hooks/useSceneLifecycle.ts`
 
-- [ ] 18. Mobile Optimization Pass
+- [x] 18. Mobile Optimization Pass
 
   **What to do**:
   - Test ALL 6 sections on iPhone 12 emulation (Playwright) and real device if available
@@ -1255,7 +1255,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `fix(mobile): responsive optimization for all 6 narrative sections`
   - Files: Multiple section components (responsive tweaks)
 
-- [ ] 19. Performance Audit + Optimization
+- [x] 19. Performance Audit + Optimization
 
   **What to do**:
   - Run Lighthouse CLI on mobile throttled: `npx lighthouse http://localhost:3000 --throttling-method=simulate --preset=perf`
@@ -1305,7 +1305,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Message: `fix(perf): Lighthouse optimization — LCP, CLS, code splitting`
   - Files: Various (dynamic imports, preload hints, bundle optimization)
 
-- [ ] 20. Accessibility Pass
+- [x] 20. Accessibility Pass
 
   **What to do**:
   - Verify all text/background combinations meet WCAG AA (4.5:1 contrast)
@@ -1367,7 +1367,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
 
 ### Wave 4 — Deployment (Porkbun Static Hosting via GitHub Connect)
 
-- [ ] 21. Deploy to Porkbun Static Hosting
+- [x] 21. Deploy to Porkbun Static Hosting
 
   **What to do**:
   - Add `output: 'export'` to `next.config.ts` — enables static HTML export for Porkbun hosting
@@ -1458,19 +1458,19 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
 
 > 4 review agents run in PARALLEL. ALL must APPROVE. Present consolidated results to user and get explicit "okay" before completing.
 
-- [ ] F1. **Plan Compliance Audit** — `oracle`
+- [x] F1. **Plan Compliance Audit** — `oracle`
   Read the plan end-to-end. For each "Must Have": verify implementation exists (read file, screenshot, run command). For each "Must NOT Have": search codebase for forbidden patterns — reject with file:line if found. Check evidence files exist in .sisyphus/evidence/. Compare deliverables against plan.
   Output: `Must Have [N/N] | Must NOT Have [N/N] | Tasks [N/N] | VERDICT: APPROVE/REJECT`
 
-- [ ] F2. **Code Quality Review** — `unspecified-high`
+- [x] F2. **Code Quality Review** — `unspecified-high`
   Run `npm run build` + linter. Review all changed files for: `as any`/`@ts-ignore`, empty catches, console.log in prod, commented-out code, unused imports. Check AI slop: excessive comments, over-abstraction, generic names. Verify single-canvas architecture (no multiple Canvas elements).
   Output: `Build [PASS/FAIL] | Files [N clean/N issues] | Architecture [CORRECT/VIOLATION] | VERDICT`
 
-- [ ] F3. **Real Manual QA** — `unspecified-high` (+ `playwright` skill)
+- [x] F3. **Real Manual QA** — `unspecified-high` (+ `playwright` skill)
   Start from clean state. Open in Chrome desktop (1440px) + Safari desktop + Chrome mobile (iPhone 12 emulation). Scroll through ALL 6 sections. Verify: 3D renders, typography correct, colors match theme, no overflow, no jank. Screenshot each section in each viewport. Test `prefers-reduced-motion`. Save to `.sisyphus/evidence/final-qa/`.
   Output: `Sections [6/6 pass] | Viewports [3/3] | Reduced-motion [PASS/FAIL] | VERDICT`
 
-- [ ] F4. **Scope Fidelity Check** — `deep`
+- [x] F4. **Scope Fidelity Check** — `deep`
   For each task: read "What to do", read actual implementation. Verify 1:1 — everything in spec was built (no missing), nothing beyond spec was built (no creep). Check all "Must NOT Have" guardrails. Verify all existing content (stats, projects, team, awards) is still present. Flag unaccounted changes.
   Output: `Tasks [N/N compliant] | Content preserved [YES/NO] | Guardrails [N/N clean] | VERDICT`
 

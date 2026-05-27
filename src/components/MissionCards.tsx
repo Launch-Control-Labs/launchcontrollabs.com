@@ -2,7 +2,7 @@ import { COLORS, TYPOGRAPHY, SPACING, SECTION_FLAG, STAR_BG } from '@/styles/sec
 
 export default function MissionCards() {
   return (
-    <div style={{ margin: 0 }}>
+    <div style={{ margin: 0, overflow: 'hidden' }}>
       {/* SPACE FEATURED SECTION — Hero spread, vertically centered */}
       <div style={{
         background: COLORS.navy,
@@ -127,7 +127,7 @@ export default function MissionCards() {
             padding: '0.25rem 0.7rem',
             fontWeight: 700,
           }}>
-            <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#34D399' }} />
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: COLORS.cyan }} />
             ACTIVE
           </span>
         </div>
@@ -135,7 +135,7 @@ export default function MissionCards() {
 
       {/* SECONDARY SECTION — Client work grid */}
       <div style={{
-        background: COLORS.navyLight,
+        background: 'rgba(255,255,255,0.04)',
         width: '100vw',
         position: 'relative',
         left: '50%',

@@ -9,10 +9,10 @@ export default function Awards() {
       <span style={SECTION_FLAG}>HONORS</span>
 
       <h2 style={{
-        fontFamily: TYPOGRAPHY.sectionHeader.font,
-        fontSize: TYPOGRAPHY.sectionHeader.size,
-        lineHeight: TYPOGRAPHY.sectionHeader.lineHeight,
-        letterSpacing: TYPOGRAPHY.sectionHeader.letterSpacing,
+        fontFamily: TYPOGRAPHY.display.font,
+        fontSize: TYPOGRAPHY.display.size,
+        lineHeight: TYPOGRAPHY.display.lineHeight,
+        letterSpacing: TYPOGRAPHY.display.letterSpacing,
         textTransform: 'uppercase' as const,
         margin: '0 0 0.5rem',
         color: COLORS.white,
@@ -40,7 +40,7 @@ export default function Awards() {
           { achievement: 'FEATURED', org: 'Awwwards', year: '2024' },
         ].map((award, i) => (
           <div key={award.org} style={{
-            background: COLORS.navyLight,
+            background: 'rgba(255,255,255,0.04)',
             border: `1px solid ${COLORS.cyanDim}`,
             padding: '2rem 1.5rem',
             textAlign: 'center' as const,

@@ -48,7 +48,7 @@ export default function Capabilities() {
             { num: '04', name: 'TECHNICAL OPERATIONS', desc: 'DevOps, monitoring, reliability engineering. We keep things running when it matters.', pct: 90 },
           ].map((s, i) => (
             <div key={s.num} style={{
-              background: COLORS.navyLight,
+              background: 'rgba(255,255,255,0.04)',
               border: '1px solid ' + COLORS.cyanDim,
               padding: '2rem',
             }}>
