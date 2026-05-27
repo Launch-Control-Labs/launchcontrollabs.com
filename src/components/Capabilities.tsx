@@ -1,41 +1,43 @@
 export default function Capabilities() {
   return (
     <section>
-      {/* Full-bleed YELLOW section — like ESPN "HAZARD PLAY" */}
       <div style={{
         background: '#F5C518',
-        padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 3rem)',
+        padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
         color: '#0A0A0A',
+        minHeight: '85vh',
+        display: 'flex',
+        flexDirection: 'column' as const,
+        justifyContent: 'center',
       }}>
         <span style={{
           display: 'inline-block',
           border: '2px solid #0A0A0A',
-          padding: '0.2rem 0.6rem',
+          padding: '0.25rem 0.7rem',
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.5rem',
+          fontSize: '0.55rem',
           letterSpacing: '0.25em',
-          fontWeight: 700,
-          marginBottom: '0.5rem',
+          marginBottom: '1.5rem',
+          alignSelf: 'flex-start',
         }}>STAT FACTORY</span>
 
         <h2 style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(5rem, 18vw, 14rem)',
+          fontSize: 'clamp(6rem, 18vw, 14rem)',
           lineHeight: 0.82,
           letterSpacing: '-0.02em',
-          textTransform: 'uppercase',
+          textTransform: 'uppercase' as const,
           margin: 0,
         }}>WHAT WE BUILD</h2>
 
         <p style={{
           fontFamily: 'var(--font-body)',
-          fontSize: '0.9rem',
+          fontSize: '0.875rem',
           maxWidth: '50ch',
           lineHeight: 1.5,
-          margin: '1rem 0 1.5rem',
+          margin: '1.5rem 0 1.5rem',
         }}>From AI agents to real-time platforms. We took a leap and ran the numbers to find out what actually ships.</p>
 
-        {/* 2x2 dense grid with borders */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', border: '3px solid #0A0A0A' }}>
           {[
             { num: '01', name: 'AI-POWERED PRODUCTS', desc: 'LLMs, agents, and automation systems built for production. Not prototypes—deployed systems.', pct: 85 },
@@ -44,19 +46,18 @@ export default function Capabilities() {
             { num: '04', name: 'TECHNICAL OPERATIONS', desc: 'DevOps, monitoring, reliability engineering. We keep things running when it matters.', pct: 90 },
           ].map((s, i) => (
             <div key={s.num} style={{
-              padding: '1.2rem',
+              padding: '1.5rem',
               borderTop: i >= 2 ? '3px solid #0A0A0A' : 'none',
               borderLeft: i % 2 === 1 ? '3px solid #0A0A0A' : 'none',
             }}>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 8vw, 5rem)', lineHeight: 0.8, display: 'block' }}>{s.num}</span>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.4rem, 3.5vw, 2.2rem)', lineHeight: 0.9, margin: '0.2rem 0 0.4rem', textTransform: 'uppercase' }}>{s.name}</h3>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#333', lineHeight: 1.4, marginBottom: '0.6rem' }}>{s.desc}</p>
-              {/* CSS bar chart */}
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3.5rem, 9vw, 7rem)', lineHeight: 0.8, display: 'block' }}>{s.num}</span>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.2rem, 3vw, 2rem)', lineHeight: 0.9, margin: '0.5rem 0 0.5rem', textTransform: 'uppercase' as const }}>{s.name}</h3>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', color: '#333', lineHeight: 1.4, marginBottom: '0.5rem' }}>{s.desc}</p>
               <div style={{ display: 'flex', height: 6, width: '100%' }}>
                 <div style={{ width: `${s.pct}%`, background: '#0A0A0A' }} />
                 <div style={{ width: `${100 - s.pct}%`, background: 'rgba(0,0,0,0.12)' }} />
               </div>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.45rem', letterSpacing: '0.1em', marginTop: '0.2rem', display: 'block' }}>{s.pct}% OF PROJECTS</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.45rem', letterSpacing: '0.15em', marginTop: '0.5rem', display: 'block' }}>{s.pct}% OF PROJECTS</span>
             </div>
           ))}
         </div>
