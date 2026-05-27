@@ -10,8 +10,6 @@ useGLTF.setDecoderPath('/draco/')
 
 const ROCKET_PATH_FULL = '/models/space-shuttle.glb'
 const ROCKET_PATH_OPT = '/models/optimized/space-shuttle.glb'
-const ASTRONAUT_PATH_FULL = '/models/astronaut-converted.glb?v=2'
-const ASTRONAUT_PATH_OPT = '/models/optimized/astronaut-converted.glb'
 const SMOKE_PATH = '/models/evanescent-smoke.glb'
 
 const HIDE_NODES = [
@@ -67,69 +65,6 @@ function Rocket({ modelPath }: { modelPath: string }) {
   )
 }
 
-function Astronaut({ modelPath }: { modelPath: string }) {
-  const { scene, animations } = useGLTF(modelPath)
-  const groupRef = useRef<THREE.Group>(null)
-  const { actions } = useAnimations(animations, groupRef)
-  const t = useRef(0)
-  const origin = useRef(new THREE.Vector3(7, 5, -18))
-
-  useLayoutEffect(() => {
-    if (!scene) return
-    scene.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.visible = true
-        child.frustumCulled = false
-        if (child.material) {
-          const mat = child.material as THREE.MeshStandardMaterial
-          mat.opacity = 1
-          mat.transparent = false
-          mat.depthWrite = true
-          mat.envMapIntensity = 1.5
-          mat.needsUpdate = true
-        }
-      }
-    })
-  }, [scene])
-
-  useEffect(() => {
-    const clip = actions['floating'] ?? actions[Object.keys(actions)[0]]
-    if (clip) clip.reset().fadeIn(0.5).play()
-  }, [actions])
-
-  useFrame((_, delta) => {
-    if (!groupRef.current) return
-    t.current += delta
-
-    const s = t.current
-
-    groupRef.current.position.x = origin.current.x
-      + Math.sin(s * 0.057) * 0.4
-      + Math.sin(s * 0.031) * 0.2
-
-    groupRef.current.position.y = origin.current.y
-      + Math.sin(s * 0.071) * 0.5
-      + Math.sin(s * 0.043) * 0.25
-
-    groupRef.current.position.z = origin.current.z
-      + Math.sin(s * 0.047) * 0.3
-
-    groupRef.current.rotation.y += delta * 0.018
-    groupRef.current.rotation.x = Math.sin(s * 0.037) * 0.08
-    groupRef.current.rotation.z = Math.sin(s * 0.029) * 0.05
-  })
-
-  return (
-    <group ref={groupRef} position={[7, 5, -18]}>
-      <primitive
-        object={scene}
-        scale={[1.8, 1.8, 1.8]}
-        rotation={[0.05, -0.3, 0.08]}
-      />
-    </group>
-  )
-}
-
 function Smoke() {
   const { scene, animations } = useGLTF(SMOKE_PATH)
   const groupRef = useRef<THREE.Group>(null)
@@ -144,7 +79,7 @@ function Smoke() {
   }, [actions])
 
   return (
-    <group ref={groupRef} position={[0, -5, -2]} scale={[0.4, 0.4, 0.4]}>
+    <group ref={groupRef} position={[0, -8, 2]} scale={[0.25, 0.25, 0.25]}>
       <primitive object={scene} />
     </group>
   )
@@ -153,17 +88,13 @@ function Smoke() {
 export function InteractiveRoom() {
   const tier = useDeviceTier()
   const rocketPath = tier >= 3 ? ROCKET_PATH_FULL : ROCKET_PATH_OPT
-  const astronautPath = tier >= 3 ? ASTRONAUT_PATH_FULL : ASTRONAUT_PATH_OPT
 
   return (
     <group>
       <Rocket modelPath={rocketPath} />
-      <Astronaut modelPath={astronautPath} />
       <Smoke />
     </group>
   )
 }
 
 useGLTF.preload(ROCKET_PATH_OPT)
-useGLTF.preload(ASTRONAUT_PATH_OPT)
-useGLTF.preload(SMOKE_PATH)

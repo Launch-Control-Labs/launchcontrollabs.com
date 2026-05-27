@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import { useGLTF, useAnimations, Environment } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -26,6 +26,7 @@ function DriftingAstronaut() {
           mat.opacity = 1
           mat.transparent = false
           mat.depthWrite = true
+          mat.envMapIntensity = 1.8
           mat.needsUpdate = true
         }
       }
@@ -43,9 +44,9 @@ function DriftingAstronaut() {
 
     const t = time.current
 
-    groupRef.current.position.x = -2 + Math.sin(t * 0.057) * 0.4 + Math.sin(t * 0.031) * 0.2
+    groupRef.current.position.x = 0 + Math.sin(t * 0.057) * 0.4 + Math.sin(t * 0.031) * 0.2
     groupRef.current.position.y = 0 + Math.sin(t * 0.071) * 0.5 + Math.sin(t * 0.043) * 0.25
-    groupRef.current.position.z = -3 + Math.sin(t * 0.047) * 0.3
+    groupRef.current.position.z = -2 + Math.sin(t * 0.047) * 0.3
 
     groupRef.current.rotation.y += delta * 0.018
     groupRef.current.rotation.x = Math.sin(t * 0.037) * 0.08
@@ -53,10 +54,10 @@ function DriftingAstronaut() {
   })
 
   return (
-    <group ref={groupRef} position={[-2, 0, -3]}>
+    <group ref={groupRef} position={[0, 0, -2]}>
       <primitive
         object={scene}
-        scale={[1.8, 1.8, 1.8]}
+        scale={[2.8, 2.8, 2.8]}
         rotation={[0.05, 0.4, 0.08]}
       />
     </group>
@@ -66,9 +67,10 @@ function DriftingAstronaut() {
 export function ProblemScene() {
   return (
     <group>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[5, 5, 5]} intensity={0.6} color="#DC2626" />
+      <ambientLight intensity={0.5} />
+      <pointLight position={[5, 5, 5]} intensity={1.2} color="#DC2626" />
       <pointLight position={[-5, -5, 5]} intensity={0.3} color="#ff6b6b" />
+      <pointLight position={[0, 5, 5]} intensity={0.8} color="#ff4444" distance={30} />
       <spotLight
         position={[0, 10, 10]}
         angle={0.3}
@@ -76,6 +78,7 @@ export function ProblemScene() {
         intensity={0.5}
         color="#DC2626"
       />
+      <Environment preset="night" background={false} />
       <DriftingAstronaut />
     </group>
   )
