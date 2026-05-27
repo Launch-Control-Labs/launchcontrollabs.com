@@ -1,41 +1,38 @@
+import { COLORS, TYPOGRAPHY, SPACING, SECTION_FLAG, SECTION_BASE, STAR_BG } from '@/styles/section-constants'
+
 export default function Awards() {
   return (
     <section style={{
-      background: '#F5F0E8',
-      margin: 0,
-      padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
+      ...SECTION_BASE,
+      backgroundImage: STAR_BG,
     }}>
-      <span style={{
-        display: 'inline-block',
-        border: '2px solid #0A0A0A',
-        padding: '0.25rem 0.7rem',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.55rem',
-        letterSpacing: '0.25em',
-        fontWeight: 700,
-        marginBottom: '1.5rem',
-      }}>HONORS</span>
+      <span style={SECTION_FLAG}>HONORS</span>
 
       <h2 style={{
         fontFamily: 'var(--font-display)',
-        fontSize: 'clamp(3.5rem, 9vw, 7rem)',
-        lineHeight: 0.85,
+        fontSize: TYPOGRAPHY.headline,
+        lineHeight: TYPOGRAPHY.lineHeightTight,
         letterSpacing: '-0.02em',
         textTransform: 'uppercase' as const,
         margin: '0 0 0.5rem',
-        color: '#0A0A0A',
+        color: COLORS.white,
       }}>RECOGNITION</h2>
 
       <p style={{
         fontFamily: 'var(--font-mono)',
-        fontSize: '0.45rem',
-        letterSpacing: '0.2em',
-        color: '#888',
+        fontSize: TYPOGRAPHY.deck,
+        color: COLORS.whiteDim,
+        letterSpacing: TYPOGRAPHY.letterSpacingDeck,
         textTransform: 'uppercase' as const,
         marginBottom: '1.5rem',
       }}>Awards and features earned since launch</p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', border: '3px solid #0A0A0A' }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        border: `1px solid ${COLORS.cyanDim}`,
+        marginTop: '2rem',
+      }}>
         {[
           { achievement: 'WINNER', org: 'Webby Awards', year: '2023' },
           { achievement: 'BEST NEW STARTUP', org: 'TWIF', year: '2024' },
@@ -43,38 +40,39 @@ export default function Awards() {
           { achievement: 'FEATURED', org: 'Awwwards', year: '2024' },
         ].map((award, i) => (
           <div key={award.org} style={{
-            background: '#0A0A0A',
-            color: '#FFFFFF',
-            padding: '1.5rem',
+            background: COLORS.navyLight,
+            border: `1px solid ${COLORS.cyanDim}`,
+            padding: '2rem 1.5rem',
             textAlign: 'center' as const,
             display: 'flex',
             flexDirection: 'column' as const,
             justifyContent: 'center',
-            minHeight: '140px',
-            borderLeft: i > 0 ? '3px solid #F5F0E8' : 'none',
+            minHeight: '180px',
           }}>
             <span style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+              fontSize: TYPOGRAPHY.dataNum,
+              color: COLORS.cyan,
+              lineHeight: 1,
               display: 'block',
-              lineHeight: 0.85,
-              letterSpacing: '-0.02em',
+              marginBottom: '0.75rem',
+            }}>{award.year}</span>
+            <span style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: TYPOGRAPHY.headlineMd,
+              textTransform: 'uppercase' as const,
+              color: COLORS.white,
+              lineHeight: TYPOGRAPHY.lineHeightTight,
+              display: 'block',
               marginBottom: '0.5rem',
             }}>{award.achievement}</span>
             <span style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.45rem',
-              letterSpacing: '0.2em',
-              opacity: 0.7,
-              display: 'block',
-              marginBottom: '0.5rem',
+              fontSize: TYPOGRAPHY.label,
+              color: COLORS.whiteDim,
+              letterSpacing: TYPOGRAPHY.letterSpacingLabel,
+              textTransform: 'uppercase' as const,
             }}>{award.org}</span>
-            <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.45rem',
-              letterSpacing: '0.2em',
-              opacity: 0.4,
-            }}>{award.year}</span>
           </div>
         ))}
       </div>
