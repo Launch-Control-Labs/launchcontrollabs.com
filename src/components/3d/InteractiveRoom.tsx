@@ -9,6 +9,7 @@ useGLTF.setDecoderPath('/draco/')
 
 const ROCKET_PATH = '/models/space-shuttle.glb'
 const ASTRONAUT_PATH = '/models/astronaut-converted.glb?v=2'
+const SMOKE_PATH = '/models/smoke.glb'
 
 const HIDE_NODES = [
   'Small_Rocket_Group_02', 'Small_Rocket_Group_01',
@@ -128,14 +129,36 @@ function Astronaut() {
   )
 }
 
+function Smoke() {
+  const { scene, animations } = useGLTF(SMOKE_PATH)
+  const groupRef = useRef<THREE.Group>(null)
+  const { actions } = useAnimations(animations, groupRef)
+
+  useEffect(() => {
+    const clip = actions['Animation'] ?? actions[Object.keys(actions)[0]]
+    if (clip) {
+      clip.reset().play()
+      clip.setLoop(THREE.LoopRepeat, Infinity)
+    }
+  }, [actions])
+
+  return (
+    <group ref={groupRef} position={[0, -4.3, 1.1]} scale={[0.4, 0.4, 0.4]}>
+      <primitive object={scene} />
+    </group>
+  )
+}
+
 export function InteractiveRoom() {
   return (
     <group>
       <Rocket />
       <Astronaut />
+      <Smoke />
     </group>
   )
 }
 
 useGLTF.preload(ROCKET_PATH)
 useGLTF.preload(ASTRONAUT_PATH)
+useGLTF.preload(SMOKE_PATH)

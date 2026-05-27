@@ -95,14 +95,14 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
           }}>
             <span style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.5rem',
-              letterSpacing: '0.3em',
+              fontSize: 'clamp(0.75rem, 1.2vw, 1.1rem)',
+              letterSpacing: '0.2em',
               color: 'rgba(255,255,255,0.35)',
               textTransform: 'uppercase',
             }}>Product Studio · Los Angeles</span>
             <span style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.5rem',
+              fontSize: 'clamp(0.75rem, 1.2vw, 1.1rem)',
               letterSpacing: '0.2em',
               color: 'rgba(34,211,238,0.5)',
               textTransform: 'uppercase',
@@ -131,8 +131,9 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
             }}>
               <p style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(0.5rem, 0.9vw, 0.75rem)',
-                letterSpacing: '0.15em',
+                fontSize: 'clamp(1rem, 1.8vw, 1.6rem)',
+                letterSpacing: '0.12em',
+                fontWeight: 500,
                 color: 'rgba(255,255,255,0.5)',
                 textTransform: 'uppercase',
                 margin: 0,
