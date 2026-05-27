@@ -47,7 +47,7 @@ function Rocket({ modelPath }: { modelPath: string }) {
     const box = new THREE.Box3().setFromObject(scene)
     const center = box.getCenter(new THREE.Vector3())
     scene.position.sub(center)
-    setScale(normalizeToHeight(scene, 9))
+    setScale(normalizeToHeight(scene, 12))
     processed.current = true
   }, [scene])
 
@@ -55,13 +55,13 @@ function Rocket({ modelPath }: { modelPath: string }) {
     if (!groupRef.current) return
     const t = state.clock.elapsedTime
 
-    groupRef.current.position.x = Math.sin(t * 0.05) * 0.3
-    groupRef.current.position.y = -8 + Math.sin(t * 0.08) * 0.2
-    groupRef.current.position.z = -20 + Math.sin(t * 0.06) * 0.4
+    groupRef.current.position.x = Math.sin(t * 0.04) * 0.4
+    groupRef.current.position.y = -2 + Math.sin(t * 0.07) * 0.3
+    groupRef.current.position.z = Math.sin(t * 0.05) * 0.5
   })
 
   return (
-    <group ref={groupRef} scale={[scale, scale, scale]} position={[0, -8, -20]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
+    <group ref={groupRef} scale={[scale, scale, scale]} position={[0, -2, 0]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
       <primitive object={scene} />
     </group>
   )
@@ -72,7 +72,7 @@ function Astronaut({ modelPath }: { modelPath: string }) {
   const groupRef = useRef<THREE.Group>(null)
   const { actions } = useAnimations(animations, groupRef)
   const t = useRef(0)
-  const origin = useRef(new THREE.Vector3(6, 2, -5))
+  const origin = useRef(new THREE.Vector3(4, 3, -14))
 
   useLayoutEffect(() => {
     if (!scene) return
@@ -85,6 +85,7 @@ function Astronaut({ modelPath }: { modelPath: string }) {
           mat.opacity = 1
           mat.transparent = false
           mat.depthWrite = true
+          mat.envMapIntensity = 1.5
           mat.needsUpdate = true
         }
       }
@@ -119,10 +120,10 @@ function Astronaut({ modelPath }: { modelPath: string }) {
   })
 
   return (
-    <group ref={groupRef} position={[6, 2, -5]}>
+    <group ref={groupRef} position={[4, 3, -14]}>
       <primitive
         object={scene}
-        scale={[3.0, 3.0, 3.0]}
+        scale={[1.8, 1.8, 1.8]}
         rotation={[0.05, -0.3, 0.08]}
       />
     </group>
@@ -143,7 +144,7 @@ function Smoke() {
   }, [actions])
 
   return (
-    <group ref={groupRef} position={[0, -4.3, 1.1]} scale={[0.4, 0.4, 0.4]}>
+    <group ref={groupRef} position={[0, -5, -2]} scale={[0.4, 0.4, 0.4]}>
       <primitive object={scene} />
     </group>
   )
