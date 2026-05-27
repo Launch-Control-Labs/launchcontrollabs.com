@@ -41,19 +41,19 @@ export default function Home() {
           </SceneErrorBoundary>
         )}
 
-        <section id="capabilities">
+        <section id="capabilities" style={{ marginTop: 0 }}>
           <Capabilities />
         </section>
 
-        <section id="projects">
+        <section id="projects" style={{ marginTop: 0 }}>
           <MissionCards />
         </section>
 
-        <section id="team">
+        <section id="team" style={{ marginTop: 0 }}>
           <TeamPedigree />
         </section>
 
-        <section id="awards">
+        <section id="awards" style={{ marginTop: 0 }}>
           <Awards />
         </section>
 
