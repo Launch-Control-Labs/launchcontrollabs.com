@@ -3,7 +3,6 @@
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import { useIsMobile } from '@/hooks/useIsMobile'
-import { SceneWrapper } from '@/components/3d/SceneWrapper'
 import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
 import { SceneLoadingState } from '@/components/3d/SceneLoadingState'
 import { StaticHeroFallback } from '@/components/3d/StaticHeroFallback'
@@ -14,9 +13,10 @@ import MissionCards from '@/components/MissionCards'
 import Awards from '@/components/Awards'
 import TeamPedigree from '@/components/TeamPedigree'
 import Contact from '@/components/Contact'
+import { HeroOverlay } from '@/components/HeroOverlay'
 
-const ControlRoomScene = dynamic(
-  () => import('@/components/3d/ControlRoomScene'),
+const ScrollScene = dynamic(
+  () => import('@/components/ScrollScene').then((m) => ({ default: m.ScrollScene })),
   { ssr: false }
 )
 
@@ -34,9 +34,9 @@ export default function Home() {
         ) : (
           <SceneErrorBoundary>
             <Suspense fallback={<SceneLoadingState />}>
-              <SceneWrapper>
-                {(containerRef) => <ControlRoomScene containerRef={containerRef} />}
-              </SceneWrapper>
+              <ScrollScene>
+                <HeroOverlay />
+              </ScrollScene>
             </Suspense>
           </SceneErrorBoundary>
         )}
