@@ -1,47 +1,47 @@
+import { COLORS, TYPOGRAPHY, SPACING, SECTION_FLAG, STAR_BG } from '@/styles/section-constants'
+
 export default function TeamPedigree() {
   const companies = ['LINKEDIN', 'PLURALSIGHT', 'PWC', 'EXPEDIA', 'DIGITAL TUTORS']
 
   return (
     <section style={{
-      background: '#F5F0E8',
-      margin: 0,
-      padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
+      background: COLORS.navy,
+      color: COLORS.white,
+      padding: SPACING.sectionPad,
+      minHeight: '70vh',
+      position: 'relative',
+      overflow: 'hidden',
+      backgroundImage: STAR_BG,
     }}>
       <span style={{
-        display: 'inline-block',
-        border: '2px solid #0A0A0A',
-        padding: '0.25rem 0.7rem',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.55rem',
-        letterSpacing: '0.25em',
-        fontWeight: 700,
-        marginBottom: '1.5rem',
-      }}>STYLE REPORT</span>
+        ...SECTION_FLAG,
+      }}>CREW MANIFEST</span>
 
       <div>
         {companies.map((company, i) => (
           <h3 key={company} style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(3.5rem, 9vw, 7rem)',
-            lineHeight: 0.85,
+            fontSize: TYPOGRAPHY.headline,
+            textTransform: 'uppercase',
+            lineHeight: TYPOGRAPHY.lineHeightTight,
             letterSpacing: '-0.02em',
-            color: '#0A0A0A',
+            color: COLORS.white,
+            borderBottom: i < companies.length - 1 ? '1px solid ' + COLORS.cyanDim : 'none',
+            paddingBottom: '0.3rem',
+            paddingTop: '0.3rem',
             margin: 0,
-            borderBottom: i < companies.length - 1 ? '3px solid rgba(0,0,0,0.1)' : 'none',
-            paddingBottom: '0.5rem',
-            paddingTop: '0.5rem',
           }}>{company}</h3>
         ))}
       </div>
 
       <p style={{
         fontFamily: 'var(--font-mono)',
-        fontSize: '0.45rem',
-        letterSpacing: '0.2em',
-        color: '#888',
-        textTransform: 'uppercase' as const,
-        marginTop: '1.5rem',
-      }}>Where our team shipped before Launch Control Labs</p>
+        fontSize: TYPOGRAPHY.deck,
+        color: COLORS.whiteDim,
+        letterSpacing: TYPOGRAPHY.letterSpacingDeck,
+        textTransform: 'uppercase',
+        marginTop: '2rem',
+      }}>Flight history of the Launch Control crew</p>
     </section>
   )
 }
