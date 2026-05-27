@@ -72,13 +72,12 @@ interface StreamConfig {
   color: string
   innerColor: string
   outerColor: string
-  opacity: number
   dir: [number, number, number]
 }
 
 function PlumeStream({ config, position }: { config: StreamConfig; position: [number, number, number] }) {
   const meshRef = useRef<THREE.Points>(null)
-  const { count, spawnRadius, speed, spread, lifetime, size, color, innerColor, outerColor, opacity, dir } = config
+  const { count, spawnRadius, speed, spread, lifetime, size, color, innerColor, outerColor, dir } = config
 
   const arrays = useMemo(() => {
     const pos  = new Float32Array(count * 3)
@@ -95,11 +94,11 @@ function PlumeStream({ config, position }: { config: StreamConfig; position: [nu
       const th = Math.random() * Math.PI * 2
       const spd = speed[0] + Math.random() * (speed[1] - speed[0])
       pos[i*3]   = r * Math.cos(th)
-      pos[i*3+1] = -(dir[1] * spd * maxA[i])
-      pos[i*3+2] = dir[2] * spd * maxA[i]
+      pos[i*3+1] = dir[1] * spd * ages[i]
+      pos[i*3+2] = dir[2] * spd * ages[i]
       vel[i*3]   = (Math.random() - 0.5) * spread
       vel[i*3+1] = dir[1] * spd
-      vel[i*3+2] = dir[2] * spd + (Math.random() - 0.5) * spread
+      vel[i*3+2] = dir[2] * spd + (Math.random() - 0.5) * spread * 0.3
     }
     return { pos, vel, ages, maxA, sz }
   }, [count, spawnRadius, speed, spread, lifetime, size, dir])
@@ -129,7 +128,7 @@ function PlumeStream({ config, position }: { config: StreamConfig; position: [nu
     if (!meshRef.current) return
     const posAttr = meshRef.current.geometry.attributes.position as THREE.BufferAttribute
     const ageAttr = meshRef.current.geometry.attributes.aAge as THREE.BufferAttribute
-    const { pos, vel, ages, maxA, sz } = arrays
+    const { pos, vel, ages, maxA } = arrays
 
     for (let i = 0; i < count; i++) {
       ages[i] += delta
@@ -143,13 +142,13 @@ function PlumeStream({ config, position }: { config: StreamConfig; position: [nu
         pos[i*3+2] = 0
         vel[i*3]   = (Math.random() - 0.5) * spread
         vel[i*3+1] = dir[1] * spd
-        vel[i*3+2] = dir[2] * spd + (Math.random() - 0.5) * spread
+        vel[i*3+2] = dir[2] * spd + (Math.random() - 0.5) * spread * 0.3
       }
       pos[i*3]   += vel[i*3]   * delta * 60
       pos[i*3+1] += vel[i*3+1] * delta * 60
       pos[i*3+2] += vel[i*3+2] * delta * 60
-      vel[i*3]   *= 1.008
-      vel[i*3+2] *= 1.008
+      vel[i*3]   *= 1.006
+      vel[i*3+2] *= 1.004
     }
     posAttr.array.set(pos)
     ageAttr.array.set(ages)
@@ -160,46 +159,58 @@ function PlumeStream({ config, position }: { config: StreamConfig; position: [nu
   return <points ref={meshRef} geometry={geo} material={mat} position={position} frustumCulled={false} />
 }
 
+const DIR: [number, number, number] = [0, -0.707, 0.707]
+
+const BELL_CONFIG: StreamConfig = {
+  count: 60,
+  spawnRadius: 0.06,
+  speed: [0.35, 0.55],
+  spread: 0.004,
+  lifetime: [0.08, 0.22],
+  size: [4, 7],
+  color: '#e8f4ff',
+  innerColor: 'rgba(240,248,255,1)',
+  outerColor: 'rgba(180,220,255,0.6)',
+  dir: DIR,
+}
+
 const CORE_CONFIG: StreamConfig = {
-  count: 120,
-  spawnRadius: 0.12,
-  speed: [0.18, 0.28],
-  spread: 0.008,
-  lifetime: [0.4, 0.9],
-  size: [6, 10],
+  count: 100,
+  spawnRadius: 0.10,
+  speed: [0.20, 0.32],
+  spread: 0.006,
+  lifetime: [0.25, 0.65],
+  size: [5, 9],
   color: '#ffffff',
   innerColor: 'rgba(255,255,255,1)',
-  outerColor: 'rgba(255,240,180,0.4)',
-  opacity: 1.0,
-  dir: [0, -0.5, 0.866],
+  outerColor: 'rgba(255,240,160,0.5)',
+  dir: DIR,
 }
 
 const MID_CONFIG: StreamConfig = {
-  count: 200,
-  spawnRadius: 0.22,
-  speed: [0.10, 0.20],
-  spread: 0.018,
-  lifetime: [0.8, 1.8],
-  size: [10, 18],
+  count: 160,
+  spawnRadius: 0.20,
+  speed: [0.10, 0.18],
+  spread: 0.014,
+  lifetime: [0.5, 1.2],
+  size: [9, 16],
   color: '#ff8820',
   innerColor: 'rgba(255,200,80,0.9)',
-  outerColor: 'rgba(255,80,10,0.3)',
-  opacity: 0.9,
-  dir: [0, -0.5, 0.866],
+  outerColor: 'rgba(255,60,5,0.25)',
+  dir: DIR,
 }
 
 const SMOKE_CONFIG: StreamConfig = {
-  count: 140,
-  spawnRadius: 0.35,
-  speed: [0.05, 0.12],
-  spread: 0.025,
-  lifetime: [1.5, 3.5],
-  size: [18, 32],
-  color: '#553322',
-  innerColor: 'rgba(180,120,60,0.5)',
-  outerColor: 'rgba(60,40,20,0.0)',
-  opacity: 0.6,
-  dir: [0, -0.5, 0.866],
+  count: 100,
+  spawnRadius: 0.28,
+  speed: [0.04, 0.09],
+  spread: 0.018,
+  lifetime: [0.8, 2.0],
+  size: [14, 26],
+  color: '#442211',
+  innerColor: 'rgba(160,100,50,0.4)',
+  outerColor: 'rgba(40,25,10,0.0)',
+  dir: DIR,
 }
 
 function Rocket({ modelPath }: { modelPath: string }) {
@@ -230,20 +241,21 @@ function Rocket({ modelPath }: { modelPath: string }) {
     if (!groupRef.current) return
     const t = state.clock.elapsedTime
     groupRef.current.position.x = Math.sin(t * 0.038) * 0.3
-    groupRef.current.position.y = 3 + Math.sin(t * 0.055) * 0.22
-    groupRef.current.position.z = Math.sin(t * 0.028) * 0.35
-    groupRef.current.rotation.x = Math.sin(t * 0.042) * 0.012
-    groupRef.current.rotation.z = Math.sin(t * 0.033) * 0.008
+    groupRef.current.position.y = 1 + Math.sin(t * 0.055) * 0.20
+    groupRef.current.position.z = Math.sin(t * 0.028) * 0.30
+    groupRef.current.rotation.x = Math.sin(t * 0.042) * 0.010
+    groupRef.current.rotation.z = Math.sin(t * 0.033) * 0.007
   })
 
   return (
-    <group ref={groupRef} position={[0, 3, 0]}>
-      <group scale={[scale, scale, scale]} rotation={[Math.PI / 3, Math.PI, 0]}>
+    <group ref={groupRef} position={[0, 1, 0]}>
+      <group scale={[scale, scale, scale]} rotation={[Math.PI / 4, Math.PI, 0]}>
         <primitive object={scene} />
       </group>
-      <PlumeStream config={SMOKE_CONFIG} position={[0, -3.0, 5.2]} />
-      <PlumeStream config={MID_CONFIG}   position={[0, -3.0, 5.2]} />
-      <PlumeStream config={CORE_CONFIG}  position={[0, -3.0, 5.2]} />
+      <PlumeStream config={SMOKE_CONFIG} position={[0, -4.24, 4.24]} />
+      <PlumeStream config={MID_CONFIG}   position={[0, -4.24, 4.24]} />
+      <PlumeStream config={CORE_CONFIG}  position={[0, -4.24, 4.24]} />
+      <PlumeStream config={BELL_CONFIG}  position={[0, -4.24, 4.24]} />
     </group>
   )
 }
