@@ -74,13 +74,9 @@ interface StreamConfig {
   expand:      number
 }
 
-// All streams use local-space direction [0, -1, 0] (straight down from nozzle).
-// Because PlumeStream lives inside the inner rotated group, Three.js transforms
-// this to world space automatically — no manual direction math needed.
-
 // ─── PlumeStream ─────────────────────────────────────────────────────────────
 
-function PlumeStream({ cfg, pos }: { cfg: StreamConfig; pos: [number, number, number] }) {
+function PlumeStream({ cfg, pos, dir }: { cfg: StreamConfig; pos: [number, number, number]; dir: [number, number, number] }) {
   const ref = useRef<THREE.Points>(null)
   const { count, radius, speed, spread, lifetime, size, color, inner, outer, expand } = cfg
 
@@ -100,15 +96,15 @@ function PlumeStream({ cfg, pos }: { cfg: StreamConfig; pos: [number, number, nu
       ages[i]   = age
       maxA[i]   = max
       sz[i]     = size[0] + Math.random() * (size[1] - size[0])
-      pos[i*3]     = r * Math.cos(th)
-      pos[i*3 + 1] = -spd * age
-      pos[i*3 + 2] = 0
-      vel[i*3]     = (Math.random() - 0.5) * spread
-      vel[i*3 + 1] = -spd
-      vel[i*3 + 2] = (Math.random() - 0.5) * spread
+      pos[i*3]     = dir[0] * spd * age + r * Math.cos(th)
+      pos[i*3 + 1] = dir[1] * spd * age
+      pos[i*3 + 2] = dir[2] * spd * age
+      vel[i*3]     = dir[0] * spd + (Math.random() - 0.5) * spread
+      vel[i*3 + 1] = dir[1] * spd
+      vel[i*3 + 2] = dir[2] * spd + (Math.random() - 0.5) * spread
     }
     return { pos, vel, ages, maxA, sz }
-  }, [count, radius, speed, spread, lifetime, size])
+  }, [count, radius, speed, spread, lifetime, size, dir])
 
   const geo = useMemo(() => {
     const g = new THREE.BufferGeometry()
@@ -147,15 +143,14 @@ function PlumeStream({ cfg, pos }: { cfg: StreamConfig; pos: [number, number, nu
         pos[i*3]     = r * Math.cos(th)
         pos[i*3 + 1] = 0
         pos[i*3 + 2] = 0
-        vel[i*3]     = (Math.random() - 0.5) * spread
-        vel[i*3 + 1] = -spd
-        vel[i*3 + 2] = (Math.random() - 0.5) * spread
+        vel[i*3]     = dir[0] * spd + (Math.random() - 0.5) * spread
+        vel[i*3 + 1] = dir[1] * spd
+        vel[i*3 + 2] = dir[2] * spd + (Math.random() - 0.5) * spread
       }
       pos[i*3]     += vel[i*3]     * delta * 60
       pos[i*3 + 1] += vel[i*3 + 1] * delta * 60
       pos[i*3 + 2] += vel[i*3 + 2] * delta * 60
       vel[i*3]     += (Math.random() - 0.5) * expand * delta
-      vel[i*3 + 2] += (Math.random() - 0.5) * expand * delta
     }
     posAttr.array.set(pos)
     ageAttr.array.set(ages)
@@ -176,6 +171,16 @@ function PlumeStream({ cfg, pos }: { cfg: StreamConfig; pos: [number, number, nu
 
 const NOZZLE_Y = -4.665
 const NOZZLE: [number, number, number] = [0, NOZZLE_Y, 0]
+
+// Nozzle position in outer group space (rotate [0, -4.665, 0] by [π/4, π, 0]):
+// After X=π/4: [0, -4.665*cos(π/4), 4.665*sin(π/4)] = [0, -3.298, 3.298]
+// After Y=π:   x flips (was 0, stays 0) → [0, -3.298, 3.298]
+const NOZZLE_WORLD: [number, number, number] = [0, -3.298, 3.298]
+// Exhaust direction: out the nozzle, trailing behind shuttle.
+// Shuttle flies up-away (y+, z-), so exhaust goes down-toward-camera (y-, z+).
+// z-component boosted to 0.9 so the "trailing behind" angle is clearly visible
+// even in perspective — flame fans out toward viewer as shuttle pulls away.
+const EXHAUST_DIR: [number, number, number] = [0, -0.436, 0.900]
 
 const STREAK_CFG: StreamConfig = {
   count:    80,
@@ -280,12 +285,12 @@ function Rocket({ modelPath }: { modelPath: string }) {
         <group scale={scale}>
           <primitive object={scene} />
         </group>
-        <PlumeStream cfg={SMOKE_CFG}  pos={NOZZLE} />
-        <PlumeStream cfg={MID_CFG}    pos={NOZZLE} />
-        <PlumeStream cfg={CORE_CFG}   pos={NOZZLE} />
-        <PlumeStream cfg={BELL_CFG}   pos={NOZZLE} />
-        <PlumeStream cfg={STREAK_CFG} pos={NOZZLE} />
       </group>
+      <PlumeStream cfg={SMOKE_CFG}  pos={NOZZLE_WORLD} dir={EXHAUST_DIR} />
+      <PlumeStream cfg={MID_CFG}    pos={NOZZLE_WORLD} dir={EXHAUST_DIR} />
+      <PlumeStream cfg={CORE_CFG}   pos={NOZZLE_WORLD} dir={EXHAUST_DIR} />
+      <PlumeStream cfg={BELL_CFG}   pos={NOZZLE_WORLD} dir={EXHAUST_DIR} />
+      <PlumeStream cfg={STREAK_CFG} pos={NOZZLE_WORLD} dir={EXHAUST_DIR} />
     </group>
   )
 }
