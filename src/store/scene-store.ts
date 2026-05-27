@@ -23,6 +23,7 @@ interface SceneState {
   setScrollProgress: (progress: number) => void
   setLoadingSection: (section: number | null) => void
   markSectionLoaded: (section: number) => void
+  setLoadedSections: (sections: number[]) => void
 }
 
 export const useSceneStore = create<SceneState>((set, get) => ({
@@ -52,4 +53,5 @@ export const useSceneStore = create<SceneState>((set, get) => ({
     }
     set({ loadedSections: next, loadingSection: null })
   },
+  setLoadedSections: (sections) => set({ loadedSections: sections, loadingSection: null }),
 }))
