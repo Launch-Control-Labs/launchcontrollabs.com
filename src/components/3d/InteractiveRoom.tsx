@@ -1,8 +1,9 @@
 'use client'
 
-import { useLayoutEffect, useRef, useState, useMemo } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
+import { Fire } from '@wolffo/three-fire/react'
 import * as THREE from 'three'
 import { useDeviceTier } from '@/hooks/useDeviceTier'
 
@@ -62,88 +63,30 @@ function Rocket({ modelPath }: { modelPath: string }) {
   )
 }
 
-const PARTICLE_COUNT = 120
-
-function ExhaustSmoke() {
-  const pointsRef = useRef<THREE.Points>(null)
-
-  const { positions, velocities, lifetimes, maxLifetimes } = useMemo(() => {
-    const positions = new Float32Array(PARTICLE_COUNT * 3)
-    const velocities = new Float32Array(PARTICLE_COUNT * 3)
-    const lifetimes = new Float32Array(PARTICLE_COUNT)
-    const maxLifetimes = new Float32Array(PARTICLE_COUNT)
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      lifetimes[i] = Math.random() * 2.5
-      maxLifetimes[i] = 2.0 + Math.random() * 1.5
-      positions[i * 3]     = (Math.random() - 0.5) * 0.8
-      positions[i * 3 + 1] = -Math.random() * 3
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 0.8
-      velocities[i * 3]     = (Math.random() - 0.5) * 0.025
-      velocities[i * 3 + 1] = -(0.015 + Math.random() * 0.02)
-      velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.025
-    }
-    return { positions, velocities, lifetimes, maxLifetimes }
-  }, [])
-
-  const geometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry()
-    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3))
-    return geo
-  }, [positions])
-
-  const texture = useMemo(() => {
-    const canvas = document.createElement('canvas')
-    canvas.width = 128; canvas.height = 128
-    const ctx = canvas.getContext('2d')!
-    const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64)
-    g.addColorStop(0,   'rgba(255,255,255,1.0)')
-    g.addColorStop(0.2, 'rgba(220,230,240,0.8)')
-    g.addColorStop(0.5, 'rgba(180,200,220,0.4)')
-    g.addColorStop(1,   'rgba(0,0,0,0)')
-    ctx.fillStyle = g
-    ctx.fillRect(0, 0, 128, 128)
-    return new THREE.CanvasTexture(canvas)
-  }, [])
-
-  useFrame((_, delta) => {
-    if (!pointsRef.current) return
-    const pos = pointsRef.current.geometry.attributes.position as THREE.BufferAttribute
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      lifetimes[i] += delta
-      if (lifetimes[i] > maxLifetimes[i]) {
-        lifetimes[i] = 0
-        positions[i * 3]     = (Math.random() - 0.5) * 0.8
-        positions[i * 3 + 1] = 0
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 0.8
-        velocities[i * 3]     = (Math.random() - 0.5) * 0.025
-        velocities[i * 3 + 1] = -(0.015 + Math.random() * 0.02)
-        velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.025
-      }
-      positions[i * 3]     += velocities[i * 3]
-      positions[i * 3 + 1] += velocities[i * 3 + 1]
-      positions[i * 3 + 2] += velocities[i * 3 + 2]
-      velocities[i * 3]     *= 1.01
-      velocities[i * 3 + 2] *= 1.01
-    }
-
-    pos.array.set(positions)
-    pos.needsUpdate = true
-  })
-
+function RocketExhaust() {
   return (
-    <points ref={pointsRef} geometry={geometry} position={[0, -4.5, 0.5]}>
-      <pointsMaterial
-        map={texture}
-        size={2.5}
-        sizeAttenuation
-        transparent
-        opacity={0.7}
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-        fog={false}
+    <group position={[0, -4.5, 0.3]}>
+      <Fire
+        texture="/fire-texture.png"
+        color={new THREE.Color(1.0, 0.5, 0.1)}
+        scale={[1.2, 3.5, 1.2]}
+        magnitude={1.4}
+        lacunarity={2.0}
+        gain={0.5}
+        iterations={18}
+        octaves={3}
       />
-    </points>
+      <Fire
+        texture="/fire-texture.png"
+        color={new THREE.Color(1.0, 0.9, 0.6)}
+        scale={[0.5, 2.0, 0.5]}
+        magnitude={1.6}
+        lacunarity={2.5}
+        gain={0.4}
+        iterations={12}
+        octaves={2}
+      />
+    </group>
   )
 }
 
@@ -154,7 +97,7 @@ export function InteractiveRoom() {
   return (
     <group>
       <Rocket modelPath={rocketPath} />
-      <ExhaustSmoke />
+      <RocketExhaust />
     </group>
   )
 }
