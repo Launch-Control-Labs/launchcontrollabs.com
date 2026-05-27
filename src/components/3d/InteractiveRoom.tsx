@@ -73,13 +73,20 @@ function Smoke() {
   useLayoutEffect(() => {
     if (!scene) return
     scene.traverse((child) => {
-      if (child instanceof THREE.Mesh && child.material) {
-        const mat = child.material as THREE.MeshStandardMaterial
+      if (!(child instanceof THREE.Mesh)) return
+      const mats = Array.isArray(child.material) ? child.material : [child.material]
+      mats.forEach((m) => {
+        const mat = m as THREE.MeshStandardMaterial
+        // GLB bakes near-zero alpha into baseColorFactor — replace with visible white smoke
+        mat.color.set('#c8d8e8')
+        mat.emissive.set('#334455')
+        mat.emissiveIntensity = 0.3
         mat.transparent = true
-        mat.opacity = 0.55
+        mat.opacity = 0.6
         mat.depthWrite = false
+        mat.side = THREE.DoubleSide
         mat.needsUpdate = true
-      }
+      })
     })
   }, [scene])
 
@@ -92,7 +99,7 @@ function Smoke() {
   }, [actions])
 
   return (
-    <group ref={groupRef} position={[0, -4, 1]} scale={[0.25, 0.25, 0.25]}>
+    <group ref={groupRef} position={[0, -4, 1]} scale={[0.3, 0.3, 0.3]}>
       <primitive object={scene} />
     </group>
   )
