@@ -3,7 +3,6 @@
 import { SectionThemeProvider } from '@/components/SectionThemeProvider'
 import { SECTION_THEMES, STAR_BG } from '@/styles/section-constants'
 
-// Project data preserved exactly from MissionCards.tsx
 const TALISMAN_PROJECT = {
   name: 'TALISMAN',
   description: 'AI-powered accounting automation for modern finance teams. Graph-native architecture processing millions of transactions.',
@@ -41,7 +40,6 @@ export function ProofSection() {
           backgroundImage: STAR_BG,
         }}
       >
-        {/* Section flag */}
         <div
           style={{
             padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem) 0',
@@ -64,7 +62,6 @@ export function ProofSection() {
           </span>
         </div>
 
-        {/* Main headline — Anton at 8vw */}
         <div
           style={{
             padding: '0 clamp(1.5rem, 4vw, 3rem)',
@@ -98,7 +95,6 @@ export function ProofSection() {
           </h2>
         </div>
 
-        {/* Featured Talisman card */}
         <div
           style={{
             margin: 'clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem)',
@@ -108,7 +104,6 @@ export function ProofSection() {
             maxWidth: '900px',
           }}
         >
-          {/* Project name */}
           <h3
             style={{
               fontFamily: 'var(--font-display)',
@@ -123,7 +118,6 @@ export function ProofSection() {
             {TALISMAN_PROJECT.name}
           </h3>
 
-          {/* Description */}
           <p
             style={{
               fontFamily: 'var(--font-mono)',
@@ -137,7 +131,6 @@ export function ProofSection() {
             {TALISMAN_PROJECT.description}
           </p>
 
-          {/* Stats grid */}
           <div
             style={{
               display: 'grid',
@@ -178,7 +171,6 @@ export function ProofSection() {
             ))}
           </div>
 
-          {/* Tech stack + status */}
           <div
             style={{
               display: 'flex',
@@ -234,7 +226,6 @@ export function ProofSection() {
           </div>
         </div>
 
-        {/* Client work subheader */}
         <div
           style={{
             padding: '0 clamp(1.5rem, 4vw, 3rem)',
@@ -255,7 +246,6 @@ export function ProofSection() {
           </span>
         </div>
 
-        {/* Mission patches grid */}
         <div
           style={{
             display: 'flex',
@@ -282,7 +272,6 @@ export function ProofSection() {
                 position: 'relative',
               }}
             >
-              {/* Mission number */}
               <span
                 style={{
                   position: 'absolute',
@@ -297,7 +286,6 @@ export function ProofSection() {
                 {project.num}
               </span>
 
-              {/* Project name */}
               <span
                 style={{
                   fontFamily: 'var(--font-display)',
@@ -311,7 +299,6 @@ export function ProofSection() {
                 {project.name}
               </span>
 
-              {/* Metric/category */}
               <span
                 style={{
                   fontSize: 'clamp(0.5rem, 0.7vw, 0.65rem)',
@@ -324,7 +311,6 @@ export function ProofSection() {
                 {project.metric}
               </span>
 
-              {/* Year */}
               <span
                 style={{
                   position: 'absolute',
