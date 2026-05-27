@@ -1,11 +1,11 @@
 export default function Capabilities() {
   return (
-    <section>
+    <section style={{ margin: 0, padding: 0, background: '#F5C518' }}>
       <div style={{
         background: '#F5C518',
         padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
         color: '#0A0A0A',
-        minHeight: '85vh',
+        minHeight: '70vh',
         display: 'flex',
         flexDirection: 'column' as const,
         justifyContent: 'center',
@@ -17,6 +17,7 @@ export default function Capabilities() {
           fontFamily: 'var(--font-mono)',
           fontSize: '0.55rem',
           letterSpacing: '0.25em',
+          fontWeight: 700,
           marginBottom: '1.5rem',
           alignSelf: 'flex-start',
         }}>STAT FACTORY</span>
@@ -24,7 +25,7 @@ export default function Capabilities() {
         <h2 style={{
           fontFamily: 'var(--font-display)',
           fontSize: 'clamp(6rem, 18vw, 14rem)',
-          lineHeight: 0.82,
+          lineHeight: 0.85,
           letterSpacing: '-0.02em',
           textTransform: 'uppercase' as const,
           margin: 0,
@@ -50,14 +51,14 @@ export default function Capabilities() {
               borderTop: i >= 2 ? '3px solid #0A0A0A' : 'none',
               borderLeft: i % 2 === 1 ? '3px solid #0A0A0A' : 'none',
             }}>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3.5rem, 9vw, 7rem)', lineHeight: 0.8, display: 'block' }}>{s.num}</span>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.2rem, 3vw, 2rem)', lineHeight: 0.9, margin: '0.5rem 0 0.5rem', textTransform: 'uppercase' as const }}>{s.name}</h3>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3.5rem, 9vw, 7rem)', lineHeight: 0.85, display: 'block' }}>{s.num}</span>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 5vw, 3.5rem)', lineHeight: 0.85, letterSpacing: '-0.02em', margin: '0.5rem 0 0.5rem', textTransform: 'uppercase' as const }}>{s.name}</h3>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', color: '#333', lineHeight: 1.4, marginBottom: '0.5rem' }}>{s.desc}</p>
               <div style={{ display: 'flex', height: 6, width: '100%' }}>
                 <div style={{ width: `${s.pct}%`, background: '#0A0A0A' }} />
                 <div style={{ width: `${100 - s.pct}%`, background: 'rgba(0,0,0,0.12)' }} />
               </div>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.45rem', letterSpacing: '0.15em', marginTop: '0.5rem', display: 'block' }}>{s.pct}% OF PROJECTS</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.45rem', letterSpacing: '0.2em', marginTop: '0.5rem', display: 'block' }}>{s.pct}% OF PROJECTS</span>
             </div>
           ))}
         </div>

@@ -2,6 +2,7 @@ export default function Awards() {
   return (
     <section style={{
       background: '#F5F0E8',
+      margin: 0,
       padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
     }}>
       <span style={{
@@ -11,6 +12,7 @@ export default function Awards() {
         fontFamily: 'var(--font-mono)',
         fontSize: '0.55rem',
         letterSpacing: '0.25em',
+        fontWeight: 700,
         marginBottom: '1.5rem',
       }}>HONORS</span>
 
@@ -27,7 +29,7 @@ export default function Awards() {
       <p style={{
         fontFamily: 'var(--font-mono)',
         fontSize: '0.45rem',
-        letterSpacing: '0.15em',
+        letterSpacing: '0.2em',
         color: '#888',
         textTransform: 'uppercase' as const,
         marginBottom: '1.5rem',
@@ -53,15 +55,16 @@ export default function Awards() {
           }}>
             <span style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(1.2rem, 3vw, 2rem)',
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
               display: 'block',
-              lineHeight: 1,
+              lineHeight: 0.85,
+              letterSpacing: '-0.02em',
               marginBottom: '0.5rem',
             }}>{award.achievement}</span>
             <span style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '0.45rem',
-              letterSpacing: '0.15em',
+              letterSpacing: '0.2em',
               opacity: 0.7,
               display: 'block',
               marginBottom: '0.5rem',
@@ -69,7 +72,7 @@ export default function Awards() {
             <span style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '0.45rem',
-              letterSpacing: '0.15em',
+              letterSpacing: '0.2em',
               opacity: 0.4,
             }}>{award.year}</span>
           </div>

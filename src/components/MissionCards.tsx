@@ -1,6 +1,6 @@
 export default function MissionCards() {
   return (
-    <div>
+    <div style={{ margin: 0 }}>
       {/* RED FEATURED SECTION — Hero spread, vertically centered */}
       <div style={{
         background: '#C41E1E',
@@ -11,7 +11,7 @@ export default function MissionCards() {
         marginLeft: '-50vw',
         marginRight: '-50vw',
         padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
-        minHeight: '85vh',
+        minHeight: '70vh',
         display: 'flex',
         flexDirection: 'column' as const,
         justifyContent: 'center',
@@ -26,6 +26,7 @@ export default function MissionCards() {
           color: '#FFFFFF',
           border: '2px solid rgba(255,255,255,0.4)',
           padding: '0.25rem 0.7rem',
+          fontWeight: 700,
           marginBottom: '1.5rem',
           alignSelf: 'flex-start',
         }}>FEATURE</span>
@@ -34,7 +35,7 @@ export default function MissionCards() {
         <h3 style={{
           fontFamily: 'var(--font-display)',
           fontSize: 'clamp(6rem, 18vw, 14rem)',
-          lineHeight: 0.82,
+          lineHeight: 0.85,
           letterSpacing: '-0.02em',
           textTransform: 'uppercase' as const,
           color: '#FFFFFF',
@@ -62,7 +63,7 @@ export default function MissionCards() {
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 0,
-          borderTop: '3px solid rgba(255,255,255,0.4)',
+          borderTop: '3px solid rgba(255,255,255,0.2)',
           paddingTop: '1.5rem',
           marginBottom: '1.5rem',
         }}>
@@ -83,7 +84,7 @@ export default function MissionCards() {
               <span style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.45rem',
-                letterSpacing: '0.15em',
+                letterSpacing: '0.2em',
                 textTransform: 'uppercase' as const,
                 color: 'rgba(255,255,255,0.6)',
                 marginTop: '0.5rem',
@@ -103,7 +104,7 @@ export default function MissionCards() {
           <span style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '0.45rem',
-            letterSpacing: '0.15em',
+            letterSpacing: '0.2em',
             color: 'rgba(255,255,255,0.5)',
             textTransform: 'uppercase' as const,
           }}>NEXT.JS &middot; NEO4J &middot; LLMs</span>
@@ -113,12 +114,13 @@ export default function MissionCards() {
             alignItems: 'center',
             gap: '0.3rem',
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.45rem',
-            letterSpacing: '0.15em',
+            fontSize: '0.55rem',
+            letterSpacing: '0.25em',
             textTransform: 'uppercase' as const,
             color: '#FFFFFF',
             border: '2px solid rgba(255,255,255,0.4)',
             padding: '0.25rem 0.7rem',
+            fontWeight: 700,
           }}>
             <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#34D399' }} />
             ACTIVE
@@ -180,9 +182,10 @@ export default function MissionCards() {
               }}>{project.num}</span>
               <h4 style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.2rem, 3vw, 2rem)',
+                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
                 color: '#0A0A0A',
-                lineHeight: 0.9,
+                lineHeight: 0.85,
+                letterSpacing: '-0.02em',
                 textTransform: 'uppercase' as const,
                 margin: '0.5rem 0 0.5rem',
               }}>{project.name}</h4>
@@ -196,7 +199,7 @@ export default function MissionCards() {
               <span style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.45rem',
-                letterSpacing: '0.15em',
+                letterSpacing: '0.2em',
                 color: '#888888',
               }}>{project.year}</span>
             </div>
@@ -227,9 +230,10 @@ export default function MissionCards() {
               }}>{project.num}</span>
               <h4 style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.2rem, 3vw, 2rem)',
+                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
                 color: '#0A0A0A',
-                lineHeight: 0.9,
+                lineHeight: 0.85,
+                letterSpacing: '-0.02em',
                 textTransform: 'uppercase' as const,
                 margin: '0.5rem 0 0.5rem',
               }}>{project.name}</h4>
@@ -243,7 +247,7 @@ export default function MissionCards() {
               <span style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.45rem',
-                letterSpacing: '0.15em',
+                letterSpacing: '0.2em',
                 color: '#888888',
               }}>{project.year}</span>
             </div>
