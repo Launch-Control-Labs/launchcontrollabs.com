@@ -8,9 +8,9 @@ import { useSceneStore, SECTION_COUNT } from '@/store/scene-store'
 const HERO_SECTION = 0
 
 export const SECTION_MODEL_URLS: Record<number, string> = {
-  1: '/models/optimized/drifting-astronaut.glb',
-  2: '/models/optimized/space-shuttle.glb',
-  3: '/models/optimized/various-planets.glb',
+  1: '/models/astronaut-hero.glb',
+  2: '/models/shuttle-atlantis.glb',
+  3: '/models/various-planets.glb',
   4: '/models/optimized/apollo-saturn-v.glb',
   5: '/models/optimized/earth.glb',
 }

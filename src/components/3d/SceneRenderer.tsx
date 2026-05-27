@@ -13,6 +13,7 @@ import { AuthorityScene } from './scenes/AuthorityScene'
 import { OrbitScene } from './scenes/OrbitScene'
 
 const SCENES = [HeroScene, ProblemScene, GuideScene, ProofScene, AuthorityScene, OrbitScene]
+const FADE_SPEED = 3.5
 
 function DisposableScene({ index, children }: { index: number; children: React.ReactNode }) {
   const groupRef = useSceneDisposer(index)
@@ -20,21 +21,31 @@ function DisposableScene({ index, children }: { index: number; children: React.R
 }
 
 export function SceneRenderer() {
-  const prevSectionRef = useRef(0)
   const groupRefs = useRef<(THREE.Group | null)[]>(Array(SCENES.length).fill(null))
+  const opacityRefs = useRef<number[]>(Array(SCENES.length).fill(0))
+  opacityRefs.current[0] = 1
 
   const activeSection = useSceneStore((s) => s.activeSection)
   const loadedSections = useSceneStore((s) => s.loadedSections)
 
   useFrame((_, delta) => {
-    const prev = prevSectionRef.current
-    if (prev !== activeSection) {
-      prevSectionRef.current = activeSection
-    }
-
     groupRefs.current.forEach((group, i) => {
       if (!group) return
-      group.visible = i === activeSection
+      const target = i === activeSection ? 1 : 0
+      opacityRefs.current[i] += (target - opacityRefs.current[i]) * Math.min(1, delta * FADE_SPEED)
+      const opacity = opacityRefs.current[i]
+      group.visible = opacity > 0.01
+      group.traverse((child) => {
+        if (child instanceof THREE.Mesh && child.material) {
+          const mats = Array.isArray(child.material) ? child.material : [child.material]
+          mats.forEach((m) => {
+            if (m.transparent !== undefined) {
+              m.transparent = true
+              m.opacity = opacity
+            }
+          })
+        }
+      })
     })
   })
 
@@ -48,7 +59,7 @@ export function SceneRenderer() {
           <group
             key={index}
             ref={(el) => { groupRefs.current[index] = el }}
-            visible={index === activeSection}
+            visible={index === activeSection || opacityRefs.current[index] > 0.01}
           >
             <DisposableScene index={index}>
               <Scene />

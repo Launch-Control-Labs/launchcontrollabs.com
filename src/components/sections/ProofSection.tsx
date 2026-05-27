@@ -41,10 +41,11 @@ export function ProofSection() {
       >
         <div
           style={{
-            background: 'rgba(10,10,15,0.88)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
+            background: 'linear-gradient(135deg, rgba(10,10,15,0.92) 0%, rgba(10,10,15,0.75) 60%, transparent 100%)',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
             minHeight: '100vh',
+            maxWidth: '780px',
           }}
         >
         <div
