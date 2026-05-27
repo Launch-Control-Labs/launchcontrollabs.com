@@ -43,18 +43,18 @@ export const BEAT_RANGES: Record<BeatName, BeatRange> = {
 // Camera waypoints for each beat boundary. Interpolation happens between these.
 
 const WAYPOINTS: Waypoint[] = [
-  // Beat 1 — Pre-Launch: Ground level, looking UP at shuttle
-  { position: [0, -5, 10], lookAt: [0, 20, -10], fov: 60 },
-  // Beat 2 — Ascent: Rising with shuttle
-  { position: [0, 30, 5], lookAt: [0, 50, -20], fov: 65 },
-  // Beat 3 — Orbit: High altitude, leveling out
-  { position: [0, 80, 20], lookAt: [0, 60, -30], fov: 70 },
-  // Beat 4 — Constellation: Pulled back, wider view
-  { position: [20, 100, 40], lookAt: [0, 80, 0], fov: 75 },
-  // Beat 5 — Deep Space: Wide view of heritage
-  { position: [30, 120, 60], lookAt: [0, 100, 0], fov: 80 },
-  // Beat 6 — CTA: Stable orbit, looking down at Earth
-  { position: [0, 150, 80], lookAt: [0, 0, 0], fov: 60 },
+  // Beat 1 — Pre-Launch: Behind shuttle, looking at it from below/behind
+  { position: [0, 2, 25], lookAt: [0, 8, 0], fov: 55 },
+  // Beat 2 — Ascent: Rising and moving forward, astronaut drifts past
+  { position: [0, 15, 10], lookAt: [0, 25, -10], fov: 60 },
+  // Beat 3 — Orbit: High above, Earth visible far below/ahead
+  { position: [0, 30, 0], lookAt: [0, 20, -50], fov: 65 },
+  // Beat 4 — Constellation: Pulled back, planets visible as nodes
+  { position: [-10, 35, 20], lookAt: [0, 25, -30], fov: 70 },
+  // Beat 5 — Deep Space: Wide view, Saturn V visible
+  { position: [15, 40, 30], lookAt: [0, 30, -20], fov: 75 },
+  // Beat 6 — CTA: Peaceful orbit, Earth fills view
+  { position: [0, 45, 40], lookAt: [0, 30, -60], fov: 65 },
 ]
 
 // Progress values at which each waypoint sits (beat boundaries)

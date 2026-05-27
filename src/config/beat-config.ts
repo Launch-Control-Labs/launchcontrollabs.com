@@ -8,7 +8,7 @@ export interface BeatConfig {
 }
 
 export const BEAT_CONFIG: Record<string, BeatConfig> = {
-  preLaunch:     { scrollStart: 0,    scrollEnd: 0.15, fadeInDuration: 0.1, fadeOutDuration: 0.2 },
+  preLaunch:     { scrollStart: 0,    scrollEnd: 0.15, fadeInDuration: 0, fadeOutDuration: 0.2 },
   ascent:        { scrollStart: 0.15, scrollEnd: 0.35, fadeInDuration: 0.1, fadeOutDuration: 0.2 },
   orbit:         { scrollStart: 0.35, scrollEnd: 0.55, fadeInDuration: 0.1, fadeOutDuration: 0.2 },
   constellation: { scrollStart: 0.55, scrollEnd: 0.75, fadeInDuration: 0.1, fadeOutDuration: 0.2 },
