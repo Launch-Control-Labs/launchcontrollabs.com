@@ -1,98 +1,39 @@
 'use client'
 
-import { Suspense, useEffect, useCallback } from 'react'
+import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { EffectComposer, Bloom, Noise, Vignette, ToneMapping } from '@react-three/postprocessing'
-import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import { ScrollCamera } from './ScrollCamera'
 import { InteractiveRoom } from './InteractiveRoom'
-import { InfoPanel } from './InfoPanel'
-import { useSceneStore } from '@/store/scene-store'
-import { PANEL_POSITIONS } from '@/data/panel-content'
-import type { MeshGroup } from './mesh-map'
-import type { ThreeEvent } from '@react-three/fiber'
 
 interface ControlRoomSceneProps {
   containerRef: React.RefObject<HTMLElement | null>
 }
 
-function SceneContent({ containerRef }: ControlRoomSceneProps) {
-  const activePanel = useSceneStore((s) => s.activePanel)
-  const interactionEnabled = useSceneStore((s) => s.interactionEnabled)
-  const setActivePanel = useSceneStore((s) => s.setActivePanel)
-  const setHoveredGroup = useSceneStore((s) => s.setHoveredGroup)
-  const setInteractionEnabled = useSceneStore((s) => s.setInteractionEnabled)
-
-  useEffect(() => {
-    setActivePanel(null)
-    setHoveredGroup(null)
-    setInteractionEnabled(false)
-    return () => {
-      setActivePanel(null)
-      setHoveredGroup(null)
-      setInteractionEnabled(false)
-    }
-  }, [setActivePanel, setHoveredGroup, setInteractionEnabled])
-
-  const handleClose = useCallback(() => setActivePanel(null), [setActivePanel])
-
-  const handleGroupClick = (group: MeshGroup, _event: ThreeEvent<MouseEvent>) => {
-    if (!interactionEnabled) return
-    // Toggle: clicking active panel's group closes it
-    setActivePanel(activePanel === group ? null : group)
-  }
-
-  const handleGroupHover = (group: MeshGroup | null) => {
-    if (!interactionEnabled) return
-    setHoveredGroup(group)
-  }
-
-  return (
-    <>
-      <ScrollCamera containerRef={containerRef} />
-
-      <Suspense fallback={null}>
-        <InteractiveRoom
-          onGroupClick={handleGroupClick}
-          onGroupHover={handleGroupHover}
-        />
-
-        {activePanel && PANEL_POSITIONS[activePanel] && (
-          <InfoPanel
-            group={activePanel}
-            position={PANEL_POSITIONS[activePanel]!}
-            onClose={handleClose}
-          />
-        )}
-      </Suspense>
-
-      <EffectComposer>
-        <ToneMapping mode={7} />
-        <Bloom intensity={0.6} luminanceThreshold={0.95} luminanceSmoothing={0.9} mipmapBlur />
-        <Vignette offset={0.3} darkness={0.5} />
-        <Noise opacity={0.02} />
-      </EffectComposer>
-    </>
-  )
-}
-
 export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps) {
-  const setActivePanel = useSceneStore((s) => s.setActivePanel)
-
   return (
-    <div style={{ width: '100%', height: '100%', background: '#0A0A0C' }}>
+    <div style={{ width: '100%', height: '100%', background: '#080810' }}>
       <Canvas
-        onPointerMissed={() => setActivePanel(null)}
         gl={{
-          antialias: false,
+          antialias: true,
           alpha: false,
           outputColorSpace: THREE.SRGBColorSpace,
-          toneMapping: THREE.NoToneMapping,
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.2,
         }}
-        camera={{ position: [0, 500, 180], fov: 55, near: 0.5, far: 2500 }}
+        camera={{ position: [0, 580, 500], fov: 60, near: 1, far: 3000 }}
       >
-        <SceneContent containerRef={containerRef} />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[0, 800, 300]} intensity={0.8} />
+        <pointLight position={[0, 600, 0]} intensity={0.6} distance={800} />
+
+        <ScrollCamera containerRef={containerRef} />
+
+        <Suspense fallback={null}>
+          <InteractiveRoom />
+        </Suspense>
+
+        <fog attach="fog" args={['#080810', 600, 1400]} />
       </Canvas>
     </div>
   )

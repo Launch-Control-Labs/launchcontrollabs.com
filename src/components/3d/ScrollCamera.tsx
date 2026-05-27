@@ -5,10 +5,9 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useSceneStore } from '@/store/scene-store'
 
-// Cockpit geometry: screens at Y=607 center, walls at Y=364-827, X/Z within ±200
 const CAMERA_PATH = {
-  start: { x: 0, y: 500, z: 180, lookAtX: 0, lookAtY: 600, lookAtZ: 0 },
-  end:   { x: 0, y: 580, z: 20, lookAtX: 0, lookAtY: 600, lookAtZ: -150 },
+  start: { x: 0, y: 580, z: 500, lookAtX: 0, lookAtY: 580, lookAtZ: 0 },
+  end:   { x: 0, y: 580, z: 30, lookAtX: 0, lookAtY: 600, lookAtZ: -100 },
 }
 
 interface ScrollCameraProps {
@@ -53,7 +52,7 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top top',
-            end: '+=250%',
+            end: '+=100%',
             pin: true,
             scrub: 1.5,
             onUpdate: (self) => {

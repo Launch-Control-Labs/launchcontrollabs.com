@@ -1,64 +1,67 @@
 export default function Awards() {
-  const awards = [
-    { org: 'Webby Awards', achievement: 'WINNER', year: '2023' },
-    { org: 'TWIF', achievement: 'BEST NEW STARTUP', year: '2024' },
-    { org: 'Product Hunt', achievement: 'PRODUCT OF THE WEEK', year: '2024' },
-    { org: 'Awwwards', achievement: 'FEATURED', year: '2024' },
-  ]
-
   return (
-    <section className="section-editorial" style={{ padding: 0, background: '#F5F0E8' }}>
-      <div style={{ borderTop: '4px solid #0A0A0A', padding: '1.5rem 0 2rem', background: '#F5F0E8' }}>
-        <div className="page">
-          <span style={{
-            display: 'inline-block',
-            border: '2px solid #C41E1E',
-            color: '#C41E1E',
-            fontSize: '0.55rem',
-            letterSpacing: '0.3em',
-            textTransform: 'uppercase',
-            fontFamily: 'var(--font-mono)',
-            padding: '0.25rem 0.7rem',
-            fontWeight: 600,
-            marginBottom: '1.5rem',
-          }}>RECOGNITION</span>
+    <section style={{ background: '#F5F0E8' }}>
+      <div style={{ padding: 'clamp(2rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem)' }}>
+        <h2 style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(4rem, 14vw, 10rem)',
+          lineHeight: 0.85,
+          letterSpacing: '-0.02em',
+          textTransform: 'uppercase',
+          margin: '0 0 0.5rem',
+          color: '#0A0A0A',
+        }}>RECOGNITION</h2>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 0,
-          }}>
-            {awards.map((award, i) => (
-              <div key={award.org} style={{
-                border: '2px solid #0A0A0A',
-                borderLeft: i === 0 ? '2px solid #0A0A0A' : 'none',
-                padding: '1.5rem 1.2rem',
-                textAlign: 'center',
-              }}>
-                <p style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.4rem, 3vw, 2.2rem)',
-                  color: '#0A0A0A',
-                  textTransform: 'uppercase',
-                  lineHeight: 1,
-                  marginBottom: '0.75rem',
-                }}>{award.achievement}</p>
-                <p style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.6rem',
-                  letterSpacing: '0.1em',
-                  color: '#3D3D3D',
-                  marginBottom: '0.4rem',
-                }}>{award.org}</p>
-                <p style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.5rem',
-                  letterSpacing: '0.1em',
-                  color: '#888888',
-                }}>{award.year}</p>
-              </div>
-            ))}
-          </div>
+        <p style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.55rem',
+          letterSpacing: '0.2em',
+          color: '#888',
+          textTransform: 'uppercase',
+          marginBottom: '1.5rem',
+        }}>Awards and features earned since launch</p>
+
+        {/* BLACK stat boxes — like ESPN trophy cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '3px' }}>
+          {[
+            { achievement: 'WINNER', org: 'Webby Awards', year: '2023' },
+            { achievement: 'BEST NEW STARTUP', org: 'TWIF', year: '2024' },
+            { achievement: 'PRODUCT OF THE WEEK', org: 'Product Hunt', year: '2024' },
+            { achievement: 'FEATURED', org: 'Awwwards', year: '2024' },
+          ].map((award) => (
+            <div key={award.org} style={{
+              background: '#0A0A0A',
+              color: '#FFFFFF',
+              padding: 'clamp(1rem, 3vw, 2rem) clamp(0.8rem, 2vw, 1.5rem)',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              minHeight: '140px',
+            }}>
+              <span style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(1.2rem, 3vw, 2rem)',
+                display: 'block',
+                lineHeight: 1,
+                marginBottom: '0.6rem',
+              }}>{award.achievement}</span>
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.5rem',
+                letterSpacing: '0.12em',
+                opacity: 0.7,
+                display: 'block',
+                marginBottom: '0.3rem',
+              }}>{award.org}</span>
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.45rem',
+                letterSpacing: '0.1em',
+                opacity: 0.4,
+              }}>{award.year}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

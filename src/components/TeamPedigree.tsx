@@ -1,44 +1,41 @@
 export default function TeamPedigree() {
-  const companies = ['LinkedIn', 'Pluralsight', 'PWC', 'Expedia', 'Digital Tutors']
+  const companies = ['LINKEDIN', 'PLURALSIGHT', 'PWC', 'EXPEDIA', 'DIGITAL TUTORS']
 
   return (
-    <section className="section-editorial" style={{ padding: 0, background: '#F5F0E8' }}>
-      <div style={{ borderTop: '4px solid #0A0A0A', padding: '1.5rem 0 2rem', background: '#F5F0E8' }}>
-        <div className="page">
-          <span style={{
-            display: 'inline-block',
-            border: '2px solid #C41E1E',
-            color: '#C41E1E',
-            fontSize: '0.55rem',
-            letterSpacing: '0.3em',
-            textTransform: 'uppercase',
-            fontFamily: 'var(--font-mono)',
-            padding: '0.25rem 0.7rem',
-            fontWeight: 600,
-            marginBottom: '1.5rem',
-          }}>PREVIOUSLY AT</span>
+    <section style={{ background: '#F5F0E8', padding: 'clamp(2rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem)' }}>
+      <span style={{
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.5rem',
+        letterSpacing: '0.3em',
+        textTransform: 'uppercase',
+        color: '#888',
+        display: 'block',
+        marginBottom: '0.5rem',
+      }}>STYLE REPORT &middot; OUR TEAM SHIPPED AT</span>
 
-          <p style={{
+      {/* Giant stacked company names — like ESPN "PERFECT FITS" */}
+      <div>
+        {companies.map((company) => (
+          <h3 key={company} style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-            lineHeight: 1.1,
-            color: '#0A0A0A',
-            textTransform: 'uppercase',
+            fontSize: 'clamp(3rem, 11vw, 8rem)',
+            lineHeight: 0.88,
             letterSpacing: '-0.01em',
-            marginBottom: '1rem',
-          }}>
-            {companies.join(' · ')}
-          </p>
-
-          <p style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.55rem',
-            letterSpacing: '0.15em',
-            color: '#888888',
-            textTransform: 'uppercase',
-          }}>Where our team shipped before Launch Control</p>
-        </div>
+            color: '#0A0A0A',
+            margin: 0,
+            borderBottom: '1px solid rgba(0,0,0,0.1)',
+          }}>{company}</h3>
+        ))}
       </div>
+
+      <p style={{
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.5rem',
+        letterSpacing: '0.15em',
+        color: '#888',
+        textTransform: 'uppercase',
+        marginTop: '1rem',
+      }}>Where our team shipped before Launch Control Labs</p>
     </section>
   )
 }
