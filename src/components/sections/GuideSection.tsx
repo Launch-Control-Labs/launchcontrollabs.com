@@ -2,61 +2,31 @@
 
 import { SectionThemeProvider } from '@/components/SectionThemeProvider'
 
-const CAPABILITIES = [
-  {
-    stat: '12',
-    label: 'SHIPPED',
-    capability: 'AI PRODUCTS',
-    description: 'Production ML systems deployed',
-  },
-  {
-    stat: '47',
-    label: 'LAUNCHED',
-    capability: 'FULL-STACK WEB APPS',
-    description: 'End-to-end applications shipped',
-  },
-  {
-    stat: '3.2B',
-    label: 'EVENTS/DAY',
-    capability: 'DATA PIPELINES',
-    description: 'Real-time event processing',
-  },
-  {
-    stat: '99.97%',
-    label: 'UPTIME',
-    capability: 'TECHNICAL OPERATIONS',
-    description: 'Battle-tested reliability',
-  },
+const STATS = [
+  { stat: '12', label: 'SHIPPED' },
+  { stat: '47', label: 'LAUNCHED' },
+  { stat: '3.2B', label: 'EVENTS/DAY' },
+  { stat: '99.97%', label: 'UPTIME' },
 ]
 
-function StatCard({
-  stat,
-  label,
-  capability,
-  description,
-}: {
-  stat: string
-  label: string
-  capability: string
-  description: string
-}) {
+function StatCard({ stat, label }: { stat: string; label: string }) {
   return (
     <div
       style={{
         border: '1px solid var(--section-accent)',
         background: 'rgba(10, 10, 15, 0.75)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        padding: '1.5rem 1.25rem',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        padding: '2rem 2.5rem',
         textAlign: 'center',
       }}
     >
       <span
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+          fontSize: 'clamp(3rem, 6vw, 6rem)',
           display: 'block',
-          lineHeight: 0.9,
+          lineHeight: 1,
           color: 'var(--section-accent)',
           letterSpacing: '-0.02em',
         }}
@@ -66,41 +36,15 @@ function StatCard({
       <span
         style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.65rem',
-          letterSpacing: '0.25em',
+          fontSize: '0.75rem',
+          letterSpacing: '0.2em',
           color: 'var(--section-muted)',
           textTransform: 'uppercase',
           display: 'block',
-          marginTop: '0.35rem',
+          marginTop: '0.5rem',
         }}
       >
         {label}
-      </span>
-      <span
-        style={{
-          fontFamily: 'var(--font-display-secondary)',
-          fontSize: 'clamp(0.85rem, 1.2vw, 1rem)',
-          fontWeight: 700,
-          letterSpacing: '0.05em',
-          color: '#FFFFFF',
-          textTransform: 'uppercase',
-          display: 'block',
-          marginTop: '0.75rem',
-        }}
-      >
-        {capability}
-      </span>
-      <span
-        style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.7rem',
-          color: 'var(--section-muted)',
-          display: 'block',
-          marginTop: '0.35rem',
-          lineHeight: 1.4,
-        }}
-      >
-        {description}
       </span>
     </div>
   )
@@ -183,18 +127,11 @@ export function GuideSection() {
             gridTemplateColumns: 'repeat(2, minmax(200px, 280px))',
             gap: '1.5rem',
             justifyContent: 'center',
-            width: '100%',
-            maxWidth: '640px',
+            marginTop: '3rem',
           }}
         >
-          {CAPABILITIES.map((item) => (
-            <StatCard
-              key={item.label}
-              stat={item.stat}
-              label={item.label}
-              capability={item.capability}
-              description={item.description}
-            />
+          {STATS.map((item) => (
+            <StatCard key={item.label} stat={item.stat} label={item.label} />
           ))}
         </div>
       </div>

@@ -1,37 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { SectionThemeProvider } from '@/components/SectionThemeProvider'
 
-function useFitText(deps: unknown[] = []) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const textRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const container = containerRef.current
-    const text = textRef.current
-    if (!container || !text) return
-
-    const fit = () => {
-      text.style.fontSize = '200px'
-      const ratio = container.clientWidth / text.scrollWidth
-      text.style.fontSize = Math.floor(200 * ratio * 0.98) + 'px'
-    }
-
-    fit()
-    const ro = new ResizeObserver(fit)
-    ro.observe(container)
-    return () => ro.disconnect()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps)
-
-  return { containerRef, textRef }
-}
-
 export function HeroOverlay() {
-  const h1Fit = useFitText()
-  const h2Fit = useFitText()
-
   return (
     <SectionThemeProvider sectionIndex={0}>
       <div
@@ -45,12 +16,11 @@ export function HeroOverlay() {
           justifyContent: 'flex-end',
         }}
       >
-        <div style={{ padding: '0', paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)' }}>
+        <div style={{ padding: 0, paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)' }}>
 
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'flex-end',
             marginBottom: '0.3rem',
             paddingLeft: '0.1em',
             paddingRight: '0.1em',
@@ -75,24 +45,21 @@ export function HeroOverlay() {
             </span>
           </div>
 
-          <div ref={h1Fit.containerRef} style={{ width: '100%', overflow: 'hidden', lineHeight: 0.82 }}>
-            <h1
-              ref={h1Fit.textRef as React.RefObject<HTMLHeadingElement>}
-              style={{
-                fontFamily: 'var(--font-display)',
-                lineHeight: 0.82,
-                letterSpacing: '-0.04em',
-                color: '#FFFFFF',
-                textTransform: 'uppercase',
-                margin: 0,
-                opacity: 0.95,
-                whiteSpace: 'nowrap',
-                display: 'inline-block',
-              }}
-            >
-              LAUNCH CONTROL
-            </h1>
-          </div>
+          <h1
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '13.5vw',
+              lineHeight: 0.82,
+              letterSpacing: '-0.04em',
+              color: '#FFFFFF',
+              textTransform: 'uppercase',
+              margin: 0,
+              opacity: 0.95,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            LAUNCH CONTROL
+          </h1>
 
           <div style={{
             display: 'flex',
@@ -113,25 +80,21 @@ export function HeroOverlay() {
             }}>
               From idea to shipped product. No guessing.
             </p>
-            <div ref={h2Fit.containerRef} style={{ overflow: 'hidden', lineHeight: 0.82, flexShrink: 0 }}>
-              <h2
-                ref={h2Fit.textRef as React.RefObject<HTMLHeadingElement>}
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  lineHeight: 0.82,
-                  letterSpacing: '-0.01em',
-                  color: '#FFFFFF',
-                  textTransform: 'uppercase',
-                  margin: 0,
-                  opacity: 0.95,
-                  textShadow: '0 0 60px rgba(34, 211, 238, 0.25)',
-                  whiteSpace: 'nowrap',
-                  display: 'inline-block',
-                }}
-              >
-                LABS
-              </h2>
-            </div>
+            <h2
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '13.5vw',
+                lineHeight: 0.82,
+                letterSpacing: '-0.01em',
+                color: '#FFFFFF',
+                textTransform: 'uppercase',
+                margin: 0,
+                opacity: 0.95,
+                textShadow: '0 0 60px rgba(34, 211, 238, 0.25)',
+              }}
+            >
+              LABS
+            </h2>
           </div>
 
         </div>
