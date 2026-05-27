@@ -5,10 +5,22 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useSceneStore } from '@/store/scene-store'
 
-const CAMERA_PATH = {
-  start: { x: 0, y: 30, z: 60, lookAtX: 0, lookAtY: 45, lookAtZ: 0 },
-  end:   { x: 0, y: 80, z: 15, lookAtX: 0, lookAtY: 85, lookAtZ: 0 },
-}
+const POSITION_KEYFRAMES = [
+  new THREE.Vector3(8, 20, 22),
+  new THREE.Vector3(28, 40, 38),
+  new THREE.Vector3(18, 65, 28),
+  new THREE.Vector3(5, 84, 14),
+]
+
+const LOOKAT_KEYFRAMES = [
+  new THREE.Vector3(-7, 30, -8),
+  new THREE.Vector3(-7, 50, -8),
+  new THREE.Vector3(-7, 72, -8),
+  new THREE.Vector3(-7, 88, -8),
+]
+
+const positionCurve = new THREE.CatmullRomCurve3(POSITION_KEYFRAMES, false, 'centripetal', 0.5)
+const lookAtCurve = new THREE.CatmullRomCurve3(LOOKAT_KEYFRAMES, false, 'centripetal', 0.5)
 
 interface ScrollCameraProps {
   containerRef: React.RefObject<HTMLElement | null>
@@ -16,6 +28,7 @@ interface ScrollCameraProps {
 
 const _targetPos = new THREE.Vector3()
 const _lookTarget = new THREE.Vector3()
+const _currentLook = new THREE.Vector3()
 
 export function ScrollCamera({ containerRef }: ScrollCameraProps) {
   const { camera } = useThree()
@@ -25,8 +38,11 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
   const interactionEnabledRef = useRef(false)
 
   useEffect(() => {
-    camera.position.set(CAMERA_PATH.start.x, CAMERA_PATH.start.y, CAMERA_PATH.start.z)
-    camera.lookAt(CAMERA_PATH.start.lookAtX, CAMERA_PATH.start.lookAtY, CAMERA_PATH.start.lookAtZ)
+    const startPos = positionCurve.getPoint(0)
+    const startLook = lookAtCurve.getPoint(0)
+    camera.position.copy(startPos)
+    camera.lookAt(startLook)
+    _currentLook.copy(startLook)
 
     const handleMouse = (e: MouseEvent) => {
       mouseRef.current = {
@@ -52,11 +68,10 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top top',
-            end: '+=100%',
+            end: '+=150%',
             pin: true,
-            scrub: 1.5,
+            scrub: 2.5,
             onUpdate: (self) => {
-              progress.current = self.progress
               if (self.progress >= 0.9 && !interactionEnabledRef.current) {
                 interactionEnabledRef.current = true
                 setInteractionEnabled(true)
@@ -69,6 +84,7 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
           },
         }).to(proxy, {
           p: 1,
+          ease: 'power2.inOut',
           onUpdate: () => {
             progress.current = proxy.p
           },
@@ -88,24 +104,16 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
   useFrame(() => {
     const t = progress.current
 
-    _targetPos.set(
-      THREE.MathUtils.lerp(CAMERA_PATH.start.x, CAMERA_PATH.end.x, t),
-      THREE.MathUtils.lerp(CAMERA_PATH.start.y, CAMERA_PATH.end.y, t),
-      THREE.MathUtils.lerp(CAMERA_PATH.start.z, CAMERA_PATH.end.z, t),
-    )
-    camera.position.lerp(_targetPos, 0.1)
+    positionCurve.getPoint(t, _targetPos)
+    lookAtCurve.getPoint(t, _lookTarget)
 
-    _lookTarget.set(
-      THREE.MathUtils.lerp(CAMERA_PATH.start.lookAtX, CAMERA_PATH.end.lookAtX, t),
-      THREE.MathUtils.lerp(CAMERA_PATH.start.lookAtY, CAMERA_PATH.end.lookAtY, t),
-      THREE.MathUtils.lerp(CAMERA_PATH.start.lookAtZ, CAMERA_PATH.end.lookAtZ, t),
-    )
-    camera.lookAt(_lookTarget)
+    camera.position.lerp(_targetPos, 0.06)
+    _currentLook.lerp(_lookTarget, 0.06)
+    camera.lookAt(_currentLook)
 
-    // ±2° max parallax — only active after scroll begins (t > 0.1)
-    if (t > 0.1) {
-      camera.rotation.y += mouseRef.current.x * 0.02 * (Math.PI / 180)
-      camera.rotation.x += mouseRef.current.y * 0.01 * (Math.PI / 180)
+    if (t > 0.05) {
+      camera.rotation.y += mouseRef.current.x * 0.008 * (Math.PI / 180)
+      camera.rotation.x += mouseRef.current.y * 0.004 * (Math.PI / 180)
     }
   })
 
