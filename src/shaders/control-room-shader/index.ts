@@ -97,7 +97,7 @@ export function createControlRoomShader(
       fogDepth: { value: 400.0 },
     },
     transparent: baseMaterial.transparent || false,
-    side: baseMaterial.side ?? THREE.FrontSide,
+    side: THREE.DoubleSide,
     depthWrite: true,
   })
 }

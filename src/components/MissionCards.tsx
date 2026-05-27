@@ -1,287 +1,443 @@
-'use client'
-
 export default function MissionCards() {
+  // Tier 1: Featured
+  const featured = {
+    num: '01',
+    status: 'Active',
+    name: 'TALISMAN',
+    desc: 'AI-powered accounting automation for modern finance teams. Graph-native architecture processing millions of transactions.',
+    stack: ['Next.js', 'Neo4j', 'LLMs'],
+  }
+
+  // Tier 2: Two-up
+  const tier2 = [
+    {
+      num: '02',
+      status: 'Active',
+      name: 'HELIOS',
+      desc: 'Autonomous AI agent runtime with multi-agent orchestration. Built for production workloads.',
+      stack: ['TypeScript', 'Memgraph', 'R3F'],
+    },
+    {
+      num: '03',
+      status: 'Deployed',
+      name: 'LAUNCH CONTROL',
+      desc: "This site. WebGL meets mission control. Baked-lighting, custom shaders, scroll-driven camera.",
+      stack: ['Next.js', 'Three.js', 'GSAP'],
+    },
+  ]
+
+  // Tier 3: Client work (FIVE projects including OBWS + HomeMeds)
+  const clientWork = [
+    { num: '04', name: 'OBWS', desc: 'Official Black Wall Street. E-commerce marketplace connecting consumers with Black-owned businesses nationwide.', stack: ['React', 'E-Commerce', 'Platform'], year: '2024' },
+    { num: '05', name: 'HOMEMEDS', desc: 'Pharmacy medication management platform. Automated dose packaging and patient compliance tracking.', stack: ['Next.js', 'Healthcare', 'API'], year: '2024' },
+    { num: '06', name: 'OPTION ONE', desc: 'Full-range plumbing services platform. CSR and field worker coordination.', stack: ['Next.js', 'Real-time', 'CRM'], year: '2025' },
+    { num: '07', name: 'SKY BOSS', desc: 'Aviation operations management. Fleet tracking, maintenance, crew coordination.', stack: ['React', 'Node.js', 'Real-time'], year: '2025' },
+    { num: '08', name: 'NPS.TODAY', desc: 'Net Promoter Score platform. Automated survey distribution and analytics.', stack: ['Next.js', 'Analytics'], year: '2024' },
+  ]
+
   return (
     <section className="section-editorial" style={{ padding: '0', background: '#F5F0E8' }}>
       
-      {/* Section header — full bleed thick rule */}
+      {/* Section header — full bleed THICK rule */}
       <div style={{
-        borderTop: '3px solid #0A0A0A',
-        padding: 'clamp(4rem, 8vh, 7rem) 0 0',
+        borderTop: '4px solid #0A0A0A',
+        padding: '1.5rem 0 0',
         background: '#F5F0E8',
       }}>
         <div className="page">
           
-          {/* Section label — ESPN style */}
-          <p style={{
-            fontSize: '0.6rem',
-            letterSpacing: '0.35em',
+          {/* WORK flag — ESPN bordered box */}
+          <span style={{
+            display: 'inline-block',
+            border: '2px solid #C41E1E',
+            color: '#C41E1E',
+            fontSize: '0.55rem',
+            letterSpacing: '0.25em',
             textTransform: 'uppercase',
             fontFamily: 'var(--font-mono)',
-            color: '#888888',
-            marginBottom: 'clamp(2rem, 4vh, 3rem)',
-          }}>Work</p>
+            padding: '0.2rem 0.6rem',
+            fontWeight: 600,
+            marginBottom: '1rem',
+          }}>WORK</span>
 
           {/* TIER 1 — Feature story, full spread */}
           <article style={{
-            paddingBottom: 'clamp(4rem, 8vh, 6rem)',
-            borderBottom: '1px solid #C8C0B0',
-            marginBottom: 'clamp(4rem, 8vh, 6rem)',
+            paddingBottom: '1.5rem',
+            borderBottom: '2px solid #0A0A0A',
+            marginBottom: '0',
           }}>
-            {/* Number + status row */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-              marginBottom: '0.5rem',
-            }}>
-              <span style={{
-                fontSize: 'clamp(5rem, 14vw, 11rem)',
-                fontWeight: 700,
-                fontFamily: 'var(--font-mono)',
-                color: '#D9D0C0',
-                lineHeight: 1,
-                letterSpacing: '-0.05em',
-                userSelect: 'none',
-              }}>01</span>
-              <span style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                fontSize: '0.55rem',
-                letterSpacing: '0.25em',
-                textTransform: 'uppercase',
-                fontFamily: 'var(--font-mono)',
-                background: '#C41E1E',
-                color: '#FFFFFF',
-                padding: '0.3rem 0.7rem',
-                fontWeight: 600,
-              }}>
-                <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#FFFFFF' }}></span>
-                Active
-              </span>
-            </div>
+            {/* RED number — ESPN style */}
+            <span style={{
+              fontSize: 'clamp(5rem, 14vw, 10rem)',
+              fontWeight: 700,
+              fontFamily: 'var(--font-mono)',
+              color: '#C41E1E',
+              lineHeight: 0.85,
+              letterSpacing: '-0.05em',
+              userSelect: 'none',
+              display: 'block',
+            }}>{featured.num}</span>
 
-            {/* Headline — ESPN oversized */}
+            {/* MASSIVE headline — fills the page */}
             <h3 style={{
-              fontSize: 'clamp(4.5rem, 13vw, 10rem)',
-              fontWeight: 800,
+              fontSize: 'clamp(5rem, 15vw, 12rem)',
+              fontWeight: 400,
               fontFamily: 'var(--font-display)',
               color: '#0A0A0A',
-              letterSpacing: '-0.02em',
-              lineHeight: 0.9,
+              letterSpacing: '0.02em',
+              lineHeight: 0.85,
               textTransform: 'uppercase',
-              marginBottom: 'clamp(1.5rem, 3vh, 2.5rem)',
-              marginTop: '-0.5rem',
-            }}>Talisman</h3>
+              marginBottom: '0.5rem',
+              marginTop: '-0.25rem',
+            }}>{featured.name}</h3>
 
-            {/* Description + meta row */}
+            {/* Description + STAT BOX row */}
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr auto',
-              gap: '3rem',
-              alignItems: 'start',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '1rem',
+              alignItems: 'center',
             }}>
               <p style={{
                 fontFamily: 'var(--font-body)',
-                fontSize: 'clamp(1rem, 1.5vw, 1.2rem)',
+                fontSize: '0.875rem',
                 color: '#3D3D3D',
-                lineHeight: 1.65,
-                maxWidth: '520px',
+                lineHeight: 1.5,
+                maxWidth: '40ch',
+                margin: '0',
               }}>
-                AI-powered accounting automation for modern finance teams. Graph-native architecture processing millions of transactions.
+                {featured.desc}
               </p>
-              {/* Stat block — right column */}
+              
+              {/* STAT BOX — bordered black box */}
               <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.4rem',
-                textAlign: 'right',
-                minWidth: '120px',
+                border: '2px solid #0A0A0A',
+                padding: '0.6rem 1rem',
+                display: 'inline-flex',
+                gap: '1.2rem',
+                alignItems: 'center',
               }}>
-                {['Next.js', 'Neo4j', 'LLMs'].map(t => (
+                {featured.stack.map(t => (
                   <span key={t} style={{
-                    fontSize: '0.6rem',
+                    fontSize: '0.55rem',
                     letterSpacing: '0.12em',
                     textTransform: 'uppercase',
-                    color: '#888888',
                     fontFamily: 'var(--font-mono)',
+                    fontWeight: 600,
+                    color: '#0A0A0A',
                   }}>{t}</span>
                 ))}
-                <span style={{
-                  fontSize: '0.6rem',
-                  letterSpacing: '0.12em',
-                  color: '#C8C0B0',
-                  fontFamily: 'var(--font-mono)',
-                  marginTop: '0.5rem',
-                  borderTop: '1px solid #C8C0B0',
-                  paddingTop: '0.4rem',
-                }}>2024</span>
               </div>
+
+              {/* Status badge — BLACK pill */}
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.3rem',
+                fontSize: '0.5rem',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                fontFamily: 'var(--font-mono)',
+                background: '#0A0A0A',
+                color: '#FFFFFF',
+                padding: '0.2rem 0.6rem',
+                fontWeight: 600,
+              }}>
+                <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#34D399' }}></span>
+                {featured.status.toUpperCase()}
+              </span>
             </div>
           </article>
 
           {/* TIER 2 — Two-up grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '0',
-            paddingBottom: 'clamp(4rem, 8vh, 6rem)',
-            borderBottom: '1px solid #C8C0B0',
-            marginBottom: 'clamp(4rem, 8vh, 6rem)',
+            borderBottom: '2px solid #0A0A0A',
           }}>
-            {[
-              {
-                num: '02',
-                status: 'Active',
-                name: 'Helios',
-                desc: 'Autonomous AI agent runtime with multi-agent orchestration. Built for production workloads.',
-                stack: ['TypeScript', 'Memgraph', 'R3F'],
-              },
-              {
-                num: '03',
-                status: 'Deployed',
-                name: 'Launch Control Labs',
-                desc: "This site. Built with basement.studio's baked-lighting approach. WebGL meets mission control.",
-                stack: ['Next.js', 'Three.js', 'GSAP'],
-              },
-            ].map((project, i) => (
+            {tier2.map((project, i) => (
               <article key={project.num} style={{
-                borderTop: '3px solid #0A0A0A',
-                paddingTop: 'clamp(1.5rem, 3vh, 2.5rem)',
-                paddingRight: i === 0 ? 'clamp(2rem, 4vw, 4rem)' : '0',
-                paddingLeft: i === 1 ? 'clamp(2rem, 4vw, 4rem)' : '0',
-                borderLeft: i === 1 ? '1px solid #C8C0B0' : 'none',
+                borderTop: '2px solid #0A0A0A',
+                padding: '1.2rem 1.5rem',
+                borderLeft: i === 1 ? '2px solid #0A0A0A' : 'none',
               }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                  <span style={{
-                    fontSize: 'clamp(3rem, 7vw, 5.5rem)',
-                    fontWeight: 700,
-                    fontFamily: 'var(--font-mono)',
-                    color: '#D9D0C0',
-                    lineHeight: 1,
-                    letterSpacing: '-0.04em',
-                    userSelect: 'none',
-                  }}>{project.num}</span>
-                  <span style={{
-                    fontSize: '0.5rem',
-                    letterSpacing: '0.2em',
-                    textTransform: 'uppercase',
-                    fontFamily: 'var(--font-mono)',
-                    color: project.status === 'Active' ? '#C41E1E' : '#888888',
-                    fontWeight: 600,
-                  }}>{project.status}</span>
-                </div>
+                {/* RED number */}
+                <span style={{
+                  fontSize: 'clamp(3rem, 8vw, 5rem)',
+                  fontWeight: 700,
+                  fontFamily: 'var(--font-mono)',
+                  color: '#C41E1E',
+                  lineHeight: 0.85,
+                  letterSpacing: '-0.04em',
+                  userSelect: 'none',
+                  display: 'block',
+                }}>{project.num}</span>
+
+                {/* Headline */}
                 <h3 style={{
-                  fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                  fontWeight: 800,
+                  fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+                  fontWeight: 400,
                   fontFamily: 'var(--font-display)',
                   color: '#0A0A0A',
-                  letterSpacing: '-0.01em',
-                  lineHeight: 0.95,
+                  letterSpacing: '0.02em',
+                  lineHeight: 0.9,
                   textTransform: 'uppercase',
-                  marginBottom: 'clamp(1rem, 2vh, 1.5rem)',
-                  marginTop: '-0.25rem',
+                  marginBottom: '0.5rem',
+                  marginTop: '-0.15rem',
                 }}>{project.name}</h3>
+
+                {/* Description */}
                 <p style={{
                   fontFamily: 'var(--font-body)',
-                  fontSize: 'clamp(0.85rem, 1.1vw, 1rem)',
+                  fontSize: '0.875rem',
                   color: '#3D3D3D',
-                  lineHeight: 1.65,
-                  marginBottom: 'clamp(1rem, 2vh, 1.5rem)',
+                  lineHeight: 1.5,
+                  marginBottom: '0.5rem',
+                  maxWidth: '35ch',
                 }}>{project.desc}</p>
-                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+
+                {/* STAT BOX */}
+                <div style={{
+                  border: '2px solid #0A0A0A',
+                  padding: '0.5rem 0.8rem',
+                  display: 'inline-flex',
+                  gap: '0.8rem',
+                  alignItems: 'center',
+                  marginBottom: '0.5rem',
+                }}>
                   {project.stack.map(t => (
                     <span key={t} style={{
                       fontSize: '0.55rem',
                       letterSpacing: '0.12em',
                       textTransform: 'uppercase',
-                      color: '#888888',
                       fontFamily: 'var(--font-mono)',
+                      fontWeight: 600,
+                      color: '#0A0A0A',
                     }}>{t}</span>
                   ))}
+                </div>
+
+                {/* Status badge */}
+                <div>
+                  {project.status === 'Active' ? (
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      fontSize: '0.5rem',
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      fontFamily: 'var(--font-mono)',
+                      background: '#0A0A0A',
+                      color: '#FFFFFF',
+                      padding: '0.2rem 0.6rem',
+                      fontWeight: 600,
+                    }}>
+                      <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#34D399' }}></span>
+                      ACTIVE
+                    </span>
+                  ) : (
+                    <span style={{
+                      display: 'inline-block',
+                      border: '1.5px solid #0A0A0A',
+                      color: '#0A0A0A',
+                      fontSize: '0.5rem',
+                      letterSpacing: '0.18em',
+                      textTransform: 'uppercase',
+                      fontFamily: 'var(--font-mono)',
+                      padding: '0.2rem 0.6rem',
+                      fontWeight: 600,
+                    }}>DEPLOYED</span>
+                  )}
                 </div>
               </article>
             ))}
           </div>
 
           {/* TIER 3 — Client work */}
-          <div style={{ paddingBottom: 'clamp(4rem, 8vh, 6rem)' }}>
-            <p style={{
+          <div style={{ paddingBottom: '2rem' }}>
+            {/* CLIENT WORK flag */}
+            <span style={{
+              display: 'inline-block',
+              border: '2px solid #C41E1E',
+              color: '#C41E1E',
               fontSize: '0.55rem',
-              letterSpacing: '0.35em',
+              letterSpacing: '0.25em',
               textTransform: 'uppercase',
               fontFamily: 'var(--font-mono)',
-              color: '#888888',
-              marginBottom: 'clamp(2rem, 4vh, 3rem)',
-            }}>Client Work</p>
+              padding: '0.2rem 0.6rem',
+              fontWeight: 600,
+              marginTop: '1rem',
+              marginBottom: '1rem',
+            }}>CLIENT WORK</span>
 
+            {/* First row: 04, 05, 06 */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gridTemplateColumns: 'repeat(3, 1fr)',
               gap: '0',
             }}>
-              {[
-                { num: '04', name: 'Option One', desc: 'Full-range plumbing services platform. CSR and field worker coordination.', stack: ['Next.js', 'Real-time', 'CRM'], year: '2025' },
-                { num: '05', name: 'Sky Boss', desc: 'Aviation operations management. Fleet tracking, maintenance, crew coordination.', stack: ['React', 'Node.js', 'Real-time'], year: '2025' },
-                { num: '06', name: 'NPS.today', desc: 'Net Promoter Score platform. Automated survey distribution and analytics.', stack: ['Next.js', 'Analytics'], year: '2024' },
-              ].map((project, i) => (
+              {clientWork.slice(0, 3).map((project, i) => (
                 <article key={project.num} style={{
-                  borderTop: '1px solid #0A0A0A',
-                  paddingTop: 'clamp(1.5rem, 3vh, 2rem)',
-                  paddingRight: i < 2 ? 'clamp(1.5rem, 3vw, 2.5rem)' : '0',
-                  paddingLeft: i > 0 ? 'clamp(1.5rem, 3vw, 2.5rem)' : '0',
-                  borderLeft: i > 0 ? '1px solid #C8C0B0' : 'none',
+                  borderTop: '2px solid #0A0A0A',
+                  padding: '1.2rem 1.5rem',
+                  borderLeft: i > 0 ? '2px solid #0A0A0A' : 'none',
                 }}>
+                  {/* RED number */}
                   <span style={{
-                    fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                    fontSize: '3rem',
                     fontWeight: 700,
                     fontFamily: 'var(--font-mono)',
-                    color: '#D9D0C0',
-                    lineHeight: 1,
+                    color: '#C41E1E',
+                    lineHeight: 0.85,
                     letterSpacing: '-0.04em',
                     display: 'block',
-                    marginBottom: '0.25rem',
+                    marginBottom: '0.1rem',
                     userSelect: 'none',
                   }}>{project.num}</span>
+
+                  {/* Headline */}
                   <h4 style={{
-                    fontSize: 'clamp(1.4rem, 3vw, 2rem)',
-                    fontWeight: 800,
+                    fontSize: '2rem',
+                    fontWeight: 400,
                     fontFamily: 'var(--font-display)',
                     color: '#0A0A0A',
-                    letterSpacing: '-0.01em',
-                    lineHeight: 0.95,
+                    letterSpacing: '0.02em',
+                    lineHeight: 0.9,
                     textTransform: 'uppercase',
-                    marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)',
-                    marginTop: '-0.15rem',
+                    marginBottom: '0.5rem',
+                    marginTop: '-0.1rem',
                   }}>{project.name}</h4>
+
+                  {/* Description */}
                   <p style={{
                     fontFamily: 'var(--font-body)',
-                    fontSize: '0.875rem',
+                    fontSize: '0.85rem',
                     color: '#3D3D3D',
-                    lineHeight: 1.6,
-                    marginBottom: '1rem',
+                    lineHeight: 1.5,
+                    marginBottom: '0.5rem',
+                    maxWidth: '28ch',
                   }}>{project.desc}</p>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                      {project.stack.map(t => (
-                        <span key={t} style={{
-                          fontSize: '0.5rem',
-                          letterSpacing: '0.1em',
-                          textTransform: 'uppercase',
-                          color: '#888888',
-                          fontFamily: 'var(--font-mono)',
-                        }}>{t}</span>
-                      ))}
-                    </div>
-                    <span style={{
-                      fontSize: '0.5rem',
-                      color: '#C8C0B0',
-                      fontFamily: 'var(--font-mono)',
-                    }}>{project.year}</span>
+
+                  {/* STAT BOX */}
+                  <div style={{
+                    border: '2px solid #0A0A0A',
+                    padding: '0.4rem 0.6rem',
+                    display: 'inline-flex',
+                    gap: '0.6rem',
+                    alignItems: 'center',
+                    marginBottom: '0.5rem',
+                  }}>
+                    {project.stack.map(t => (
+                      <span key={t} style={{
+                        fontSize: '0.55rem',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        fontFamily: 'var(--font-mono)',
+                        fontWeight: 600,
+                        color: '#0A0A0A',
+                      }}>{t}</span>
+                    ))}
                   </div>
+
+                  {/* Year */}
+                  <span style={{
+                    display: 'block',
+                    fontSize: '0.55rem',
+                    color: '#888888',
+                    fontFamily: 'var(--font-mono)',
+                    letterSpacing: '0.1em',
+                  }}>{project.year}</span>
                 </article>
               ))}
+            </div>
+
+            {/* Second row: 07, 08, empty */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '0',
+            }}>
+              {clientWork.slice(3, 5).map((project, i) => (
+                <article key={project.num} style={{
+                  borderTop: '2px solid #0A0A0A',
+                  padding: '1.2rem 1.5rem',
+                  borderLeft: i > 0 ? '2px solid #0A0A0A' : 'none',
+                }}>
+                  {/* RED number */}
+                  <span style={{
+                    fontSize: '3rem',
+                    fontWeight: 700,
+                    fontFamily: 'var(--font-mono)',
+                    color: '#C41E1E',
+                    lineHeight: 0.85,
+                    letterSpacing: '-0.04em',
+                    display: 'block',
+                    marginBottom: '0.1rem',
+                    userSelect: 'none',
+                  }}>{project.num}</span>
+
+                  {/* Headline */}
+                  <h4 style={{
+                    fontSize: '2rem',
+                    fontWeight: 400,
+                    fontFamily: 'var(--font-display)',
+                    color: '#0A0A0A',
+                    letterSpacing: '0.02em',
+                    lineHeight: 0.9,
+                    textTransform: 'uppercase',
+                    marginBottom: '0.5rem',
+                    marginTop: '-0.1rem',
+                  }}>{project.name}</h4>
+
+                  {/* Description */}
+                  <p style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '0.85rem',
+                    color: '#3D3D3D',
+                    lineHeight: 1.5,
+                    marginBottom: '0.5rem',
+                    maxWidth: '28ch',
+                  }}>{project.desc}</p>
+
+                  {/* STAT BOX */}
+                  <div style={{
+                    border: '2px solid #0A0A0A',
+                    padding: '0.4rem 0.6rem',
+                    display: 'inline-flex',
+                    gap: '0.6rem',
+                    alignItems: 'center',
+                    marginBottom: '0.5rem',
+                  }}>
+                    {project.stack.map(t => (
+                      <span key={t} style={{
+                        fontSize: '0.55rem',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        fontFamily: 'var(--font-mono)',
+                        fontWeight: 600,
+                        color: '#0A0A0A',
+                      }}>{t}</span>
+                    ))}
+                  </div>
+
+                  {/* Year */}
+                  <span style={{
+                    display: 'block',
+                    fontSize: '0.55rem',
+                    color: '#888888',
+                    fontFamily: 'var(--font-mono)',
+                    letterSpacing: '0.1em',
+                  }}>{project.year}</span>
+                </article>
+              ))}
+              {/* Empty cell to complete the grid */}
+              <div style={{
+                borderTop: '2px solid #0A0A0A',
+                borderLeft: '2px solid #0A0A0A',
+                padding: '1.2rem 1.5rem',
+              }} />
             </div>
           </div>
 

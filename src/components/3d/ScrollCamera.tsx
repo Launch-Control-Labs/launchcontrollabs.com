@@ -6,10 +6,11 @@ import * as THREE from 'three'
 import { useSceneStore } from '@/store/scene-store'
 
 // Soma04 model (Z-up, rotated to Y-up): 622×622×1097 units, center [0, 548, 0]
-// Start: above + in front of ship → End: inside cockpit looking at screens
+// Bounding box after rotation: X[-311,311], Y[0,1097], Z[-311,311]
+// Start: inside ship, slightly off-axis for cinematic entry → End: centered in cockpit
 const CAMERA_PATH = {
-  start: { x: 0, y: 900, z: 1400, lookAtX: 0, lookAtY: 400, lookAtZ: 0 },
-  end:   { x: 0, y: 280, z:  120, lookAtX: 0, lookAtY: 280, lookAtZ: -300 },
+  start: { x: 50, y: 400, z: 50, lookAtX: 0, lookAtY: 350, lookAtZ: -100 },
+  end:   { x: 0, y: 250, z: -50, lookAtX: 0, lookAtY: 250, lookAtZ: -250 },
 }
 
 interface ScrollCameraProps {

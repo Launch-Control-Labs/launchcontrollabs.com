@@ -68,7 +68,7 @@ function SceneContent({ containerRef }: ControlRoomSceneProps) {
 
       <EffectComposer>
         <ToneMapping mode={7} />
-        <Bloom intensity={0.8} luminanceThreshold={0.85} luminanceSmoothing={0.9} mipmapBlur />
+        <Bloom intensity={0.6} luminanceThreshold={0.95} luminanceSmoothing={0.9} mipmapBlur />
         <Vignette offset={0.3} darkness={0.5} />
         <Noise opacity={0.02} />
       </EffectComposer>
@@ -89,7 +89,7 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
           outputColorSpace: THREE.SRGBColorSpace,
           toneMapping: THREE.NoToneMapping,
         }}
-        camera={{ position: [0, 900, 1400], fov: 50 }}
+        camera={{ position: [50, 400, 50], fov: 55, near: 0.5, far: 2500 }}
       >
         <SceneContent containerRef={containerRef} />
       </Canvas>

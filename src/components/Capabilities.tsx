@@ -1,95 +1,90 @@
 'use client'
 
-import { useState } from 'react'
-
 const SERVICES = [
   {
     number: '01',
-    name: 'AI-Powered Products',
+    name: 'AI-POWERED PRODUCTS',
     description: 'LLMs, agents, and automation systems built for production. Not prototypes—deployed systems.',
   },
   {
     number: '02',
-    name: 'Full-Stack Web Apps',
+    name: 'FULL-STACK WEB APPS',
     description: 'From architecture to deployment. React, Next.js, Node. We ship complete products, not partial commits.',
   },
   {
     number: '03',
-    name: 'Data Pipelines',
+    name: 'DATA PIPELINES',
     description: 'ETL, real-time processing, and analytics infrastructure. Systems that handle millions of events without breaking.',
   },
   {
     number: '04',
-    name: 'Technical Operations',
+    name: 'TECHNICAL OPERATIONS',
     description: 'DevOps, monitoring, and system reliability engineering. We keep things running when it matters.',
   },
 ]
 
 export default function Capabilities() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
   return (
     <section className="section-editorial" style={{ padding: '0', background: '#F5F0E8' }}>
-      <div style={{ borderTop: '3px solid #0A0A0A', padding: 'clamp(4rem, 8vh, 7rem) 0 0', background: '#F5F0E8' }}>
+      <div style={{ borderTop: '4px solid #0A0A0A', padding: '1.5rem 0 0', background: '#F5F0E8' }}>
         <div className="page">
           
-          <p style={{
-            fontSize: '0.6rem',
-            letterSpacing: '0.35em',
+          <span style={{
+            display: 'inline-block',
+            border: '2px solid #C41E1E',
+            color: '#C41E1E',
+            fontSize: '0.55rem',
+            letterSpacing: '0.25em',
             textTransform: 'uppercase',
             fontFamily: 'var(--font-mono)',
-            color: '#888888',
-            marginBottom: 'clamp(2rem, 4vh, 3rem)',
-          }}>Capabilities</p>
+            padding: '0.2rem 0.6rem',
+            fontWeight: 600,
+            marginBottom: '1rem',
+          }}>CAPABILITIES</span>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '0' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0' }}>
             {SERVICES.map((service, index) => (
               <div
                 key={service.number}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
                 style={{
-                  borderTop: hoveredIndex === index ? '3px solid #C41E1E' : '1px solid #0A0A0A',
-                  padding: 'clamp(2rem, 4vh, 3rem) clamp(1.5rem, 3vw, 2.5rem)',
-                  background: hoveredIndex === index ? '#EDE9DF' : '#F5F0E8',
-                  transition: 'border-color 120ms ease-out, background 120ms ease-out',
-                  cursor: 'default',
+                  borderTop: '2px solid #0A0A0A',
+                  padding: '1.2rem 1.5rem',
+                  borderRight: index % 2 === 0 ? '2px solid #0A0A0A' : 'none',
                 }}
               >
                 <span style={{
                   display: 'block',
-                  fontSize: 'clamp(3.5rem, 8vw, 6rem)',
+                  fontSize: 'clamp(5rem, 14vw, 10rem)',
                   fontWeight: 700,
                   fontFamily: 'var(--font-mono)',
-                  color: hoveredIndex === index ? '#C41E1E' : '#D9D0C0',
-                  lineHeight: 0.9,
+                  color: '#C41E1E',
+                  lineHeight: 0.85,
                   letterSpacing: '-0.04em',
-                  marginBottom: 'clamp(1rem, 2vh, 1.5rem)',
-                  transition: 'color 120ms ease-out',
+                  marginBottom: '0.5rem',
                   userSelect: 'none',
                 }}>
                   {service.number}
                 </span>
 
                 <h3 style={{
-                  fontSize: 'clamp(1.4rem, 2.5vw, 2rem)',
-                  fontWeight: 800,
+                  fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+                  fontWeight: 400,
                   fontFamily: 'var(--font-display)',
                   color: '#0A0A0A',
-                  letterSpacing: '-0.01em',
-                  lineHeight: 0.95,
+                  letterSpacing: '0.02em',
+                  lineHeight: 0.9,
                   textTransform: 'uppercase',
-                  marginBottom: 'clamp(0.75rem, 1.5vh, 1.25rem)',
+                  marginBottom: '0.5rem',
                 }}>
                   {service.name}
                 </h3>
 
                 <p style={{
                   fontFamily: 'var(--font-body)',
-                  fontSize: 'clamp(0.85rem, 1.1vw, 1rem)',
+                  fontSize: '0.875rem',
                   color: '#3D3D3D',
-                  lineHeight: 1.65,
-                  maxWidth: '280px',
+                  lineHeight: 1.5,
+                  maxWidth: '32ch',
                 }}>
                   {service.description}
                 </p>
@@ -97,8 +92,7 @@ export default function Capabilities() {
             ))}
           </div>
 
-          {/* Bottom rule */}
-          <div style={{ borderTop: '1px solid #C8C0B0', marginTop: '0', paddingBottom: 'clamp(4rem, 8vh, 6rem)' }} />
+          <div style={{ borderTop: '2px solid #0A0A0A', paddingBottom: '2rem' }} />
         </div>
       </div>
     </section>

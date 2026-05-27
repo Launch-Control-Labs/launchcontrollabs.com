@@ -12,6 +12,7 @@ import CompanyTicker from '@/components/CompanyTicker'
 import Capabilities from '@/components/Capabilities'
 import MissionCards from '@/components/MissionCards'
 import Awards from '@/components/Awards'
+import TeamPedigree from '@/components/TeamPedigree'
 import Contact from '@/components/Contact'
 
 const ControlRoomScene = dynamic(
@@ -46,6 +47,10 @@ export default function Home() {
 
         <section id="projects">
           <MissionCards />
+        </section>
+
+        <section id="team">
+          <TeamPedigree />
         </section>
 
         <section id="awards">
