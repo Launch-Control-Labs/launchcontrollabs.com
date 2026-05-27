@@ -2,32 +2,35 @@
 
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
-/** Section 4 — Placeholder for Apollo Saturn V model (Wave 2) */
 export function AuthorityScene() {
-  const meshRef = useRef<THREE.Mesh>(null)
+  const groupRef = useRef<THREE.Group>(null)
+  
+  const { scene } = useGLTF('/models/optimized/apollo-saturn-v.glb')
 
   useFrame((_, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.1
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * 0.05
     }
   })
 
   return (
-    <group>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[0, 8, 5]} intensity={1} color="#f59e0b" />
-      <directionalLight position={[3, 5, 2]} intensity={0.6} color="#ffffff" />
-      <mesh ref={meshRef} position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.4, 0.6, 4, 16]} />
-        <meshStandardMaterial color="#f59e0b" emissive="#331a00" emissiveIntensity={0.3} />
-      </mesh>
-
-      <mesh position={[0, 2.5, 0]}>
-        <coneGeometry args={[0.4, 1, 16]} />
-        <meshStandardMaterial color="#ffffff" emissive="#333333" emissiveIntensity={0.1} />
-      </mesh>
+    <group ref={groupRef}>
+      <ambientLight intensity={0.4} />
+      <pointLight position={[5, 10, 5]} intensity={1.5} color="#FFFFFF" />
+      <pointLight position={[-5, 5, -5]} intensity={0.8} color="#FFFFFF" />
+      <directionalLight position={[0, 10, 5]} intensity={0.6} color="#FFFFFF" />
+      
+      <primitive 
+        object={scene} 
+        scale={0.8}
+        position={[0, -2, 0]}
+        rotation={[0, 0, 0]}
+      />
     </group>
   )
 }
+
+useGLTF.preload('/models/optimized/apollo-saturn-v.glb')

@@ -3,7 +3,6 @@
 import { SectionThemeProvider } from '@/components/SectionThemeProvider'
 import { SECTION_FLAG } from '@/styles/section-constants'
 
-// Team pedigree companies (from TeamPedigree.tsx)
 const COMPANIES = [
   'LINKEDIN',
   'PLURALSIGHT', 
@@ -12,7 +11,6 @@ const COMPANIES = [
   'DIGITAL TUTORS',
 ]
 
-// Awards data (from Awards.tsx)
 const AWARDS = [
   { achievement: 'WINNER', org: 'Webby Awards', year: '2023' },
   { achievement: 'BEST NEW STARTUP', org: 'TWIF', year: '2024' },
@@ -35,7 +33,6 @@ export function AuthoritySection() {
           overflow: 'hidden',
         }}
       >
-        {/* Left side - 3D Scene placeholder (rocket will be rendered by AuthorityScene) */}
         <div
           style={{
             flex: '0 0 40%',
@@ -45,10 +42,8 @@ export function AuthoritySection() {
             justifyContent: 'center',
           }}
         >
-          {/* 3D canvas renders here via SceneRenderer */}
         </div>
 
-        {/* Right side - Content */}
         <div
           style={{
             flex: '1 1 60%',
@@ -60,7 +55,6 @@ export function AuthoritySection() {
             zIndex: 2,
           }}
         >
-          {/* Section flag */}
           <span style={{
             ...SECTION_FLAG,
             color: 'var(--section-text)',
@@ -70,7 +64,6 @@ export function AuthoritySection() {
             THE AUTHORITY
           </span>
 
-          {/* Main headline */}
           <h2
             style={{
               fontFamily: 'var(--font-display)',
@@ -86,7 +79,6 @@ export function AuthoritySection() {
             PROVEN<br />CREW
           </h2>
 
-          {/* Pedigree section */}
           <div
             style={{
               marginBottom: '3rem',
@@ -134,7 +126,6 @@ export function AuthoritySection() {
             </div>
           </div>
 
-          {/* Awards grid */}
           <div>
             <p
               style={{
