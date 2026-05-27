@@ -6,17 +6,17 @@ import * as THREE from 'three'
 import { useSceneStore } from '@/store/scene-store'
 
 const POSITION_KEYFRAMES = [
-  new THREE.Vector3(0, 35, 130),
-  new THREE.Vector3(30, 50, 70),
-  new THREE.Vector3(15, 75, 30),
-  new THREE.Vector3(2, 90, 5),
+  new THREE.Vector3(0, 4, 30),
+  new THREE.Vector3(-5, 5, 18),
+  new THREE.Vector3(-4, 4, 8),
+  new THREE.Vector3(-3, 3.5, 3.5),
 ]
 
 const LOOKAT_KEYFRAMES = [
-  new THREE.Vector3(-7, 45, -8),
-  new THREE.Vector3(-7, 55, -8),
-  new THREE.Vector3(-7, 80, -8),
-  new THREE.Vector3(-7, 91, -8),
+  new THREE.Vector3(0, 5, 0),
+  new THREE.Vector3(-3, 4, 5),
+  new THREE.Vector3(-3, 3.5, 8),
+  new THREE.Vector3(-3, 3.2, 10),
 ]
 
 const positionCurve = new THREE.CatmullRomCurve3(POSITION_KEYFRAMES, false, 'centripetal', 0.5)

@@ -48,7 +48,7 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.0,
         }}
-        camera={{ position: [0, 35, 130], fov: 50, near: 0.1, far: 500 }}
+        camera={{ position: [0, 4, 30], fov: 50, near: 0.1, far: 500 }}
       >
         <Environment preset="sunset" background={false} />
         <ambientLight intensity={0.3} />
