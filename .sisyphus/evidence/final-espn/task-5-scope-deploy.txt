@@ -1,0 +1,76 @@
+COMMIT SCOPE AUDIT
+==================
+Total commits reviewed: 22 (includes 2 pre-implementation setup commits)
+
+SHA       | Scope               | Files (key)
+----------|---------------------|--------------------------------------------
+dd1d65d   | src/, .sisyphus/    | Awards.tsx, Capabilities.tsx, MissionCards.tsx, pnpm-workspace.yaml*
+6fbeb66   | src/, next.config   | ProblemScene.tsx, ScrollScene.tsx, ProblemSection.tsx, next.config.ts
+e831a5e   | .github/, src/      | deploy.yml, next.config.ts, DELETED src/app/api/telemetry/route.ts
+b672bd8   | src/, .sisyphus/    | layout.tsx, page.tsx, StaticHeroFallback.tsx
+74a802d   | src/                | globals.css, InteractiveRoom.tsx, HeroScene.tsx, ScrollScene.tsx, sections/*
+5967307   | src/                | SectionNav.tsx
+e17d5d0   | src/                | SceneRenderer.tsx, ScrollScene.tsx, useSceneLifecycle.ts, scene-store.ts
+de32b1a   | src/                | ProofScene.tsx, ProofSection.tsx
+5f00707   | src/                | ProblemScene.tsx, ProblemSection.tsx
+93d4b27   | src/                | AuthorityScene.tsx, AuthoritySection.tsx
+983eec4   | src/                | OrbitScene.tsx, OrbitSection.tsx
+7a89e63   | src/                | GuideScene.tsx, GuideSection.tsx
+4e77a10   | src/, .sisyphus/    | page.tsx, HeroOverlay.tsx, SectionNav.tsx, StatusBar.tsx, sections/*
+43632c3   | src/                | page.tsx, HeroOverlay.tsx
+b1cb07d   | src/                | scene-store.ts
+2eb6831   | src/                | SceneRenderer.tsx, ScrollScene.tsx
+87af1f1   | src/                | scene-store.ts
+1b935a2   | src/                | scenes/*, useDeviceTier.ts
+8305aaf   | src/, .sisyphus/    | globals.css, layout.tsx, scenes/*, components/*, hooks/*, styles/*
+b5b0747   | public/, scripts/*, .sisyphus/ | models/optimized/*, compress-models.sh*
+9474a2d   | .sisyphus/          | evidence/task-1-pin-*.png
+cfc094d   | public/, scripts/   | models/optimized/*, DELETED scripts/capture-fonts.ts*
+
+* = borderline scope (see notes below)
+
+SCOPE NOTES:
+- pnpm-workspace.yaml (dd1d65d): Package manager config, analogous to package.json. ACCEPTABLE.
+- scripts/compress-models.sh (b5b0747): Build tooling for asset optimization. ACCEPTABLE.
+- scripts/capture-fonts.ts (cfc094d): Removed unused script. ACCEPTABLE (cleanup).
+- src/app/api/telemetry/route.ts (e831a5e): DELETED — correctly removed as incompatible with output:'export'.
+
+HARD SCOPE VIOLATIONS: NONE
+BORDERLINE (acceptable): 3 files in scripts/ and pnpm-workspace.yaml
+
+DEPLOYMENT CONFIG
+=================
+.github/workflows/: EXISTS (deploy.yml, 34 lines)
+Workflow trigger: push to main
+Build command: npm run build (line 26)
+Output dir: ./out (publish_dir, line 32)
+Deploy target: GitHub Pages action (peaceiris/actions-gh-pages@v4) -> deploy branch
+Porkbun integration: Porkbun watches deploy branch via GitHub Connect
+Deploy tool: peaceiris/actions-gh-pages@v4 with force_orphan
+Permissions: contents: write (for pushing to deploy branch)
+Auth: ${{ secrets.GITHUB_TOKEN }} (built-in, no external secret needed)
+
+output: 'export' in next.config.ts: YES (line 4)
+images.unoptimized: true (required for static export)
+transpilePackages: three, @react-three/fiber, @react-three/drei, @react-three/postprocessing
+
+SECRETS SCAN
+============
+Method 1: grep for API_KEY|SECRET|PASSWORD|PRIVATE_KEY in .github/ and src/ — CLEAN (no output)
+Method 2: Deep scan of all added files for secret patterns — FALSE POSITIVES ONLY
+  - Binary files (GLB, PNG) matched random byte patterns
+  - Text files matched file path references containing "task-"
+  - No actual credentials, API keys, or private keys found
+Result: CLEAN
+
+VERDICT: PASS
+
+All 22 commits are correctly scoped to expected directories.
+Deployment pipeline is properly configured for Porkbun Static Hosting.
+Static export is enabled. No secrets committed.
+
+Issues: None blocking.
+Minor observations:
+  1. 22 commits found vs "20" mentioned in task — 2 are pre-implementation (spike + cleanup)
+  2. scripts/ directory not in original expected scope list but contains legitimate build tooling
+  3. pnpm-workspace.yaml is an acceptable package manager config addition

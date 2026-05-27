@@ -68,6 +68,15 @@ export const ASSET_INVENTORY: ModelMeta[] = [
     description: 'Earth - full detail for orbit view',
   },
 
+  // Beat 6: CTA (Earth from orbit, peaceful)
+  {
+    path: '/models/optimized/earth.glb',
+    fileSize: 786432,
+    hasAnimations: false,
+    beat: 6,
+    description: 'Earth from stable orbit — CTA section peaceful view (reuses Beat 3 model)',
+  },
+
   // Beat 4: Constellation (Mission nodes as planets)
   {
     path: '/models/optimized/various-planets.glb',

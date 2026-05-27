@@ -1,0 +1,56 @@
+=== TASK 1: CONFIG REVERT & DEV SERVER START ===
+Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+## STEP 1: REVERT next.config.ts
+Command: git checkout -- next.config.ts
+Status: ✅ SUCCESS
+Output: (no output - file reverted to committed state)
+
+## STEP 2: VERIFY CLEAN WORKING TREE
+Command: git status --short
+Status: ✅ SUCCESS
+Output:
+?? .sisyphus/boulder.json
+?? .sisyphus/plans/espn-final-verification.md
+(Only untracked .sisyphus files - working tree clean)
+
+## STEP 3: BUILD VERIFICATION
+Command: npm run build
+Status: ✅ SUCCESS (exit 0)
+Output Summary:
+- Next.js 16.2.6 (Turbopack)
+- Compiled successfully in 3.0s
+- TypeScript check: PASSED in 2.1s
+- Static page generation: 6/6 pages ✓
+- Routes: / (○), /_not-found (○), /spike (○), /spike/fonts (○)
+
+## STEP 4: PORT CLEANUP
+Command: lsof -ti:3005 | xargs kill -9 2>/dev/null || true
+Status: ✅ SUCCESS
+Output: Port 3005 cleared
+
+## STEP 5: TMUX SESSION & DEV SERVER START
+Command: tmux new-session -d -s lcl-dev -c /Users/chikochingaya/Projects/launchcontrollabs.com "npx next dev -p 3005"
+Status: ✅ SUCCESS
+Session: lcl-dev
+Port: 3005
+
+## STEP 6: DEV SERVER VERIFICATION
+Command: curl -sI http://localhost:3005
+Status: ✅ SUCCESS (HTTP 200)
+Output:
+HTTP/1.1 200 OK
+Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding
+link: </_next/static/media/0c89a48fa5027cee-s.p.0rd3rjvnnhw7n.woff2>; rel=preload; as="font"; crossorigin=""; type="font/woff2", </_next/static/media/9e9f04e3c37952ab-s.p.07uvnuj.ona6k.woff2>; rel=preload; as="font"; crossorigin=""; type="font/woff2"
+Cache-Control: no-cache, must-revalidate
+X-Powered-By: Next.js
+
+## FINAL STATUS
+✅ All tasks completed successfully:
+- [x] next.config.ts reverted to committed state (turbopack root removed)
+- [x] git status --short shows clean working tree
+- [x] npm run build exits 0 with no TypeScript errors
+- [x] Dev server running in tmux session lcl-dev on port 3005
+- [x] curl -sI http://localhost:3005 returns HTTP 200
+- [x] Evidence saved to .sisyphus/evidence/final-espn/task-1-config-revert.txt
+

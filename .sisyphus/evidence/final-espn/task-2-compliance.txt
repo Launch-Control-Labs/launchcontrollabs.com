@@ -1,0 +1,96 @@
+MUST HAVE CHECKLIST
+===================
+
+[PASS] Pixar narrative arc — src/components/ScrollScene.tsx:30-37
+       Section order: hero → problem → guide → proof → authority → orbit
+       Maps to: Promise → Problem → Guide → Proof → Authority → Orbit ✓
+
+[PASS] ESPN-scale typography (13vw+) — Multiple evidence:
+       src/styles/section-constants.ts:15  — clamp(5rem, 13vw, 16rem)
+       src/components/HeroOverlay.tsx:63   — clamp(4.5rem, 13vw, 13rem)
+       src/components/sections/AuthoritySection.tsx:71 — clamp(5rem, 13vw, 16rem)
+       src/components/sections/HeroSection.tsx:136     — clamp(4.5rem, 13vw, 13rem)
+
+[PASS] 3D asset per section — GLB model loaded in each:
+       Hero:      InteractiveRoom.tsx loads space-shuttle.glb, astronaut-converted.glb, smoke.glb
+       Problem:   ProblemScene.tsx:10 loads drifting-astronaut.glb
+       Guide:     GuideScene.tsx:16 loads space-shuttle.glb
+       Proof:     ProofScene.tsx:11 loads various-planets.glb
+       Authority: AuthorityScene.tsx:11 loads apollo-saturn-v.glb
+       Orbit:     OrbitScene.tsx:13 loads earth.glb
+
+[PASS] Bold monochromatic color per section — src/styles/section-constants.ts:97-147
+       SECTION_THEMES object defines unique accent colors:
+       hero=#22D3EE, problem=#DC2626, guide=#2563EB, proof=#F59E0B, authority=#FFFFFF, orbit=#4ADE80
+
+[PASS] Mobile-functional (device tier system) — 19 matches across 8 files:
+       src/hooks/useDeviceTier.ts:49       — hook definition (tier 1/2/3)
+       src/hooks/useIsMobile.ts:7          — mobile detection hook
+       src/store/scene-store.ts:11         — deviceTier state
+       src/components/ScrollScene.tsx:55    — uses useDeviceTier()
+       src/components/3d/InteractiveRoom.tsx:156 — tier-based rendering
+       src/components/3d/scenes/HeroScene.tsx:11 — tier-gated effects
+       src/app/page.tsx:25                 — isMobile fallback to StaticHeroFallback
+
+[PASS] Single-canvas architecture — 1 production Canvas:
+       src/components/ScrollScene.tsx:149   — THE production Canvas
+       (ControlRoomScene.tsx has Canvas but is dead code — not imported anywhere)
+       (spike/ScrollPinSpike.tsx has Canvas but is prototype/spike route)
+
+[PASS] Lazy-load secondary models — Patterns found (20 matches):
+       useGLTF.preload() in all 6 scene files for model preloading
+       Suspense wrappers: page.tsx:45, HeroScene.tsx:20
+       Dynamic import: page.tsx:19 (ScrollScene loaded via next/dynamic)
+
+[PASS] Dispose GPU resources — 8 matches in screen-textures:
+       src/components/3d/screen-textures/index.ts:69-71     — disposeScreenTextures()
+       src/components/3d/screen-textures/DataVizScreen.ts:111-112
+       src/components/3d/screen-textures/StatusScreen.ts:128-129
+       src/components/3d/screen-textures/CodeScreen.ts:127-128
+
+
+MUST NOT HAVE CHECKLIST
+=======================
+
+[FAIL] No custom shaders — 5 matches found:
+       src/shaders/control-room-shader/index.ts:3   — vertexShader = /* glsl */
+       src/shaders/control-room-shader/index.ts:15  — fragmentShader = /* glsl */
+       src/shaders/control-room-shader/index.ts:65  — THREE.ShaderMaterial
+       src/shaders/control-room-shader/index.ts:83  — new THREE.ShaderMaterial({...})
+       src/components/3d/screen-textures/index.ts:50 — type assertion as THREE.ShaderMaterial
+       NOTE: The shader file exists but is DEAD CODE (not imported anywhere in production).
+       The screen-textures reference is a type assertion, not shader creation.
+       SEVERITY: Low — dead code, not shipped to client.
+
+[PASS] No new particle systems — 0 matches for Points/BufferGeometry particles/particleSystem
+       (Existing Particles.tsx is hero-only, pre-existing, not NEW)
+
+[PASS] No horizontal scroll — 0 matches for overflow-x: scroll/auto
+
+[PASS] No CSS scroll-snap — 0 matches for scroll-snap
+
+[PASS] No extra fonts beyond 4 — Production fonts (4 total):
+       layout.tsx: Anton, Space_Grotesk (next/font/google)
+       globals.css:1 — @import IBM Plex Mono, Inter (Google Fonts)
+       All 4 are in the allowed list: Anton, Space Grotesk, Inter, IBM Plex Mono ✓
+       NOTE: spike/fonts/page.tsx imports Bebas_Neue but that's a dev spike route, not production.
+
+[PASS] No more than 6 sections — Exactly 6 narrative sections:
+       ScrollScene.tsx:30-37 — SECTION_IDS = [hero, problem, guide, proof, authority, orbit]
+       (Additional HTML sections below ScrollScene are standard page content, not 3D narrative sections)
+
+
+VERDICT: CONDITIONAL PASS
+=========================
+
+Failures:
+1. [FAIL] No custom shaders — src/shaders/control-room-shader/index.ts exists with
+   ShaderMaterial + GLSL code. However, this is DEAD CODE: it is not imported anywhere
+   in the production codebase (verified via grep for imports). The file should be deleted
+   for full compliance but does not affect runtime behavior.
+
+Recommendation:
+- Delete src/shaders/control-room-shader/ directory to achieve full PASS
+- Current state: ships no custom shaders to the client (dead code tree-shaken out)
+- Strict interpretation: FAIL (file exists in src/)
+- Practical interpretation: PASS (never imported, never executed)

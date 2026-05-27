@@ -53,18 +53,22 @@ export function useDeviceTier(): 1 | 2 | 3 {
     const detectedTier = detectDeviceTier()
     setTier(detectedTier)
 
-    // Expose for Playwright testing
     if (typeof window !== 'undefined') {
       ;(window as any).__deviceTier = detectedTier
     }
 
-    // Listen for resize events to recalculate
     const handleResize = () => {
       const newTier = detectDeviceTier()
-      if (newTier !== detectedTier) {
-        setTier(newTier)
-        ;(window as any).__deviceTier = newTier
-      }
+      // Use functional update to compare against CURRENT state, not captured value
+      setTier(prev => {
+        if (newTier !== prev) {
+          if (typeof window !== 'undefined') {
+            ;(window as any).__deviceTier = newTier
+          }
+          return newTier
+        }
+        return prev
+      })
     }
 
     window.addEventListener('resize', handleResize)

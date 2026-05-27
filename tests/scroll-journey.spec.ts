@@ -6,8 +6,12 @@ test.describe('LCL Scroll Journey - Visual QA', () => {
   })
 
   test.describe('Beat Visibility', () => {
-    test.skip('Beat 1: Pre-Launch hero content visible at scroll 0%', async ({ page }) => {
-      // TODO: Assert hero content visible at top of page
+    test('Beat 1: Pre-Launch hero content visible at scroll 0%', async ({ page }) => {
+      await page.goto('/')
+      await page.waitForLoadState('networkidle')
+      // Hero content should be visible at top
+      const heroText = page.locator('text=LAUNCH CONTROL LABS')
+      await expect(heroText).toBeVisible({ timeout: 10000 })
     })
 
     test.skip('Beat 2: Ascent/Problem content visible at scroll 25%', async ({ page }) => {
