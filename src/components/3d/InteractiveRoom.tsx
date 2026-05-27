@@ -47,7 +47,7 @@ function Rocket({ modelPath }: { modelPath: string }) {
     const box = new THREE.Box3().setFromObject(scene)
     const center = box.getCenter(new THREE.Vector3())
     scene.position.sub(center)
-    setScale(normalizeToHeight(scene, 7))
+    setScale(normalizeToHeight(scene, 9))
     processed.current = true
   }, [scene])
 
@@ -55,16 +55,13 @@ function Rocket({ modelPath }: { modelPath: string }) {
     if (!groupRef.current) return
     const t = state.clock.elapsedTime
 
-    zOffset.current += delta * 0.12
-    if (zOffset.current > 3.5) zOffset.current = 0
-
-    groupRef.current.position.z = zOffset.current
-    groupRef.current.position.x = Math.sin(t * 0.07) * 0.15
-    groupRef.current.position.y = -1 + Math.sin(t * 0.11) * 0.08
+    groupRef.current.position.x = Math.sin(t * 0.05) * 0.3
+    groupRef.current.position.y = -8 + Math.sin(t * 0.08) * 0.2
+    groupRef.current.position.z = -20 + Math.sin(t * 0.06) * 0.4
   })
 
   return (
-    <group ref={groupRef} scale={[scale, scale, scale]} position={[0, -1, 0]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
+    <group ref={groupRef} scale={[scale, scale, scale]} position={[0, -8, -20]} rotation={[Math.PI / 2.5, Math.PI, 0]}>
       <primitive object={scene} />
     </group>
   )
@@ -75,7 +72,7 @@ function Astronaut({ modelPath }: { modelPath: string }) {
   const groupRef = useRef<THREE.Group>(null)
   const { actions } = useAnimations(animations, groupRef)
   const t = useRef(0)
-  const origin = useRef(new THREE.Vector3(6, 2, -4))
+  const origin = useRef(new THREE.Vector3(6, 2, -5))
 
   useLayoutEffect(() => {
     if (!scene) return
@@ -122,11 +119,11 @@ function Astronaut({ modelPath }: { modelPath: string }) {
   })
 
   return (
-    <group ref={groupRef} position={[6, 2, -4]}>
+    <group ref={groupRef} position={[6, 2, -5]}>
       <primitive
         object={scene}
-        scale={[2.2, 2.2, 2.2]}
-        rotation={[0.05, 0.4, 0.08]}
+        scale={[3.0, 3.0, 3.0]}
+        rotation={[0.05, -0.3, 0.08]}
       />
     </group>
   )

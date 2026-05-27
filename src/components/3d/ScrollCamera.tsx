@@ -25,8 +25,8 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
 
   useEffect(() => {
     camera.rotation.order = 'YXZ'
-    camera.position.set(0, -6, 28)
-    camera.lookAt(0, -2, 0)
+    camera.position.set(0, 3, 30)
+    camera.lookAt(0, -2, -10)
 
     const container = containerRef.current
     if (!container) return
@@ -66,11 +66,11 @@ export function ScrollCamera({ containerRef }: ScrollCameraProps) {
   }, [camera, containerRef, setInteractionEnabled])
 
   useFrame(() => {
-    // Z drift: from 25 (far) to 18 (closer) as user scrolls
-    const targetZ = 28 - scrollProgress.current * 4
+    const targetZ = 30 - scrollProgress.current * 10
+    const targetY = 3 - scrollProgress.current * 2
     camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.05)
     camera.position.x = THREE.MathUtils.lerp(camera.position.x, 0, 0.05)
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, -6, 0.05)
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.05)
 
     // Mouse parallax — subtle rotation (skip if prefers-reduced-motion)
     if (!prefersReducedMotion.current) {

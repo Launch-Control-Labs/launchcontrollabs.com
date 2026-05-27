@@ -8,6 +8,7 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { ScrollCamera } from './ScrollCamera'
 import { InteractiveRoom } from './InteractiveRoom'
 import { Particles } from './Particles'
+import { HeroOverlay } from '@/components/HeroOverlay'
 
 interface ControlRoomSceneProps {
   containerRef: React.RefObject<HTMLElement | null>
@@ -47,17 +48,18 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
           alpha: false,
           outputColorSpace: THREE.SRGBColorSpace,
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 0.7,
+          toneMappingExposure: 0.85,
         }}
-        camera={{ position: [0, -6, 28], fov: 42, near: 0.1, far: 2000 }}
+        camera={{ position: [0, 3, 30], fov: 50, near: 0.1, far: 2000 }}
       >
         <color attach="background" args={['#020914']} />
 
-        {/* Sun key light */}
-        <directionalLight position={[80, 40, 60]} intensity={1.8} color="#ffffff" />
-        <hemisphereLight args={['#0d1a3a', '#020914', 0.2]} />
-        <pointLight position={[-40, 20, 40]} intensity={0.7} color="#22d3ee" distance={120} />
-        <pointLight position={[7, 3, -10]} intensity={1.2} color="#ffffff" distance={40} />
+        {/* Cinematic 3-light setup — key, fill, rim */}
+        <directionalLight position={[80, 40, 60]} intensity={2.5} color="#ffffff" castShadow={false} />
+        <hemisphereLight args={['#1a1a3e', '#020914', 0.4]} />
+        <pointLight position={[-40, 20, 40]} intensity={1.2} color="#22d3ee" distance={200} />
+        {/* Back rim on shuttle */}
+        <pointLight position={[0, -5, -25]} intensity={0.6} color="#22d3ee" distance={60} />
 
         <ScrollCamera containerRef={containerRef} />
 
@@ -67,93 +69,17 @@ export default function ControlRoomScene({ containerRef }: ControlRoomSceneProps
           <Particles />
         </Suspense>
 
-        {/* Fog only affects close range — planets/stars use fog={false} on their materials */}
-        <fogExp2 attach="fog" args={['#020914', 0.003]} />
+        {/* Atmospheric depth fog — denser than before */}
+        <fogExp2 attach="fog" args={['#020914', 0.008]} />
 
         <EffectComposer>
-          <Bloom luminanceThreshold={0.85} luminanceSmoothing={0.9} intensity={0.2} mipmapBlur />
+          <Bloom luminanceThreshold={0.6} luminanceSmoothing={0.9} intensity={0.4} mipmapBlur />
         </EffectComposer>
       </Canvas>
 
-      <div ref={overlayRef} style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}>
-        <div style={{
-          padding: '0',
-          paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)',
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            marginBottom: '0.3rem',
-          }}>
-            <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.75rem, 1.2vw, 1.1rem)',
-              letterSpacing: '0.2em',
-              color: 'rgba(255,255,255,0.35)',
-              textTransform: 'uppercase',
-            }}>Product Studio · Dallas · Barcelona · Miami</span>
-            <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.75rem, 1.2vw, 1.1rem)',
-              letterSpacing: '0.2em',
-              color: 'rgba(34,211,238,0.5)',
-              textTransform: 'uppercase',
-            }}>Est. 2021</span>
-          </div>
-
-          <div style={{ position: 'relative' }}>
-            <h1 style={{
-              fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(4.5rem, 16vw, 20rem)',
-              lineHeight: 0.82,
-              letterSpacing: '-0.04em',
-              color: '#FFFFFF',
-              textTransform: 'uppercase',
-              margin: 0,
-              opacity: 0.95,
-              whiteSpace: 'nowrap',
-            }}>
-              LAUNCH CONTROL
-            </h1>
-            <div style={{
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-              marginTop: '-0.06em',
-            }}>
-              <p style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(1rem, 1.8vw, 1.6rem)',
-                letterSpacing: '0.12em',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.5)',
-                textTransform: 'uppercase',
-                margin: 0,
-                maxWidth: '28ch',
-                lineHeight: 1.4,
-              }}>From idea to shipped product. No guessing.</p>
-              <h2 style={{
-                fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(4.5rem, 16vw, 20rem)',
-                lineHeight: 0.82,
-                letterSpacing: '-0.01em',
-                color: '#FFFFFF',
-                textTransform: 'uppercase',
-                margin: 0,
-                opacity: 0.95,
-                textShadow: '0 0 60px rgba(34, 211, 238, 0.25)',
-              }}>LABS</h2>
-            </div>
-          </div>
-        </div>
+      {/* Hero text overlay — fades on scroll */}
+      <div ref={overlayRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        <HeroOverlay />
       </div>
     </div>
   )
