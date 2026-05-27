@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export function StaticHeroFallback() {
   return (
     <div style={{
@@ -7,12 +9,13 @@ export function StaticHeroFallback() {
       background: '#060E1C',
       overflow: 'hidden',
     }}>
-      <img
+      <Image
         src="/images/hero-static.webp"
         alt="LCL Control Room"
+        fill
+        priority
+        sizes="100vw"
         style={{
-          width: '100%',
-          height: '100%',
           objectFit: 'cover',
           opacity: 0.85,
         }}
