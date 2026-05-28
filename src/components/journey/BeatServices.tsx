@@ -85,12 +85,12 @@ export function BeatServices() {
       <h2
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(4rem, 12vw, 11rem)',
+          fontSize: 'clamp(2rem, 6vw, 6rem)',
           lineHeight: 0.78,
           letterSpacing: '-0.04em',
           textTransform: 'uppercase',
           color: '#FFFFFF',
-          margin: 'clamp(3rem, 8vw, 6rem) 0 clamp(0.5rem, 1.5vw, 1rem)',
+          margin: 'clamp(1.5rem, 4vw, 3rem) 0 clamp(0.4rem, 1vw, 0.75rem)',
           textShadow: '0 4px 40px rgba(0,0,0,0.6)',
           maxWidth: '85vw',
         }}
@@ -108,7 +108,7 @@ export function BeatServices() {
           letterSpacing: '0.12em',
           textTransform: 'uppercase',
           maxWidth: '50ch',
-          margin: '0 0 clamp(2rem, 5vw, 4rem)',
+          margin: '0 0 clamp(1rem, 2vw, 2rem)',
           lineHeight: 1.6,
         }}
       >
@@ -136,7 +136,7 @@ export function BeatServices() {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            minHeight: 'clamp(280px, 35vh, 400px)',
+            minHeight: 'clamp(200px, 28vh, 320px)',
             borderLeft: '4px solid #22D3EE',
           }}
         >
