@@ -266,13 +266,17 @@ function AstronautModel() {
 
   useEffect(() => {
     const firstAction = Object.values(actions)[0]
-    if (firstAction) firstAction.play()
+    if (firstAction) {
+      firstAction.play()
+      firstAction.setEffectiveTimeScale(0.4) // Slow, dreamy zero-g movement
+      firstAction.setLoop(THREE.LoopRepeat, Infinity)
+    }
   }, [actions])
 
   useEffect(() => {
     const toRemove: THREE.Object3D[] = []
     scene.traverse((child: any) => {
-      if (child.name && child.name.toLowerCase().includes('rope')) {
+      if (child.name && (child.name.toLowerCase().includes('rope') || child.name.toLowerCase().includes('wire'))) {
         toRemove.push(child)
         return
       }
@@ -306,9 +310,9 @@ function AstronautModel() {
 
     groupRef.current.position.set(astroX, astroY, astroZ)
 
-    groupRef.current.rotation.y = Math.sin(t * 0.18) * 0.35
-    groupRef.current.rotation.z = Math.sin(t * 0.12 + 1.2) * 0.15
-    groupRef.current.rotation.x = Math.sin(t * 0.09 + 2.4) * 0.08
+    // Gentle whole-body tumble layered on skeletal animation
+    groupRef.current.rotation.y += 0.0003 * Math.sin(t * 0.1)
+    groupRef.current.rotation.x += 0.0001 * Math.sin(t * 0.07 + 1.5)
 
     scene.traverse((child: any) => {
       if (child.isMesh) {
