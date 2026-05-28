@@ -52,7 +52,8 @@ function ShuttleModel() {
       // Rule 1: Name-based filter (defense-in-depth)
       if (name.includes('antenna') || name.includes('wire') ||
           name.includes('cable') || name.includes('tether') ||
-          name.includes('rope') || name.includes('rocket_details')) {
+          name.includes('rope') || name.includes('rocket_details') ||
+          name.includes('tube')) {
         toRemove.push(child)
         return
       }
@@ -263,7 +264,7 @@ function AstronautModel() {
   useEffect(() => {
     scene.traverse((child) => {
       if (child.name === 'Rope_Mat_0' || child.name === 'Rope_tip_Chrome_0') {
-        child.visible = true
+        child.visible = false
       }
     })
   }, [scene])
