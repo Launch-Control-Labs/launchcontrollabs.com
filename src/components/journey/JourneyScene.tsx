@@ -272,7 +272,7 @@ function AstronautModel() {
   useEffect(() => {
     const toRemove: THREE.Object3D[] = []
     scene.traverse((child) => {
-      if (child.name === 'Rope_Mat_0' || child.name === 'Rope_tip_Chrome_0') {
+      if (child.name.toLowerCase().includes('rope')) {
         toRemove.push(child)
       }
     })
