@@ -237,7 +237,7 @@ function ShuttleModel() {
 
     const bayProgress = THREE.MathUtils.clamp((scrollProgress - 0.65) / 0.07, 0, 1)
     if (bayDoorRef.current) {
-      bayDoorRef.current.rotation.x = bayProgress * Math.PI * 0.6
+      bayDoorRef.current.rotation.z = bayProgress * Math.PI * 0.6
     }
 
     const astroGroup = astronautGroupRef.current
@@ -255,9 +255,9 @@ function ShuttleModel() {
           reparentedRef.current = false
         }
         const emergeProgress = (scrollProgress - 0.70) / 0.08
-        astroGroup.position.y = THREE.MathUtils.lerp(0.5, 4, emergeProgress)
-        astroGroup.position.x = THREE.MathUtils.lerp(0, 1, emergeProgress)
-        astroGroup.position.z = THREE.MathUtils.lerp(-1, 2, emergeProgress)
+        astroGroup.position.y = THREE.MathUtils.lerp(0, 3, emergeProgress)
+        astroGroup.position.x = THREE.MathUtils.lerp(0, 0.5, emergeProgress)
+        astroGroup.position.z = THREE.MathUtils.lerp(0, 2, emergeProgress)
         astroGroup.traverse((child: any) => {
           if (child.isMesh && child.material) {
             const mat = child.material
@@ -272,8 +272,8 @@ function ShuttleModel() {
         }
         const driftProgress = (scrollProgress - 0.78) / 0.22
         const shuttleY = scrollProgress * 50
-        astroGroup.position.x = 5 + 1 + driftProgress * 3
-        astroGroup.position.y = shuttleY + 4 + driftProgress * 5
+        astroGroup.position.x = 5 + 0.5 + driftProgress * 4
+        astroGroup.position.y = shuttleY + 3 + driftProgress * 6
         astroGroup.position.z = 2 + driftProgress * 8
         astroGroup.rotation.y += 0.002
         astroGroup.rotation.x = Math.sin(driftProgress * 2) * 0.3
@@ -308,7 +308,7 @@ function ShuttleModel() {
         visible={exhaustVisible}
         srbAttached={scrollProgress < 0.22}
       />
-      <group ref={astronautGroupRef} visible={false} position={[0, 0.5, -1]} scale={1.1}>
+      <group ref={astronautGroupRef} visible={false} position={[0, 0, 0]} scale={0.25}>
         <primitive object={astronautGltf.scene} />
       </group>
     </group>
