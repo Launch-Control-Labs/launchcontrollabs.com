@@ -42,21 +42,23 @@ function ShuttleModel() {
     srbRightRef.current = scene.getObjectByName('Small_Rocket_Group_02') || null
     etRef.current = scene.getObjectByName('Orange_Parts') || null
 
+    const toRemove: THREE.Object3D[] = []
     scene.traverse((child: any) => {
       const name = child.name.toLowerCase()
       if (name.includes('antenna') || name.includes('wire') ||
           name.includes('cable') || name.includes('tether') ||
           name.includes('rope') || name.includes('rocket_details')) {
-        child.visible = false
+        toRemove.push(child)
       }
       if (child.isMesh && child.geometry) {
         const box = new THREE.Box3().setFromObject(child)
         const s = box.getSize(new THREE.Vector3())
         if (Math.min(s.x, s.y, s.z) < 0.15 && Math.max(s.x, s.y, s.z) > 1) {
-          child.visible = false
+          toRemove.push(child)
         }
       }
     })
+    toRemove.forEach(obj => obj.removeFromParent())
   }, [scene])
 
   const { computedScale, nozzleY, centerOffset } = useMemo(() => {
