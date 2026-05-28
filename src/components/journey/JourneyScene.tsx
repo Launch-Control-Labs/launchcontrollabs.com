@@ -46,7 +46,8 @@ function ShuttleModel() {
     scene.traverse((child) => {
       const name = child.name.toLowerCase()
       if (name.includes('antenna') || name.includes('wire') ||
-          name.includes('cable') || name.includes('tether')) {
+          name.includes('cable') || name.includes('tether') ||
+          name.includes('rope')) {
         child.visible = false
       }
     })
