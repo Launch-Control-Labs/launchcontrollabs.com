@@ -77,12 +77,37 @@ function ShuttleModel() {
   )
 }
 
-function DriftingAstronautModel() {
-  const visible = useBeatVisible(0.15, 0.38)
-  const groupRef = useRef<Group>(null)
+function EarthModel() {
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const { scene } = useGLTF('/models/optimized/earth.glb')
+  const ref = useRef<THREE.Group>(null)
+  const { position, rotation, scale } = SCENE_POSITIONS.earth
+
+  // Visible 50-80%
+  const visible = scrollProgress >= 0.47 && scrollProgress <= 0.83
+
+  useFrame((_, delta) => {
+    if (!ref.current) return
+    ref.current.rotation.y += 0.003 * delta
+  })
+
+  if (!visible) return null
+  return (
+    <group ref={ref} position={position} rotation={rotation} scale={scale}>
+      <primitive object={scene} />
+    </group>
+  )
+}
+
+function AstronautModel() {
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const groupRef = useRef<THREE.Group>(null)
   const { scene, animations } = useGLTF('/models/optimized/drifting-astronaut.glb')
   const { actions } = useAnimations(animations, groupRef)
-  const { position, rotation, scale } = SCENE_POSITIONS.driftingAstronaut
+  const { position, rotation, scale } = SCENE_POSITIONS.astronaut
+
+  // Visible from 75%+
+  const visible = scrollProgress >= 0.72
 
   useEffect(() => {
     const firstAction = Object.values(actions)[0]
@@ -105,12 +130,35 @@ function EarthModel() {
   return <primitive object={scene} position={position} rotation={rotation} scale={scale} />
 }
 
-function PlanetsModel() {
-  const visible = useBeatVisible(0.50, 0.85)
+function PlanetDriftModel() {
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const { scene } = useGLTF('/models/optimized/various-planets.glb')
+  const ref = useRef<Group>(null)
   const { position, rotation, scale } = SCENE_POSITIONS.planets
+
+  // Visible 35-55% scroll
+  const visible = scrollProgress >= 0.30 && scrollProgress <= 0.58
+
+  useFrame((_, delta) => {
+    if (!ref.current || !visible) return
+    ref.current.rotation.y += 0.02 * delta
+    ref.current.position.z += 0.5 * delta
+  })
+
   if (!visible) return null
-  return <primitive object={scene} position={position} rotation={rotation} scale={scale} />
+  return (
+    <group ref={ref} position={position} rotation={rotation} scale={scale}>
+      <primitive object={scene} />
+    </group>
+  )
+}
+
+function StarFieldWrapper() {
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  // Stars fade in from 25% to 35% scroll
+  const opacity = THREE.MathUtils.clamp((scrollProgress - 0.25) / 0.10, 0, 1)
+  if (opacity <= 0) return null
+  return <StarField opacity={opacity} />
 }
 
 function SaturnVModel() {
@@ -174,8 +222,9 @@ export function JourneyScene() {
         <EarthModel />
       </Suspense>
       <Suspense fallback={null}>
-        <PlanetsModel />
+        <PlanetDriftModel />
       </Suspense>
+      <StarFieldWrapper />
       <Suspense fallback={null}>
         <SaturnVModel />
       </Suspense>
