@@ -265,6 +265,7 @@ function EarthModel() {
 function AstronautModel() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const groupRef = useRef<THREE.Group>(null)
+  const astronautMatsRef = useRef<THREE.Material[]>([])
   const { scene, animations } = useGLTF('/models/astronaut-converted.glb')
   const { actions } = useAnimations(animations, groupRef)
   const { rotation, scale } = SCENE_POSITIONS.astronaut
@@ -325,6 +326,15 @@ function AstronautModel() {
         mats.forEach((m: any) => { if (m) { m.transparent = true; m.opacity = 0 } })
       }
     })
+
+    const cachedMats: THREE.Material[] = []
+    scene.traverse((child: any) => {
+      if (child.isMesh && child.visible !== false) {
+        const ms = Array.isArray(child.material) ? child.material : [child.material]
+        ms.forEach((m: any) => { if (m && !cachedMats.includes(m)) cachedMats.push(m) })
+      }
+    })
+    astronautMatsRef.current = cachedMats
   }, [scene])
 
   useFrame(() => {
@@ -346,12 +356,7 @@ function AstronautModel() {
     groupRef.current.rotation.y += 0.0003 * Math.sin(t * 0.1)
     groupRef.current.rotation.x += 0.0001 * Math.sin(t * 0.07 + 1.5)
 
-    scene.traverse((child: any) => {
-      if (child.isMesh) {
-        const mats = Array.isArray(child.material) ? child.material : [child.material]
-        mats.forEach((m: any) => { if (m && m.transparent) m.opacity = fadeIn })
-      }
-    })
+    astronautMatsRef.current.forEach(m => { (m as any).opacity = fadeIn })
   })
 
   if (!shouldRender) return null
@@ -377,6 +382,10 @@ function EVATether() {
     opacity: 0.85,
   }), [])
 
+  const hullPosRef = useRef(new THREE.Vector3())
+  const astroPosRef = useRef(new THREE.Vector3())
+  const midRef = useRef(new THREE.Vector3())
+
   useFrame(() => {
     if (!meshRef.current || !visible) {
       if (meshRef.current) meshRef.current.visible = false
@@ -387,17 +396,19 @@ function EVATether() {
     const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
     const shuttleY = scrollProgress * 50
 
-    const hullPos = new THREE.Vector3(5, shuttleY + 0.5, 0)
-    const astroPos = new THREE.Vector3(
+    hullPosRef.current.set(5, shuttleY + 0.5, 0)
+    astroPosRef.current.set(
       5 + driftProgress * 3,
       shuttleY + 0.5 + driftProgress * 5,
-      0 + driftProgress * 6
+      driftProgress * 6
     )
+    midRef.current.lerpVectors(hullPosRef.current, astroPosRef.current, 0.5)
+    midRef.current.y -= 0.3 + driftProgress * 1.2
 
-    const mid = new THREE.Vector3().lerpVectors(hullPos, astroPos, 0.5)
-    mid.y -= 0.3 + driftProgress * 1.2
-
-    const curve = new THREE.CatmullRomCurve3([hullPos, mid, astroPos], false, 'catmullrom', 0.5)
+    const curve = new THREE.CatmullRomCurve3(
+      [hullPosRef.current.clone(), midRef.current.clone(), astroPosRef.current.clone()],
+      false, 'catmullrom', 0.5
+    )
     const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.03 + driftProgress * 0.01, 8, false)
 
     if (meshRef.current.geometry) meshRef.current.geometry.dispose()
