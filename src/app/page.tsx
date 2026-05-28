@@ -1,43 +1,51 @@
+'use client'
+
+import { Suspense } from 'react'
+import { useExperienceMode } from '@/hooks/useExperienceMode'
+import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
+import { SceneLoadingState } from '@/components/3d/SceneLoadingState'
 import StatusBar from '@/components/StatusBar'
-import Hero from '@/components/Hero'
-import MissionNarrative from '@/components/MissionNarrative'
-import MissionCards from '@/components/MissionCards'
-import Capabilities from '@/components/Capabilities'
-import CompanyTicker from '@/components/CompanyTicker'
-import Brief from '@/components/Brief'
+import SectionNav from '@/components/SectionNav'
+import { ScrollJourney } from '@/components/ScrollJourney'
+import { JourneyScene } from '@/components/journey/JourneyScene'
+import { BeatOverlays } from '@/components/journey/BeatOverlays'
+import { MobileExperience } from '@/components/MobileExperience'
+import { StaticContent } from '@/components/StaticContent'
+import { SmoothScrollProvider } from '@/components/SmoothScroll'
 
 export default function Home() {
+  const experienceMode = useExperienceMode()
+
   return (
     <>
-      <StatusBar />
-
-      <main>
-        <Hero />
-        <MissionNarrative />
-        <MissionCards />
-        <Capabilities />
-        <CompanyTicker />
-        <Brief />
-      </main>
-
-      <footer
-        style={{
-          borderTop: '1px solid var(--border-subtle)',
-          padding: 'var(--space-5) 2rem',
-          maxWidth: '900px',
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontSize: '0.6rem',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          color: 'var(--text-muted)',
-        }}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:bg-[#080810] focus:text-[#22D3EE] focus:px-4 focus:py-2 focus:border focus:border-[#22D3EE] focus:rounded focus:text-sm focus:no-underline"
       >
-        <span>© 2026 Launch Control Labs</span>
-        <span>Los Angeles, CA</span>
-      </footer>
+        Skip to content
+      </a>
+      <StatusBar />
+      <SectionNav />
+
+      <SmoothScrollProvider>
+        <main id="main-content" data-experience-mode={experienceMode}>
+          <div style={{ minHeight: '100vh', position: 'relative' }}>
+            {experienceMode === '3d' ? (
+              <SceneErrorBoundary>
+                <Suspense fallback={<SceneLoadingState />}>
+                  <ScrollJourney scene={<JourneyScene />}>
+                    <BeatOverlays />
+                  </ScrollJourney>
+                </Suspense>
+              </SceneErrorBoundary>
+            ) : experienceMode === '2d-parallax' ? (
+              <MobileExperience />
+            ) : (
+              <StaticContent />
+            )}
+          </div>
+        </main>
+      </SmoothScrollProvider>
     </>
   )
 }

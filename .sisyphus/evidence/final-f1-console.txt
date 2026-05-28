@@ -1,0 +1,22 @@
+[      72ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[     115ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[     627ms] [WARNING] THREE.GLTFLoader: Unknown extension "KHR_materials_pbrSpecularGlossiness". @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[     743ms] [WARNING] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[    2266ms] [LOG] Orbiter size: Vector3 center: Vector3 @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[    9668ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[    9678ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[    9716ms] [WARNING] THREE.GLTFLoader: Unknown extension "KHR_materials_pbrSpecularGlossiness". @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[    9969ms] [WARNING] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   10177ms] [LOG] Orbiter size: Vector3 center: Vector3 @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   56283ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   56290ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   56326ms] [WARNING] THREE.GLTFLoader: Unknown extension "KHR_materials_pbrSpecularGlossiness". @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   56597ms] [WARNING] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   56609ms] [LOG] Orbiter size: Vector3 center: Vector3 @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   57582ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   57587ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   57619ms] [WARNING] THREE.GLTFLoader: Unknown extension "KHR_materials_pbrSpecularGlossiness". @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   57906ms] [WARNING] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead. @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[   57918ms] [LOG] Orbiter size: Vector3 center: Vector3 @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[  103862ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477
+[  103926ms] [LOG] [Fast Refresh] done in 165ms @ http://localhost:3000/_next/static/chunks/0_g._next_dist_007cp8g._.js:2477

@@ -1,0 +1,11 @@
+Listing tests:
+  [chromium] › scroll-journey.spec.ts:9:10 › LCL Scroll Journey - Visual QA › Beat Visibility › Beat 1: Pre-Launch hero content visible at scroll 0%
+  [chromium] › scroll-journey.spec.ts:13:10 › LCL Scroll Journey - Visual QA › Beat Visibility › Beat 2: Ascent/Problem content visible at scroll 25%
+  [chromium] › scroll-journey.spec.ts:17:10 › LCL Scroll Journey - Visual QA › Beat Visibility › Beat 3: Orbit/Guide content visible at scroll 45%
+  [chromium] › scroll-journey.spec.ts:21:10 › LCL Scroll Journey - Visual QA › Beat Visibility › Beat 4: Constellation/Proof content visible at scroll 65%
+  [chromium] › scroll-journey.spec.ts:25:10 › LCL Scroll Journey - Visual QA › Beat Visibility › Beat 5: Deep Space/Authority content visible at scroll 82%
+  [chromium] › scroll-journey.spec.ts:29:10 › LCL Scroll Journey - Visual QA › Beat Visibility › Beat 6: CTA content visible at scroll 95%
+  [chromium] › scroll-journey.spec.ts:35:10 › LCL Scroll Journey - Visual QA › Responsive & Accessibility › Mobile: No canvas on 375px viewport
+  [chromium] › scroll-journey.spec.ts:39:10 › LCL Scroll Journey - Visual QA › Responsive & Accessibility › Reduced motion: Static mode activated
+  [chromium] › scroll-journey.spec.ts:45:10 › LCL Scroll Journey - Visual QA › Scroll Behavior › Scroll reversibility: Camera returns to same position
+Total: 9 tests in 1 file

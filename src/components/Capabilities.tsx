@@ -1,109 +1,86 @@
-const capabilities = [
-  {
-    number: '01',
-    title: 'New Products',
-    subtitle: 'Zero to Shipped',
-    description:
-      'From validated idea to production in weeks, not quarters. We scope, build, and ship.',
-  },
-  {
-    number: '02',
-    title: 'AI Engineering',
-    subtitle: null,
-    description:
-      'Custom models, fine-tuning, inference pipelines, and AI-native product features that actually work.',
-  },
-  {
-    number: '03',
-    title: 'Platform Rescue',
-    subtitle: null,
-    description:
-      "Legacy systems replaced without downtime. We've migrated six-figure user bases with zero incidents.",
-  },
-  {
-    number: '04',
-    title: 'Scale Engineering',
-    subtitle: null,
-    description:
-      'Architecture, data pipelines, and infrastructure that hold up at millions of events per day.',
-  },
-]
+import { COLORS, TYPOGRAPHY, SPACING, SECTION_FLAG, STAR_BG } from '@/styles/section-constants'
 
 export default function Capabilities() {
   return (
-    <section>
-      <div className="page">
-        <p className="section-label">CAPABILITIES</p>
+    <section style={{ margin: 0, padding: 0, background: COLORS.navy }}>
+      <div style={{
+        background: COLORS.navy,
+        padding: SPACING.sectionPad,
+        color: COLORS.white,
+        minHeight: '70vh',
+        display: 'flex',
+        flexDirection: 'column' as const,
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+        backgroundImage: STAR_BG,
+      }}>
+        <span style={{
+          ...SECTION_FLAG,
+        }}>STAT FACTORY</span>
 
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0',
-          }}
-        >
-          {capabilities.map((cap, i) => (
-            <div
-              key={cap.number}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '2rem 1fr',
-                gap: 'var(--space-5)',
-                alignItems: 'start',
-                padding: 'var(--space-5) 0',
-                borderTop:
-                  i === 0 ? '1px solid var(--border)' : undefined,
-                borderBottom: '1px solid var(--border-subtle)',
-                maxWidth: '640px',
-              }}
-            >
-              {/* Number */}
-              <span
-                style={{
-                  fontSize: '0.6rem',
-                  letterSpacing: '0.1em',
-                  color: 'var(--text-muted)',
-                  paddingTop: '0.2rem',
-                  fontVariantNumeric: 'tabular-nums',
-                }}
-              >
-                {cap.number}
-              </span>
+         <h2 style={{
+           fontFamily: 'var(--font-display)',
+           fontSize: TYPOGRAPHY.display.size,
+           lineHeight: TYPOGRAPHY.lineHeightTight,
+           letterSpacing: '-0.02em',
+           textTransform: 'uppercase' as const,
+           color: COLORS.white,
+           margin: 0,
+         }}>WHAT WE BUILD</h2>
 
-              {/* Content */}
-              <div>
-                <p
-                  style={{
-                    fontSize: '0.95rem',
-                    fontWeight: 500,
-                    color: 'var(--text)',
-                    marginBottom: 'var(--space-2)',
-                  }}
-                >
-                  {cap.title}
-                  {cap.subtitle && (
-                    <span
-                      style={{
-                        color: 'var(--text-dim)',
-                        fontWeight: 400,
-                        marginLeft: '0.5rem',
-                      }}
-                    >
-                      — {cap.subtitle}
-                    </span>
-                  )}
-                </p>
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: '0.85rem',
-                    color: 'var(--text-dim)',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {cap.description}
-                </p>
-              </div>
+        <p style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: TYPOGRAPHY.deck,
+          color: COLORS.whiteDim,
+          letterSpacing: TYPOGRAPHY.letterSpacingDeck,
+          textTransform: 'uppercase' as const,
+          maxWidth: '60ch',
+          lineHeight: TYPOGRAPHY.lineHeightBody,
+          margin: '1rem 0 2rem',
+        }}>From AI agents to real-time platforms. Every engagement is full-stack, production-grade, and built to last.</p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', border: '1px solid ' + COLORS.cyanDim }}>
+          {[
+            { num: '01', name: 'AI-POWERED PRODUCTS', desc: 'LLMs, agents, and automation systems built for production. Not prototypes—deployed systems.', label: 'CORE CAPABILITY' },
+            { num: '02', name: 'FULL-STACK WEB APPS', desc: 'From architecture to deployment. React, Next.js, Node. Complete products, not partial commits.', label: 'CORE CAPABILITY' },
+            { num: '03', name: 'DATA PIPELINES', desc: 'ETL, real-time processing, analytics. Systems that handle millions of events without breaking.', label: 'SUPPORTING CAPABILITY' },
+            { num: '04', name: 'TECHNICAL OPERATIONS', desc: 'DevOps, monitoring, reliability engineering. We keep things running when it matters.', label: 'SUPPORTING CAPABILITY' },
+          ].map((s, i) => (
+            <div key={s.num} style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid ' + COLORS.cyanDim,
+              padding: '2rem',
+            }}>
+              <span style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: TYPOGRAPHY.stat.size,
+                color: COLORS.cyanDim,
+                lineHeight: 1,
+                display: 'block',
+              }}>{s.num}</span>
+              <h3 style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: TYPOGRAPHY.sectionHeader.size,
+                textTransform: 'uppercase' as const,
+                color: COLORS.white,
+                lineHeight: TYPOGRAPHY.lineHeightTight,
+                margin: '0.5rem 0',
+              }}>{s.name}</h3>
+              <p style={{
+                fontSize: TYPOGRAPHY.body,
+                color: COLORS.whiteDim,
+                lineHeight: TYPOGRAPHY.lineHeightBody,
+                margin: '0.75rem 0',
+              }}>{s.desc}</p>
+              <span style={{
+                fontSize: TYPOGRAPHY.label,
+                color: COLORS.cyan,
+                fontFamily: 'var(--font-mono)',
+                letterSpacing: TYPOGRAPHY.letterSpacingLabel,
+                marginTop: '0.5rem',
+                display: 'block',
+              }}>{s.label}</span>
             </div>
           ))}
         </div>

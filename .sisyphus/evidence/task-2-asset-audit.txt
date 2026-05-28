@@ -1,0 +1,145 @@
+ASSET AUDIT EVIDENCE - Task 2 [Wave 1]
+Generated: 2025-05-27
+Project: Launch Control Labs (launchcontrollabs.com)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+INVENTORY SUMMARY
+─────────────────────────────────────────────────────────────────────────────
+
+Total Models Audited: 26 GLB files
+  - Main directory (public/models/): 20 files
+  - Optimized variants (public/models/optimized/): 6 files
+
+Recommended Narrative Models: 11 models (beats 1-6)
+Animated Models: 5 models
+Supporting/Atmospheric Models: 15 models (beat = 0)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+NARRATIVE BEAT MAPPING
+─────────────────────────────────────────────────────────────────────────────
+
+Beat 1 (Pre-Launch): Shuttle on pad, engines igniting
+  ✓ /models/optimized/space-shuttle.glb (497 KB)
+  ✓ /models/shuttle-atlantis.glb (12.8 MB)
+  Total: 13.3 MB
+
+Beat 2 (Ascent): Drifting astronaut (lost in space metaphor)
+  ✓ /models/optimized/drifting-astronaut.glb (399 KB) [ANIMATED]
+  ✓ /models/drifting-astronaut.glb (7.1 MB) [ANIMATED]
+  Total: 7.5 MB
+
+Beat 3 (Orbit): Earth visible, stable orbit achieved
+  ✓ /models/optimized/earth.glb (786 KB)
+  ✓ /models/earth.glb (22.3 MB)
+  Total: 23.1 MB
+
+Beat 4 (Constellation): Mission nodes as planets
+  ✓ /models/optimized/various-planets.glb (1.9 MB)
+  ✓ /models/various-planets.glb (33.3 MB)
+  ✓ /models/mercury.glb (3.4 MB)
+  Total: 38.6 MB
+
+Beat 5 (Deep Space): Saturn V heritage + purposeful astronaut
+  ✓ /models/optimized/apollo-saturn-v.glb (376 KB)
+  ✓ /models/apollo-saturn-v.glb (689 KB)
+  ✓ /models/floating-astronaut.glb (19.3 MB) [ANIMATED]
+  Total: 20.4 MB
+
+Beat 6 (CTA): Earth from orbit, peaceful
+  ✓ Reuses /models/earth.glb from Beat 3
+
+═══════════════════════════════════════════════════════════════════════════════
+
+RECOMMENDED MODEL SET (Optimized for Performance)
+─────────────────────────────────────────────────────────────────────────────
+
+Strategy: Use optimized variants where available, fall back to full quality
+
+Beat 1: /models/optimized/space-shuttle.glb (497 KB)
+Beat 2: /models/optimized/drifting-astronaut.glb (399 KB) [ANIMATED]
+Beat 3: /models/optimized/earth.glb (786 KB)
+Beat 4: /models/optimized/various-planets.glb (1.9 MB)
+Beat 5: /models/optimized/apollo-saturn-v.glb (376 KB)
+Beat 6: /models/optimized/earth.glb (786 KB) [reused from Beat 3]
+
+TOTAL RECOMMENDED SIZE: 4.8 MB ✓ (Well under 8 MB target)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+ANIMATED MODELS (For Performance Optimization)
+─────────────────────────────────────────────────────────────────────────────
+
+5 models with animations detected:
+  1. /models/animated-astronaut.glb (19.3 MB)
+  2. /models/drifting-astronaut.glb (7.1 MB) [Beat 2]
+  3. /models/drifting-astronaut-hd.glb (7.1 MB)
+  4. /models/drifting-astronaut-hq.glb (7.1 MB)
+  5. /models/floating-astronaut.glb (19.3 MB) [Beat 5]
+
+Recommended animated models for narrative:
+  - Beat 2: /models/optimized/drifting-astronaut.glb (399 KB)
+  - Beat 5: /models/floating-astronaut.glb (19.3 MB)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+OPTIMIZATION NOTES
+─────────────────────────────────────────────────────────────────────────────
+
+1. Optimized Variants Available:
+   ✓ apollo-saturn-v.glb: 705 KB → 376 KB (47% reduction)
+   ✓ astronaut-converted.glb: 21.8 MB → 4.5 MB (79% reduction)
+   ✓ drifting-astronaut.glb: 7.1 MB → 399 KB (94% reduction)
+   ✓ earth.glb: 22.3 MB → 786 KB (97% reduction)
+   ✓ space-shuttle.glb: 12.8 MB → 497 KB (96% reduction)
+   ✓ various-planets.glb: 33.3 MB → 1.9 MB (94% reduction)
+
+2. Duplicate/Variant Models (Consider Consolidation):
+   - astronaut-hero.glb (31.9 MB) vs astronaut-v2.glb (31.9 MB) - identical size
+   - drifting-astronaut.glb (7.1 MB) has -hd and -hq variants (same size)
+   - space-shuttle.glb (12.8 MB) vs space-shuttle-oriented.glb (12.8 MB)
+
+3. Large Non-Narrative Models (Consider Lazy Loading):
+   - falcon-9.glb (33.3 MB) - not in narrative sequence
+   - astronaut-hero.glb (31.9 MB) - not in narrative sequence
+   - astronaut-v2.glb (31.9 MB) - not in narrative sequence
+
+═══════════════════════════════════════════════════════════════════════════════
+
+DELIVERABLES CHECKLIST
+─────────────────────────────────────────────────────────────────────────────
+
+✓ File created: src/config/asset-inventory.ts
+✓ TypeScript validation: PASSED (npx tsc --noEmit)
+✓ Each entry has: path, fileSize (bytes), hasAnimations, beat, description
+✓ Total recommended model set: 4.8 MB (< 8 MB target)
+✓ Beat-to-model mapping: Documented in BEAT_MODEL_MAP export
+✓ Evidence file: .sisyphus/evidence/task-2-asset-audit.txt
+
+═══════════════════════════════════════════════════════════════════════════════
+
+EXPORTS PROVIDED
+─────────────────────────────────────────────────────────────────────────────
+
+1. ASSET_INVENTORY: Complete array of all 26 models with metadata
+2. RECOMMENDED_MODELS: Filtered array of narrative models (beats 1-6)
+3. TOTAL_RECOMMENDED_SIZE: Sum of recommended models (4.8 MB in bytes)
+4. BEAT_MODEL_MAP: Record mapping beat numbers to model arrays
+5. ANIMATED_MODELS: Filtered array of models with animations
+6. ASSET_STATS: Summary statistics (counts, sizes in bytes and MB)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+NEXT STEPS
+─────────────────────────────────────────────────────────────────────────────
+
+1. Commit the asset inventory:
+   git add src/config/asset-inventory.ts
+   git commit -m "chore(assets): add typed model inventory with size/beat metadata"
+
+2. Consider consolidating duplicate astronaut models
+3. Implement lazy loading for large non-narrative models (falcon-9, hero variants)
+4. Monitor performance with recommended optimized model set
+
+═══════════════════════════════════════════════════════════════════════════════

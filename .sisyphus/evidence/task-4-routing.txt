@@ -1,0 +1,81 @@
+# Task 4 Evidence: Device Tier Detection + Component Routing
+
+## Deliverables Completed
+
+### 1. File Created: `src/hooks/useExperienceMode.ts`
+- ✅ Hook returns `'3d' | '2d-parallax' | 'static'`
+- ✅ Priority order implemented:
+  1. `prefers-reduced-motion` → `'static'`
+  2. `isMobile` (< 768px) → `'2d-parallax'`
+  3. `deviceTier === 1` (weak GPU) → `'2d-parallax'`
+  4. else → `'3d'`
+- ✅ SSR-safe: defaults to `'3d'` on server, actual mode on client
+- ✅ Composes existing hooks: `useReducedMotion()`, `useIsMobile()`, `useDeviceTier()`
+- ✅ No TypeScript errors
+
+### 2. File Updated: `src/app/page.tsx`
+- ✅ Imported `useExperienceMode` hook
+- ✅ Added `data-experience-mode={experienceMode}` attribute to `<main>` element
+- ✅ Routing logic implemented:
+  - `'3d'` → renders `<ScrollScene>` with `<HeroOverlay>` (existing 3D experience)
+  - `'2d-parallax'` → renders placeholder div "Mobile Experience — Coming in Task 14"
+  - `'static'` → renders placeholder div "Static Content — Coming in Task 17"
+- ✅ Preserved existing components: `<StatusBar />`, `<SectionNav />`, `<CompanyTicker />`
+- ✅ Preserved skip-to-content link
+- ✅ No TypeScript errors
+
+### 3. Verification
+- ✅ LSP diagnostics: No errors on both files
+- ✅ Mobile viewport (375px) → no `<canvas>` in DOM (uses placeholder div)
+- ✅ `prefers-reduced-motion` → `data-experience-mode="static"` on root
+- ✅ Desktop with capable GPU → `data-experience-mode="3d"` on root
+
+## Implementation Details
+
+### Hook Logic Flow
+```
+useExperienceMode()
+  ├─ useReducedMotion() → if true, return 'static'
+  ├─ useIsMobile() → if true, return '2d-parallax'
+  ├─ useDeviceTier() → if tier === 1, return '2d-parallax'
+  └─ else → return '3d'
+```
+
+### Component Routing
+```
+<main data-experience-mode={mode}>
+  ├─ mode === '3d' → <ScrollScene><HeroOverlay /></ScrollScene>
+  ├─ mode === '2d-parallax' → <div>Mobile Experience — Coming in Task 14</div>
+  └─ mode === 'static' → <div>Static Content — Coming in Task 17</div>
+```
+
+## Testing Scenarios
+
+1. **Desktop, capable GPU, no reduced motion**
+   - Expected: `data-experience-mode="3d"`, renders `<ScrollScene>`
+   - Verified: ✅
+
+2. **Mobile (375px), no reduced motion**
+   - Expected: `data-experience-mode="2d-parallax"`, renders placeholder
+   - Verified: ✅
+
+3. **Desktop with `prefers-reduced-motion: reduce`**
+   - Expected: `data-experience-mode="static"`, renders placeholder
+   - Verified: ✅
+
+4. **Device with no WebGL (tier 1)**
+   - Expected: `data-experience-mode="2d-parallax"`, renders placeholder
+   - Verified: ✅
+
+## Files Modified
+- `src/hooks/useExperienceMode.ts` (created)
+- `src/app/page.tsx` (updated)
+
+## Commit
+```
+git add src/hooks/useExperienceMode.ts src/app/page.tsx
+git commit -m "feat(routing): experience mode detection + component routing"
+```
+
+## Status
+✅ COMPLETE - All deliverables met, no errors, ready for next task.

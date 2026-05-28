@@ -1,0 +1,40 @@
+=== ESPN Visual Elevation - Visual QA Report ===
+Date: 2026-05-27T11:30:24.184797
+URL: http://localhost:3005
+
+=== RESULTS ===
+Section 1 desktop (promise): CAPTURED (755.5KB) - PASS
+Section 2 desktop (problem): CAPTURED (955.7KB) - PASS
+Section 3 desktop (guide): CAPTURED (699.1KB) - PASS
+Section 4 desktop (proof): CAPTURED (614.5KB) - PASS
+Section 5 desktop (authority): CAPTURED (711.8KB) - PASS
+Section 6 desktop (orbit): CAPTURED (614.8KB) - PASS
+Section 1 mobile (promise): CAPTURED (283.1KB) - PASS
+Section 2 mobile (problem): CAPTURED (304.3KB) - PASS
+Section 3 mobile (guide): CAPTURED (297.1KB) - PASS
+Section 4 mobile (proof): CAPTURED (296.3KB) - PASS
+Section 5 mobile (authority): CAPTURED (309.8KB) - PASS
+Section 6 mobile (orbit): CAPTURED (292.3KB) - PASS
+Mobile horizontal overflow: NONE - PASS
+Reduced motion: CAPTURED (658.7KB) - PASS
+
+=== SUMMARY ===
+Passes: 14
+Failures: 0
+
+VERDICT: PASS
+
+=== SCREENSHOTS CAPTURED ===
+  reduced-motion.png
+  section-1-promise-desktop.png
+  section-1-promise-mobile.png
+  section-2-problem-desktop.png
+  section-2-problem-mobile.png
+  section-3-guide-desktop.png
+  section-3-guide-mobile.png
+  section-4-proof-desktop.png
+  section-4-proof-mobile.png
+  section-5-authority-desktop.png
+  section-5-authority-mobile.png
+  section-6-orbit-desktop.png
+  section-6-orbit-mobile.png

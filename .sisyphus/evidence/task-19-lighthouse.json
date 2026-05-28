@@ -1,0 +1,45 @@
+{
+  "task": "task-19-lighthouse",
+  "timestamp": "2026-05-27T15:14:31Z",
+  "mobile": {
+    "performance_score": 96.0,
+    "metrics": {
+      "FCP": "0.8\u00a0s",
+      "LCP": "2.7\u00a0s",
+      "CLS": 0,
+      "TBT": "20\u00a0ms",
+      "SI": "0.8\u00a0s"
+    }
+  },
+  "desktop": {
+    "performance_score": 100,
+    "metrics": {
+      "FCP": "0.2\u00a0s",
+      "LCP": "0.5\u00a0s",
+      "CLS": 0,
+      "TBT": "0\u00a0ms",
+      "SI": "0.2\u00a0s"
+    }
+  },
+  "fixes_applied": [
+    "Added min-height:100vh wrapper around hero section to prevent CLS",
+    "Added loading component to dynamic ScrollScene import for SSR placeholder",
+    "Converted StaticHeroFallback img to next/image with priority and fill",
+    "Added preload:true to Space Grotesk font"
+  ],
+  "before": {
+    "mobile_score": 73,
+    "CLS": 0.95,
+    "LCP_mobile": "2.6s"
+  },
+  "after": {
+    "mobile_score": 96,
+    "CLS": 0,
+    "LCP_desktop": "0.5s"
+  },
+  "targets_met": {
+    "mobile_score_gte_70": true,
+    "LCP_lt_2500ms_desktop": true,
+    "CLS_lt_0_1": true
+  }
+}

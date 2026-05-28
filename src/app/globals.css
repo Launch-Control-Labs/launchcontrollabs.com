@@ -3,26 +3,35 @@
 @import "tailwindcss";
 
 :root {
-  /* Mission Control palette — warm midnight + amber signals */
-  --bg: #0B1628;
-  --bg-deep: #060E1C;
-  --surface: #0E1E38;
-  --border: #1A3055;
-  --border-subtle: #12243F;
-  
-  --text: #D4DCE8;
-  --text-dim: #5A7A9E;
-  --text-muted: #3A5573;
-  
-  --amber: #E5A832;
-  --amber-dim: rgba(229, 168, 50, 0.15);
+  /* Alpine palette — cool midnight + blue signals */
+  --bg: #080810;
+  --bg-deep: #0D0D2B;
+  --surface: #1A1A3E;
+  --border: #2A2A5A;
+  --border-subtle: #1A1A40;
+
+  --text: #E5EBF2;
+  --text-dim: #8BA0B5;
+  --text-muted: #4B5C6B;
+
+  --accent: #2E6EB5;
+  --accent-dim: rgba(46, 110, 181, 0.15);
+  --highlight: #A0CDE8;
   --green: #34D399;
   --green-dim: rgba(52, 211, 153, 0.1);
   --red: #F87171;
 
+  /* Section theme variables (overridden per section) */
+  --section-bg: #080810;
+  --section-text: #E5EBF2;
+  --section-accent: #22D3EE;
+  --section-muted: #4B5563;
+  --section-border: #1F2937;
+
   /* Typography */
   --font-mono: 'IBM Plex Mono', 'SF Mono', ui-monospace, monospace;
   --font-body: 'Inter', -apple-system, sans-serif;
+  --font-display: 'Bebas Neue', 'Impact', sans-serif;
 
   /* Spacing (8px grid) */
   --space-1: 0.25rem;
@@ -34,6 +43,20 @@
   --space-7: 4rem;
   --space-8: 6rem;
   --space-9: 8rem;
+}
+
+/* Editorial / Magazine section theming */
+.section-editorial {
+  --bg-edit: #F5F0E8;
+  --text-edit: #0A0A0A;
+  --text-edit-dim: #3D3D3D;
+  --text-edit-muted: #888888;
+  --border-edit: #0A0A0A;
+  --border-edit-subtle: #C8C0B0;
+  --accent-edit: #C41E1E;
+  --number-edit: #D9D0C0;
+  background: #F5F0E8;
+  color: #0A0A0A;
 }
 
 * {
@@ -56,10 +79,43 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* Subtle noise/grain texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* Subtle grid line texture */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.03;
+  background-image: 
+    linear-gradient(to right, var(--text-muted) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--text-muted) 1px, transparent 1px);
+  background-size: 200px 200px;
 }
 
 ::selection {
-  background: var(--amber);
+  background: var(--accent);
   color: var(--bg);
 }
 
@@ -73,8 +129,8 @@ a {
   font-family: var(--font-body);
 }
 
-.text-amber {
-  color: var(--amber);
+.text-accent {
+  color: var(--accent);
 }
 
 .text-green {
@@ -89,6 +145,25 @@ a {
   color: var(--text-muted);
 }
 
+.text-large {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+/* Strong typographic headings */
+h1, h2, h3 {
+  letter-spacing: -0.03em;
+}
+
+/* Section separator */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 -2rem;
+  width: calc(100% + 4rem);
+}
+
 /* Status pulse — the ONE animated ambient element */
 @keyframes status-pulse {
   0%, 100% { opacity: 1; }
@@ -96,8 +171,8 @@ a {
 }
 
 .status-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--green);
   display: inline-block;
@@ -112,18 +187,19 @@ a {
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 0.6rem 2rem;
+  padding: 0.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-dim);
   background: rgba(11, 22, 40, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 1px 0 rgba(46, 110, 181, 0.1);
 }
 
 /* Page container */
@@ -131,6 +207,8 @@ a {
   max-width: 900px;
   margin: 0 auto;
   padding: 0 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* Section spacing */
@@ -140,9 +218,96 @@ section {
 
 /* Section labels */
 .section-label {
-  font-size: 0.5rem;
+  font-size: 0.55rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: var(--space-5);
+}
+
+/* Accessibility: screen-reader-only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Mobile responsive overrides */
+@media (max-width: 768px) {
+  /* Prevent horizontal overflow on all sections */
+  section,
+  [data-section] {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* ProblemSection: stack columns */
+  #problem {
+    grid-template-columns: 1fr !important;
+  }
+
+  #problem > div:first-child {
+    height: 40vh !important;
+    min-height: 250px;
+  }
+
+  /* AuthoritySection: stack flex columns */
+  section[data-section="authority"] {
+    flex-direction: column !important;
+  }
+
+  section[data-section="authority"] > div:first-child {
+    flex: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: none !important;
+  }
+
+  section[data-section="authority"] > div:last-child {
+    flex: none !important;
+  }
+
+  /* OrbitSection: stack grid */
+  section[data-section="orbit"] {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* ProofSection: stats grid 2 columns on mobile */
+  .proof-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ProofSection: project circles wrap properly */
+  .proof-projects-wrap {
+    justify-content: center !important;
+  }
+
+  /* Touch scroll: native momentum */
+  html {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    overscroll-behavior-y: contain;
+  }
+}
+
+/* Reduced motion: disable animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
