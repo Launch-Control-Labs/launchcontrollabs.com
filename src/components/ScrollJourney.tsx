@@ -7,28 +7,58 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import * as THREE from 'three'
-import { getCamera } from '@/config/camera-path'
+import { getCamera, getCameraFollow } from '@/config/camera-path'
 import { useSceneStore } from '@/store/scene-store'
 import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
 
 gsap.registerPlugin(ScrollTrigger)
 
 // ─── CameraController ───────────────────────────────────────────────────────────
-// Reads progressRef every frame and applies camera-path interpolation.
+// Dual-mode: follow-mode (0–30%), crossfade (30–40%), path-mode (40–100%).
 // Single-writer principle: only useFrame touches the camera.
 
-function CameraController({ progressRef }: { progressRef: React.RefObject<number> }) {
-  const { camera } = useThree()
+const FOLLOW_END = 0.30
+const PATH_START = 0.40
+const SMOOTH_SPEED = 8
 
-  useFrame(() => {
+const _blendedPos = new THREE.Vector3()
+const _blendedLookAt = new THREE.Vector3()
+
+function CameraController({
+  progressRef,
+  shuttleYRef,
+}: {
+  progressRef: React.RefObject<number>
+  shuttleYRef: React.RefObject<number>
+}) {
+  const { camera, invalidate } = useThree()
+  const lastProgress = useRef(-1)
+
+  useFrame((_state, delta) => {
     const progress = Math.max(0, Math.min(1, progressRef.current ?? 0))
-    const { position, lookAt, fov } = getCamera(progress)
-    camera.position.copy(position)
-    camera.lookAt(lookAt)
+    if (Math.abs(progress - lastProgress.current) < 0.0001) return
+    lastProgress.current = progress
+
+    const shuttleY = progress * 50
+
+    const blendWeight = THREE.MathUtils.smoothstep(progress, FOLLOW_END, PATH_START)
+
+    const follow = getCameraFollow(progress, shuttleY)
+    const path = getCamera(progress)
+
+    _blendedPos.copy(follow.position).lerp(path.position, blendWeight)
+    _blendedLookAt.copy(follow.lookAt).lerp(path.lookAt, blendWeight)
+    const blendedFov = THREE.MathUtils.lerp(follow.fov, path.fov, blendWeight)
+
+    const smoothing = 1 - Math.exp(-SMOOTH_SPEED * delta)
+    camera.position.lerp(_blendedPos, smoothing)
+    camera.lookAt(_blendedLookAt)
+
     if (camera instanceof THREE.PerspectiveCamera) {
-      camera.fov = fov
+      camera.fov = THREE.MathUtils.lerp(camera.fov, blendedFov, smoothing)
       camera.updateProjectionMatrix()
     }
+    invalidate()
   })
 
   return null
@@ -40,20 +70,28 @@ const DynamicCanvas = dynamic(
   () =>
     Promise.resolve(function ScrollCanvas({
       progressRef,
+      shuttleYRef,
       scene,
     }: {
       progressRef: React.RefObject<number>
+      shuttleYRef: React.RefObject<number>
       scene?: React.ReactNode
     }) {
       return (
         <Canvas
           dpr={[1, Math.min(2, typeof window !== 'undefined' ? window.devicePixelRatio : 1)]}
-          gl={{ antialias: true, alpha: false }}
+          gl={{
+            antialias: true,
+            alpha: false,
+            toneMapping: THREE.ACESFilmicToneMapping,
+            toneMappingExposure: 1.2,
+            outputColorSpace: THREE.SRGBColorSpace,
+          }}
           camera={{ position: [0, -5, 10], fov: 60, near: 0.1, far: 2000 }}
           style={{ width: '100%', height: '100%' }}
         >
           <color attach="background" args={['#020914']} />
-          <CameraController progressRef={progressRef} />
+          <CameraController progressRef={progressRef} shuttleYRef={shuttleYRef} />
           {scene}
         </Canvas>
       )
@@ -68,6 +106,7 @@ const DynamicCanvas = dynamic(
 export function ScrollJourney({ children, scene }: { children?: React.ReactNode; scene?: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef(0)
+  const shuttleYRef = useRef(0)
 
   // GSAP binding: ScrollTrigger writes to progressRef + Zustand store
   useGSAP(
@@ -131,7 +170,7 @@ export function ScrollJourney({ children, scene }: { children?: React.ReactNode;
         }}
       >
         <SceneErrorBoundary>
-          <DynamicCanvas progressRef={progressRef} scene={scene} />
+          <DynamicCanvas progressRef={progressRef} shuttleYRef={shuttleYRef} scene={scene} />
         </SceneErrorBoundary>
       </div>
 

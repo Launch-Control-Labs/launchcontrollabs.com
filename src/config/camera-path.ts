@@ -39,26 +39,27 @@ export const BEAT_RANGES: Record<BeatName, BeatRange> = {
   cta: { start: 0.9, end: 1.0 },
 }
 
-// ─── Waypoints ──────────────────────────────────────────────────────────────────
-// Camera waypoints for each beat boundary. Interpolation happens between these.
+// ─── Path-Mode Waypoints ────────────────────────────────────────────────────────
+// Used by getCamera() for path-mode (active after 30% scroll).
+// Anchors at 0.30/0.40 define the crossfade zone with follow-mode.
 
 const WAYPOINTS: Waypoint[] = [
-  // Beat 1 — Pre-Launch: Behind shuttle, looking at it from below/behind
-  { position: [0, 2, 25], lookAt: [0, 8, 0], fov: 55 },
-  // Beat 2 — Ascent: Rising and moving forward, astronaut drifts past
-  { position: [0, 15, 10], lookAt: [0, 25, -10], fov: 60 },
-  // Beat 3 — Orbit: High above, Earth visible far below/ahead
-  { position: [0, 30, 0], lookAt: [0, 20, -50], fov: 65 },
-  // Beat 4 — Constellation: Pulled back, planets visible as nodes
-  { position: [-10, 35, 20], lookAt: [0, 25, -30], fov: 70 },
-  // Beat 5 — Deep Space: Wide view, Saturn V visible
-  { position: [15, 40, 30], lookAt: [0, 30, -20], fov: 75 },
-  // Beat 6 — CTA: Peaceful orbit, Earth fills view
-  { position: [0, 45, 40], lookAt: [0, 30, -60], fov: 65 },
+  // Anchor — crossfade start (matches follow-mode output at 30%)
+  { position: [0, 7, 25], lookAt: [0, 19, 0], fov: 55 },
+  // Anchor — crossfade end / pure path-mode starts
+  { position: [0, 20, 20], lookAt: [0, 25, -20], fov: 60 },
+  // Beat 3 — spaceCruise (~50% scroll)
+  { position: [0, 35, 15], lookAt: [0, 30, -40], fov: 65 },
+  // Beat 4 — shuttleEarth (~65% scroll)
+  { position: [-5, 40, 25], lookAt: [10, 35, -60], fov: 70 },
+  // Beat 5 — astronautFar (~82% scroll)
+  { position: [3, 42, 20], lookAt: [-5, 40, -10], fov: 60 },
+  // Beat 6 — astronautClose (~95% scroll)
+  { position: [0, 43, 8], lookAt: [0, 43, -5], fov: 50 },
 ]
 
-// Progress values at which each waypoint sits (beat boundaries)
-const WAYPOINT_PROGRESS = [0, 0.15, 0.35, 0.55, 0.75, 1.0]
+// Progress values at which each path-mode waypoint sits
+const WAYPOINT_PROGRESS = [0.30, 0.40, 0.50, 0.65, 0.82, 0.95]
 
 // ─── Core Functions ─────────────────────────────────────────────────────────────
 
@@ -136,4 +137,17 @@ export function getCamera(progress: number): CameraState {
   const fov = THREE.MathUtils.lerp(startWaypoint.fov, endWaypoint.fov, localT)
 
   return { position, lookAt, fov }
+}
+
+/**
+ * Follow-mode camera: tracks the rising shuttle from behind/below.
+ * Active during 0–30% scroll. Pull-back increases for cinematic reveal.
+ */
+export function getCameraFollow(progress: number, shuttleY: number): CameraState {
+  const pullback = THREE.MathUtils.lerp(2, 8, Math.min(1, progress / 0.15))
+  return {
+    position: new THREE.Vector3(0, shuttleY - pullback, 25),
+    lookAt: new THREE.Vector3(0, shuttleY + 4, 0),
+    fov: 55,
+  }
 }
