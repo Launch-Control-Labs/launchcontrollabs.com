@@ -49,7 +49,7 @@ export function BeatServices() {
         opacity,
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',
-        background: '#020914',
+        background: 'linear-gradient(to top, rgba(2, 9, 20, 0.88) 0%, rgba(2, 9, 20, 0.7) 50%, transparent 100%)',
         padding: 'clamp(1.5rem, 4vw, 3rem)',
       }}
     >
@@ -131,7 +131,9 @@ export function BeatServices() {
           style={{
             gridColumn: '1',
             gridRow: '1 / 3',
-            background: 'rgba(2, 9, 20, 0.95)',
+            background: 'rgba(2, 9, 20, 0.82)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
             padding: 'clamp(1.5rem, 3vw, 2.5rem)',
             display: 'flex',
             flexDirection: 'column',
@@ -187,7 +189,9 @@ export function BeatServices() {
           <div
             key={service.num}
             style={{
-              background: 'rgba(2, 9, 20, 0.95)',
+              background: 'rgba(2, 9, 20, 0.78)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
               padding: 'clamp(1rem, 2vw, 1.5rem)',
               display: 'flex',
               alignItems: 'flex-start',

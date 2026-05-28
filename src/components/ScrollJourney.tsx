@@ -157,7 +157,7 @@ export function ScrollJourney({ children, scene }: { children?: React.ReactNode;
   }, [])
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', height: '600vh' }}>
+    <div ref={containerRef} style={{ position: 'relative', height: '700vh' }}>
       {/* Fixed 3D Canvas — decorative, hidden from assistive tech */}
       <div
         aria-hidden="true"
