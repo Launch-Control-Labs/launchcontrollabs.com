@@ -52,10 +52,10 @@ const WAYPOINTS: Waypoint[] = [
   { position: [0, 35, 15], lookAt: [0, 30, -40], fov: 65 },
   // Beat 4 — shuttleEarth (~65% scroll)
   { position: [-5, 40, 25], lookAt: [10, 35, -60], fov: 70 },
-  // Beat 5 — astronautFar (~82% scroll)
-  { position: [3, 42, 20], lookAt: [-5, 40, -10], fov: 60 },
-  // Beat 6 — astronautClose (~95% scroll)
-  { position: [0, 43, 8], lookAt: [0, 43, -5], fov: 50 },
+  // Beat 5 — astronautFar (~82% scroll) — full body visible in space
+  { position: [-3, 44, 16], lookAt: [5, 46, 2], fov: 55 },
+  // Beat 6 — astronautClose (~95% scroll) — helmet close-up
+  { position: [3, 48, 7], lookAt: [5, 48, 2], fov: 45 },
 ]
 
 // Progress values at which each path-mode waypoint sits
