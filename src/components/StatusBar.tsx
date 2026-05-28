@@ -1,22 +1,21 @@
 'use client'
 
 import { useSceneStore } from '@/store/scene-store'
-import { getBeatForProgress, type BeatName } from '@/config/camera-path'
 
 const SECTION_NAMES = ['THE PROMISE', 'THE PROBLEM', 'THE GUIDE', 'THE PROOF', 'THE AUTHORITY', 'THE ORBIT']
 
-const BEAT_TO_INDEX: Record<BeatName, number> = {
-  preLaunch: 0,
-  ascent: 1,
-  orbit: 2,
-  constellation: 3,
-  deepSpace: 4,
-  cta: 5,
+function getBeatIndex(progress: number): number {
+  if (progress < 0.15) return 0
+  if (progress < 0.35) return 1
+  if (progress < 0.55) return 2
+  if (progress < 0.75) return 3
+  if (progress < 0.90) return 4
+  return 5
 }
 
 export default function StatusBar() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const activeSection = BEAT_TO_INDEX[getBeatForProgress(scrollProgress)]
+  const activeSection = getBeatIndex(scrollProgress)
   const currentSectionName = SECTION_NAMES[activeSection] || 'THE PROMISE'
 
   return (

@@ -29,15 +29,11 @@ export function getBeatOpacity(beatKey: BeatKey, progress: number): number {
   const range = end - start
   const local = (progress - start) / range
 
-  if (local < 0 || local > 1) return 0
+  if (local <= 0 || local >= 1) return 0
 
-  // Fade in over first 10% of beat
-  const fadeInDuration = 0.1
-  if (local < fadeInDuration) return local / fadeInDuration
-
-  // Fade out over last 10% of beat
-  const fadeOutDuration = 0.1
-  if (local > 1 - fadeOutDuration) return (1 - local) / fadeOutDuration
+  const fade = 0.12
+  if (local < fade) return local / fade
+  if (local > 1 - fade) return (1 - local) / fade
 
   return 1
 }

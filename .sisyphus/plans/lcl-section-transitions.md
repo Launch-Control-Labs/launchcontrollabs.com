@@ -897,7 +897,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 15. StatusBar + SectionNav Integration
+- [x] 15. StatusBar + SectionNav Integration
 
   **What to do**:
   - Update `src/components/StatusBar.tsx` — read current beat from scrollProgress (not activeSection)
@@ -929,7 +929,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 16. Performance Tuning Pass
+- [x] 16. Performance Tuning Pass
 
   **What to do**:
   - Profile full journey scroll with Chrome DevTools Performance tab
@@ -977,7 +977,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 17. Accessibility + Reduced Motion
+- [x] 17. Accessibility + Reduced Motion
 
   **What to do**:
   - `prefers-reduced-motion`: disable camera animation, show all content simultaneously (static layout)
@@ -1004,7 +1004,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 18. Edge Cases (Scroll Restore, Keyboard, iOS)
+- [x] 18. Edge Cases (Scroll Restore, Keyboard, iOS)
 
   **What to do**:
   - iOS rubber-banding: clamp camera position to valid range (never < 0 or > 1)
@@ -1033,7 +1033,7 @@ Max Concurrent: 7 (Wave 2)
 
 ---
 
-- [ ] 19. Remove Old Architecture (Dead Code Cleanup)
+- [x] 19. Remove Old Architecture (Dead Code Cleanup)
 
   **What to do**:
   - Delete `src/components/ScrollScene.tsx` (replaced by ScrollJourney)
@@ -1085,19 +1085,19 @@ Max Concurrent: 7 (Wave 2)
 
 > 4 review agents run in PARALLEL. ALL must APPROVE. Present consolidated results to user and get explicit "okay" before completing.
 
-- [ ] F1. **Plan Compliance Audit** — `oracle`
+- [x] F1. **Plan Compliance Audit** — `oracle`
   Read the plan end-to-end. For each "Must Have": verify implementation exists (read file, check exports). For each "Must NOT Have": search codebase for forbidden patterns (custom shaders, physics imports, audio, OrbitControls, procedural Math.random). Check evidence files exist in .sisyphus/evidence/. Compare deliverables against plan.
   Output: `Must Have [N/N] | Must NOT Have [N/N] | Tasks [N/N] | VERDICT: APPROVE/REJECT`
 
-- [ ] F2. **Code Quality Review** — `unspecified-high`
+- [x] F2. **Code Quality Review** — `unspecified-high`
   Run `tsc --noEmit` + lint. Review all changed files for: `as any`/`@ts-ignore`, empty catches, console.log in prod, commented-out code, unused imports. Check AI slop: excessive comments, over-abstraction. Verify no new dependencies added to package.json.
   Output: `Build [PASS/FAIL] | Lint [PASS/FAIL] | Files [N clean/N issues] | VERDICT`
 
-- [ ] F3. **Real Manual QA** — `unspecified-high` (+ `playwright` skill)
+- [x] F3. **Real Manual QA** — `unspecified-high` (+ `playwright` skill)
   Start from clean state. Open localhost:3005. Scroll through ENTIRE journey. Screenshot each beat. Test scroll up/down. Test nav link clicks. Test mobile viewport. Test reduced motion. Test WebGL failure. Save all evidence to `.sisyphus/evidence/final-qa/`.
   Output: `Beats [6/6 rendered] | Scroll [smooth/janky] | Mobile [renders/fails] | VERDICT`
 
-- [ ] F4. **Scope Fidelity Check** — `deep`
+- [x] F4. **Scope Fidelity Check** — `deep`
   For each task: read "What to do", read actual implementation. Verify 1:1 — everything in spec was built, nothing beyond spec was built. Check guardrails: no custom shaders, no physics, no audio, no new deps. Detect cross-task contamination.
   Output: `Tasks [N/N compliant] | Guardrails [N/N respected] | Unaccounted [CLEAN/N files] | VERDICT`
 

@@ -12,6 +12,10 @@ import { StarField } from '@/components/3d/StarField'
 import { getBackgroundColor } from '@/config/beat-config'
 import type { Group } from 'three'
 
+// CRITICAL: Set DRACO decoder path so compressed GLBs (earth, astronaut) load correctly.
+// Without this, DRACO-compressed models fail silently (empty scene object).
+useGLTF.setDecoderPath('/draco/')
+
 function BackgroundController() {
   const { scene } = useThree()
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
@@ -142,7 +146,6 @@ function PlanetDriftModel() {
 
 function StarFieldWrapper() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  // Stars fade in from 25% to 35% scroll
   const opacity = THREE.MathUtils.clamp((scrollProgress - 0.25) / 0.10, 0, 1)
   if (opacity <= 0) return null
   return <StarField opacity={opacity} />
@@ -152,24 +155,18 @@ export function JourneyScene() {
   return (
     <>
       <BackgroundController />
-      {/* Low ambient — just enough to see into shadows */}
-      <ambientLight intensity={0.08} />
-      {/* Main sun-like directional — physically correct with decay=0 */}
+      <ambientLight intensity={0.15} />
       <directionalLight
         position={[50, 80, 30]}
-        intensity={Math.PI * 1.2}
+        intensity={Math.PI * 1.4}
         color="#FFF5E0"
-        decay={0}
         castShadow={false}
       />
-      {/* Rim/fill from opposite side — cool blue */}
       <directionalLight
         position={[-30, -20, -50]}
-        intensity={Math.PI * 0.3}
+        intensity={Math.PI * 0.4}
         color="#1a3a5c"
-        decay={0}
       />
-      {/* Cyan accent — close to shuttle/models, short range */}
       <pointLight
         position={[0, 5, 15]}
         intensity={Math.PI * 2}
@@ -177,16 +174,12 @@ export function JourneyScene() {
         distance={80}
         decay={2}
       />
-      {/* Hemisphere — subtle sky/ground separation */}
       <hemisphereLight
         args={['#0a1628', '#020914', 0.4]}
       />
 
       <Suspense fallback={null}>
         <ShuttleModel />
-      </Suspense>
-      <Suspense fallback={null}>
-        <PlanetDriftModel />
       </Suspense>
       <Suspense fallback={null}>
         <EarthModel />
@@ -202,3 +195,7 @@ export function JourneyScene() {
     </>
   )
 }
+
+useGLTF.preload('/models/optimized/space-shuttle.glb')
+useGLTF.preload('/models/optimized/earth.glb')
+useGLTF.preload('/models/optimized/drifting-astronaut.glb')
