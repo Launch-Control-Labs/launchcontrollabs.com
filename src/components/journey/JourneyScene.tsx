@@ -258,18 +258,24 @@ function EarthModel() {
 function AstronautModel() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const groupRef = useRef<THREE.Group>(null)
-  const { scene, animations } = useGLTF('/models/animated-astronaut.glb')
+  const { scene, animations } = useGLTF('/models/astronaut-converted.glb')
   const { actions } = useAnimations(animations, groupRef)
   const { rotation, scale } = SCENE_POSITIONS.astronaut
 
   const visible = scrollProgress >= 0.72
 
   useEffect(() => {
-    const firstAction = Object.values(actions)[0]
-    if (firstAction) {
-      firstAction.play()
-      firstAction.setEffectiveTimeScale(0.4) // Slow, dreamy zero-g movement
-      firstAction.setLoop(THREE.LoopRepeat, Infinity)
+    if (actions['floating']) {
+      actions['floating'].play()
+      actions['floating'].setEffectiveTimeScale(0.4)
+      actions['floating'].setLoop(THREE.LoopRepeat, Infinity)
+    } else {
+      // Fallback to first available action
+      const firstAction = Object.values(actions)[0]
+      if (firstAction) {
+        firstAction.play()
+        firstAction.setEffectiveTimeScale(0.4)
+      }
     }
   }, [actions])
 
@@ -422,4 +428,4 @@ export function JourneyScene() {
 
 useGLTF.preload('/models/space-shuttle-oriented.glb')
 useGLTF.preload('/models/optimized/earth.glb')
-useGLTF.preload('/models/animated-astronaut.glb')
+useGLTF.preload('/models/astronaut-converted.glb')
