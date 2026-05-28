@@ -62,7 +62,7 @@ function ShuttleModel() {
     return { computedScale: scale, nozzleY: -halfLength, centerOffset: [-center.x, -center.y, -center.z] as [number, number, number] }
   }, [scene])
 
-  const visible = scrollProgress <= 0.78
+  const visible = scrollProgress <= 0.90
 
   const exhaustIntensity = THREE.MathUtils.clamp(
     1 - (scrollProgress - 0.15) / 0.20,
@@ -71,8 +71,39 @@ function ShuttleModel() {
   )
   const exhaustVisible = exhaustIntensity > 0
 
+  // Fade shuttle opacity from 75-90% so it becomes a background element
+  useEffect(() => {
+    scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh
+        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+        materials.forEach((mat) => {
+          if (mat) {
+            mat.transparent = true
+          }
+        })
+      }
+    })
+  }, [scene])
+
   useFrame(() => {
     if (!shuttleRef.current) return
+
+    // Fade opacity between 75-90%
+    const shuttleOpacity = scrollProgress > 0.75
+      ? THREE.MathUtils.clamp(1 - (scrollProgress - 0.75) / 0.15, 0.2, 1)
+      : 1
+    scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh
+        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+        materials.forEach((mat) => {
+          if (mat) {
+            mat.opacity = shuttleOpacity
+          }
+        })
+      }
+    })
 
     shuttleRef.current.position.y = scrollProgress * 50
     shuttleRef.current.position.x = 5
@@ -190,9 +221,8 @@ function AstronautModel() {
   const groupRef = useRef<THREE.Group>(null)
   const { scene, animations } = useGLTF('/models/optimized/drifting-astronaut.glb')
   const { actions } = useAnimations(animations, groupRef)
-  const { position, rotation, scale } = SCENE_POSITIONS.astronaut
+  const { rotation, scale } = SCENE_POSITIONS.astronaut
 
-  // Visible from 75%+
   const visible = scrollProgress >= 0.72
 
   useEffect(() => {
@@ -200,18 +230,31 @@ function AstronautModel() {
     if (firstAction) firstAction.play()
   }, [actions])
 
-  // Hide rope mesh that creates a thin line artifact across the screen
   useEffect(() => {
     scene.traverse((child) => {
       if (child.name === 'Rope_Mat_0' || child.name === 'Rope_tip_Chrome_0') {
-        child.visible = false
+        child.visible = true
       }
     })
   }, [scene])
 
+  useFrame((_, delta) => {
+    if (!groupRef.current || !visible) return
+
+    const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
+    const astroY = (scrollProgress * 50) + 2 + driftProgress * 5
+    const astroX = 5 + driftProgress * 3
+    const astroZ = 2 + driftProgress * 4
+
+    groupRef.current.position.set(astroX, astroY, astroZ)
+
+    groupRef.current.rotation.y += delta * 0.1
+    groupRef.current.rotation.z += delta * 0.05
+  })
+
   if (!visible) return null
   return (
-    <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
+    <group ref={groupRef} position={[5, 38, 2]} rotation={rotation} scale={scale}>
       <primitive object={scene} />
     </group>
   )
