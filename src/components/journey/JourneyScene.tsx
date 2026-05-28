@@ -274,16 +274,17 @@ function AstronautModel() {
   const visible = scrollProgress >= 0.72
 
   useEffect(() => {
-    if (actions['floating']) {
-      actions['floating'].play()
-      actions['floating'].setEffectiveTimeScale(0.4)
-      actions['floating'].setLoop(THREE.LoopRepeat, Infinity)
+    // Prefer 'idle' (natural relaxed pose) over 'floating' (arms splayed)
+    const preferred = actions['idle'] || actions['floating']
+    if (preferred) {
+      preferred.play()
+      preferred.setEffectiveTimeScale(0.3)
+      preferred.setLoop(THREE.LoopRepeat, Infinity)
     } else {
-      // Fallback to first available action
       const firstAction = Object.values(actions)[0]
       if (firstAction) {
         firstAction.play()
-        firstAction.setEffectiveTimeScale(0.4)
+        firstAction.setEffectiveTimeScale(0.3)
       }
     }
   }, [actions])
@@ -345,9 +346,9 @@ function AstronautModel() {
     const shuttleY = scrollProgress * 50
     const t = Date.now() * 0.001
 
-    const astroX = 5 + driftProgress * 3
-    const astroY = shuttleY + 0.5 + driftProgress * 5
-    const astroZ = 0 + driftProgress * 6
+    const astroX = 5 + driftProgress * 2.5
+    const astroY = shuttleY + 0.3 + driftProgress * 4
+    const astroZ = -2 + driftProgress * 8
 
     groupRef.current.position.set(astroX, astroY, astroZ)
     groupRef.current.visible = visible
@@ -375,11 +376,11 @@ function EVATether() {
   const visible = scrollProgress >= 0.72
 
   const material = useMemo(() => new THREE.MeshStandardMaterial({
-    color: '#cccccc',
-    metalness: 0.3,
-    roughness: 0.7,
+    color: '#888888',
+    metalness: 0.1,
+    roughness: 0.9,
     transparent: true,
-    opacity: 0.85,
+    opacity: 0.7,
   }), [])
 
   const hullPosRef = useRef(new THREE.Vector3())
@@ -396,11 +397,11 @@ function EVATether() {
     const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
     const shuttleY = scrollProgress * 50
 
-    hullPosRef.current.set(5, shuttleY + 0.5, 0)
+    hullPosRef.current.set(5, shuttleY + 0.3, -2)
     astroPosRef.current.set(
-      5 + driftProgress * 3,
-      shuttleY + 0.5 + driftProgress * 5,
-      driftProgress * 6
+      5 + driftProgress * 2.5,
+      shuttleY + 0.3 + driftProgress * 4,
+      -2 + driftProgress * 8
     )
     midRef.current.lerpVectors(hullPosRef.current, astroPosRef.current, 0.5)
     midRef.current.y -= 0.3 + driftProgress * 1.2
@@ -409,7 +410,7 @@ function EVATether() {
       [hullPosRef.current.clone(), midRef.current.clone(), astroPosRef.current.clone()],
       false, 'catmullrom', 0.5
     )
-    const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.03 + driftProgress * 0.01, 8, false)
+    const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.015 + driftProgress * 0.005, 6, false)
 
     if (meshRef.current.geometry) meshRef.current.geometry.dispose()
     meshRef.current.geometry = tubeGeo
