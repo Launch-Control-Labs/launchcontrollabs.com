@@ -71,6 +71,7 @@ export function BeatAscent() {
       style={{
         position: 'absolute',
         inset: 0,
+        overflow: 'hidden',
         opacity,
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',
@@ -82,10 +83,10 @@ export function BeatAscent() {
           position: 'absolute',
           bottom: 0,
           left: 0,
-          padding: 'clamp(3rem, 6vw, 5rem)',
+          padding: 'clamp(1.5rem, 3vw, 2.5rem)',
           display: 'flex',
           flexDirection: 'column',
-          gap: 'clamp(1.5rem, 3vw, 3rem)',
+          gap: 'clamp(0.75rem, 1.5vw, 1.5rem)',
           maxWidth: '560px',
         }}
       >
