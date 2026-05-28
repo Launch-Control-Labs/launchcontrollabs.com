@@ -28,7 +28,7 @@ function BackgroundController() {
 }
 
 function ShuttleModel() {
-  const { scene } = useGLTF('/models/optimized/space-shuttle.glb')
+  const { scene } = useGLTF('/models/space-shuttle-oriented.glb')
   const shuttleRef = useRef<THREE.Group>(null)
   const modelGroupRef = useRef<THREE.Group>(null)
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
@@ -361,6 +361,6 @@ export function JourneyScene() {
   )
 }
 
-useGLTF.preload('/models/optimized/space-shuttle.glb')
+useGLTF.preload('/models/space-shuttle-oriented.glb')
 useGLTF.preload('/models/optimized/earth.glb')
 useGLTF.preload('/models/optimized/drifting-astronaut.glb')
