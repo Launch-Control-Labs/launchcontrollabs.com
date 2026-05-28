@@ -290,9 +290,12 @@ function AstronautModel() {
     if (!groupRef.current || !visible) return
 
     const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
-    const astroY = (scrollProgress * 50) + 2 + driftProgress * 5
-    const astroX = 5 + driftProgress * 3
-    const astroZ = 2 + driftProgress * 4
+    const shuttleY = scrollProgress * 50
+
+    // Start at cargo bay hatch, drift outward into space
+    const astroX = 5 + driftProgress * 4
+    const astroY = shuttleY + 1.5 + driftProgress * 3.5
+    const astroZ = -0.8 + driftProgress * 4.8
 
     groupRef.current.position.set(astroX, astroY, astroZ)
 
@@ -308,19 +311,92 @@ function AstronautModel() {
   )
 }
 
+function SpaceTether() {
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const visible = scrollProgress >= 0.72
+
+  const lineObj = useMemo(() => {
+    const geometry = new THREE.BufferGeometry()
+    const material = new THREE.LineBasicMaterial({
+      color: '#ffffff',
+      transparent: true,
+      opacity: 0.65,
+    })
+    return new THREE.Line(geometry, material)
+  }, [])
+
+  useFrame(() => {
+    if (!visible) {
+      lineObj.visible = false
+      return
+    }
+    lineObj.visible = true
+
+    const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
+    const shuttleY = scrollProgress * 50
+
+    // Hull attachment point (cargo bay hatch — fixed on shuttle)
+    const hullX = 5
+    const hullY = shuttleY + 1.5
+    const hullZ = -0.8
+
+    // Astronaut position (matches AstronautModel's useFrame calculation)
+    const astroX = 5 + driftProgress * 4
+    const astroY = shuttleY + 1.5 + driftProgress * 3.5
+    const astroZ = -0.8 + driftProgress * 4.8
+
+    // Catenary sag increases as astronaut drifts farther
+    const points: number[] = []
+    const segments = 24
+    for (let i = 0; i <= segments; i++) {
+      const t = i / segments
+      const x = THREE.MathUtils.lerp(hullX, astroX, t)
+      const y = THREE.MathUtils.lerp(hullY, astroY, t)
+      const z = THREE.MathUtils.lerp(hullZ, astroZ, t)
+      const sag = Math.sin(t * Math.PI) * -0.4 * driftProgress
+      points.push(x, y + sag, z)
+    }
+
+    lineObj.geometry.setAttribute(
+      'position',
+      new THREE.Float32BufferAttribute(points, 3)
+    )
+    lineObj.geometry.attributes.position.needsUpdate = true
+  })
+
+  if (!visible) return null
+  return <primitive object={lineObj} />
+}
+
 
 function CloudLayer() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const opacity = 1 - THREE.MathUtils.clamp((scrollProgress - 0.15) / 0.15, 0, 1)
-  if (opacity <= 0) return null
+  const lowerOpacity = 1 - THREE.MathUtils.clamp((scrollProgress - 0.15) / 0.15, 0, 1)
+  const upperOpacity = THREE.MathUtils.clamp(1 - (scrollProgress - 0.08) / 0.12, 0, 1)
+
+  if (lowerOpacity <= 0 && upperOpacity <= 0) return null
 
   return (
-    <Clouds material={THREE.MeshBasicMaterial} limit={100}>
-      <Cloud position={[-6, -10, 5]} speed={0.1} opacity={opacity * 0.6} bounds={[15, 4, 5]} volume={8} seed={1} />
-      <Cloud position={[10, -12, 0]} speed={0.08} opacity={opacity * 0.4} bounds={[12, 3, 4]} volume={6} seed={2} />
-      <Cloud position={[-12, -8, -3]} speed={0.12} opacity={opacity * 0.5} bounds={[18, 5, 6]} volume={10} seed={3} />
-      <Cloud position={[4, -14, 7]} speed={0.06} opacity={opacity * 0.35} bounds={[16, 4, 5]} volume={7} seed={4} />
-      <Cloud position={[0, -9, -5]} speed={0.09} opacity={opacity * 0.45} bounds={[20, 4, 6]} volume={9} seed={5} />
+    <Clouds material={THREE.MeshBasicMaterial} limit={150}>
+      {/* Lower ground-level clouds (existing) */}
+      {lowerOpacity > 0 && (
+        <>
+          <Cloud position={[-6, -10, 5]} speed={0.1} opacity={lowerOpacity * 0.6} bounds={[15, 4, 5]} volume={8} seed={1} />
+          <Cloud position={[10, -12, 0]} speed={0.08} opacity={lowerOpacity * 0.4} bounds={[12, 3, 4]} volume={6} seed={2} />
+          <Cloud position={[-12, -8, -3]} speed={0.12} opacity={lowerOpacity * 0.5} bounds={[18, 5, 6]} volume={10} seed={3} />
+          <Cloud position={[4, -14, 7]} speed={0.06} opacity={lowerOpacity * 0.35} bounds={[16, 4, 5]} volume={7} seed={4} />
+          <Cloud position={[0, -9, -5]} speed={0.09} opacity={lowerOpacity * 0.45} bounds={[20, 4, 6]} volume={9} seed={5} />
+        </>
+      )}
+      {/* Upper overhead clouds — shuttle rises through these */}
+      {upperOpacity > 0 && (
+        <>
+          <Cloud position={[-8, 10, 6]} speed={0.04} opacity={upperOpacity * 0.5} bounds={[20, 3, 8]} volume={7} seed={10} />
+          <Cloud position={[12, 14, -4]} speed={0.03} opacity={upperOpacity * 0.4} bounds={[16, 3, 6]} volume={6} seed={11} />
+          <Cloud position={[-3, 18, 8]} speed={0.05} opacity={upperOpacity * 0.45} bounds={[22, 4, 7]} volume={8} seed={12} />
+          <Cloud position={[8, 12, 3]} speed={0.04} opacity={upperOpacity * 0.35} bounds={[14, 3, 5]} volume={5} seed={13} />
+        </>
+      )}
     </Clouds>
   )
 }
@@ -369,6 +445,7 @@ export function JourneyScene() {
       <Suspense fallback={null}>
         <AstronautModel />
       </Suspense>
+      <SpaceTether />
       <CloudLayer />
       <StarFieldWrapper />
 

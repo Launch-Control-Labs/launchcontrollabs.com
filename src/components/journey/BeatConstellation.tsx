@@ -54,7 +54,7 @@ export function BeatConstellation() {
       >
         <div
           style={{
-            padding: 'clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 3rem) 0',
+            padding: 'clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 3rem) clamp(0.25rem, 0.5vw, 0.5rem)',
           }}
         >
           <span
@@ -77,6 +77,7 @@ export function BeatConstellation() {
         <div
           style={{
             padding: '0 clamp(1.5rem, 4vw, 3rem)',
+            marginTop: 'clamp(0.5rem, 1.2vw, 1rem)',
           }}
         >
           <h2
