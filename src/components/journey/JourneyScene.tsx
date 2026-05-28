@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useEffect, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { useFrame, useThree } from '@react-three/fiber'
@@ -28,9 +28,28 @@ function BackgroundController() {
 }
 
 function ShuttleModel() {
-  const { scene } = useGLTF('/models/optimized/space-shuttle.glb')
+  const { scene } = useGLTF('/models/space-shuttle-oriented.glb')
   const shuttleRef = useRef<THREE.Group>(null)
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
+
+  // Find SRB and ET nodes after mount
+  const srbLeftRef = useRef<THREE.Object3D | null>(null)
+  const srbRightRef = useRef<THREE.Object3D | null>(null)
+  const etRef = useRef<THREE.Object3D | null>(null)
+
+  useEffect(() => {
+    srbLeftRef.current = scene.getObjectByName('Small_Rocket_Group_01') || null
+    srbRightRef.current = scene.getObjectByName('Small_Rocket_Group_02') || null
+    etRef.current = scene.getObjectByName('Orange_Parts') || null
+  }, [scene])
+
+  // Normalize model to ~7 world units height
+  const computedScale = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(scene)
+    const size = box.getSize(new THREE.Vector3())
+    const maxDim = Math.max(size.x, size.y, size.z)
+    return maxDim > 0 ? 7 / maxDim : 2.5
+  }, [scene])
 
   // Visible during launch + atmosphere + space cruise + shuttle-earth (0-78%)
   const visible = scrollProgress <= 0.78
@@ -45,23 +64,89 @@ function ShuttleModel() {
 
   useFrame(() => {
     if (!shuttleRef.current) return
+
     // Y rises with scroll: 0 at bottom, 50 at top of journey
     shuttleRef.current.position.y = scrollProgress * 50
+    shuttleRef.current.position.x = 5 // ESPN right-side anchor
+
     // Subtle vibration during ignition/launch (0-5%)
     if (scrollProgress < 0.05) {
       const vib = (1 - scrollProgress / 0.05) * 0.03
-      shuttleRef.current.position.x = (Math.random() - 0.5) * vib
-    } else {
-      shuttleRef.current.position.x = 0
+      shuttleRef.current.position.x = 5 + (Math.random() - 0.5) * vib
+    }
+
+    // === SRB SEPARATION (20-30% scroll) ===
+    const srbProgress = THREE.MathUtils.clamp(
+      (scrollProgress - 0.20) / 0.10, // 0 at 20%, 1 at 30%
+      0,
+      1
+    )
+
+    // Reset SRBs when scrolling back up
+    if (srbProgress <= 0) {
+      if (srbLeftRef.current) {
+        srbLeftRef.current.visible = true
+        srbLeftRef.current.position.set(0, 0, 0)
+        srbLeftRef.current.rotation.set(0, 0, 0)
+      }
+      if (srbRightRef.current) {
+        srbRightRef.current.visible = true
+        srbRightRef.current.position.set(0, 0, 0)
+        srbRightRef.current.rotation.set(0, 0, 0)
+      }
+    }
+
+    if (srbLeftRef.current) {
+      if (srbProgress > 0 && srbProgress < 1) {
+        // SRBs drift outward + fall behind
+        srbLeftRef.current.position.x = -srbProgress * 8
+        srbLeftRef.current.position.y = -srbProgress * 12
+        srbLeftRef.current.rotation.z = srbProgress * 0.3
+      } else if (srbProgress >= 1) {
+        srbLeftRef.current.visible = false
+      }
+    }
+
+    if (srbRightRef.current) {
+      if (srbProgress > 0 && srbProgress < 1) {
+        srbRightRef.current.position.x = srbProgress * 8
+        srbRightRef.current.position.y = -srbProgress * 12
+        srbRightRef.current.rotation.z = -srbProgress * 0.3
+      } else if (srbProgress >= 1) {
+        srbRightRef.current.visible = false
+      }
+    }
+
+    // === ET SEPARATION (28-35% scroll) ===
+    const etProgress = THREE.MathUtils.clamp(
+      (scrollProgress - 0.28) / 0.07, // 0 at 28%, 1 at 35%
+      0,
+      1
+    )
+
+    // Reset ET when scrolling back up
+    if (etProgress <= 0 && etRef.current) {
+      etRef.current.visible = true
+      etRef.current.position.set(0, 0, 0)
+      etRef.current.rotation.set(0, 0, 0)
+    }
+
+    if (etRef.current) {
+      if (etProgress > 0 && etProgress < 1) {
+        etRef.current.position.y = -etProgress * 15
+        etRef.current.position.z = etProgress * 5
+        etRef.current.rotation.x = etProgress * 0.2
+      } else if (etProgress >= 1) {
+        etRef.current.visible = false
+      }
     }
   })
 
   if (!visible) return null
 
   return (
-    <group ref={shuttleRef} position={[0, 0, 0]}>
-      {/* Shuttle body at rotation [-π/2, 0, 0] (nose UP) */}
-      <group rotation={[-Math.PI / 2, 0, 0]} scale={2.5}>
+    <group ref={shuttleRef} position={[5, 0, 0]}>
+      <group rotation={[-Math.PI / 2, Math.PI, 0]} scale={computedScale}>
         <primitive object={scene} />
       </group>
       {/* Exhaust: nozzle at bottom of shuttle, pointing DOWN */}
@@ -172,6 +257,6 @@ export function JourneyScene() {
   )
 }
 
-useGLTF.preload('/models/optimized/space-shuttle.glb')
+useGLTF.preload('/models/space-shuttle-oriented.glb')
 useGLTF.preload('/models/optimized/earth.glb')
 useGLTF.preload('/models/optimized/drifting-astronaut.glb')
