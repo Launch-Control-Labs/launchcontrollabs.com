@@ -3,9 +3,24 @@
 import { Suspense, useEffect, useRef } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
+import { useFrame, useThree } from '@react-three/fiber'
+import * as THREE from 'three'
 import { SCENE_POSITIONS } from '@/config/scene-positions'
 import { useSceneStore } from '@/store/scene-store'
+import { getBackgroundColor } from '@/config/beat-config'
 import type { Group } from 'three'
+
+function BackgroundController() {
+  const { scene } = useThree()
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+
+  useFrame(() => {
+    const hex = getBackgroundColor(scrollProgress)
+    scene.background = new THREE.Color(hex)
+  })
+
+  return null
+}
 
 function useBeatVisible(beatStart: number, beatEnd: number, buffer = 0.05): boolean {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
@@ -21,7 +36,7 @@ function ShuttleModel() {
 }
 
 function DriftingAstronautModel() {
-  const visible = useBeatVisible(0.10, 0.45)
+  const visible = useBeatVisible(0.15, 0.38)
   const groupRef = useRef<Group>(null)
   const { scene, animations } = useGLTF('/models/optimized/drifting-astronaut.glb')
   const { actions } = useAnimations(animations, groupRef)
@@ -76,9 +91,36 @@ function CtaEarthModel() {
 export function JourneyScene() {
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[10, 20, 10]} intensity={1.5} color="#ffffff" />
-      <pointLight position={[0, 10, 20]} intensity={0.8} color="#22d3ee" distance={200} />
+      <BackgroundController />
+      {/* Low ambient — just enough to see into shadows */}
+      <ambientLight intensity={0.08} />
+      {/* Main sun-like directional — physically correct with decay=0 */}
+      <directionalLight
+        position={[50, 80, 30]}
+        intensity={Math.PI * 1.2}
+        color="#FFF5E0"
+        decay={0}
+        castShadow={false}
+      />
+      {/* Rim/fill from opposite side — cool blue */}
+      <directionalLight
+        position={[-30, -20, -50]}
+        intensity={Math.PI * 0.3}
+        color="#1a3a5c"
+        decay={0}
+      />
+      {/* Cyan accent — close to shuttle/models, short range */}
+      <pointLight
+        position={[0, 5, 15]}
+        intensity={Math.PI * 2}
+        color="#22d3ee"
+        distance={80}
+        decay={2}
+      />
+      {/* Hemisphere — subtle sky/ground separation */}
+      <hemisphereLight
+        args={['#0a1628', '#020914', 0.4]}
+      />
 
       <Suspense fallback={null}>
         <ShuttleModel />
