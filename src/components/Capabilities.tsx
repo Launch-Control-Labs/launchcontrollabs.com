@@ -38,14 +38,14 @@ export default function Capabilities() {
           maxWidth: '60ch',
           lineHeight: TYPOGRAPHY.lineHeightBody,
           margin: '1rem 0 2rem',
-        }}>From AI agents to real-time platforms. We took a leap and ran the numbers to find out what actually ships.</p>
+        }}>From AI agents to real-time platforms. Every engagement is full-stack, production-grade, and built to last.</p>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', border: '1px solid ' + COLORS.cyanDim }}>
           {[
-            { num: '01', name: 'AI-POWERED PRODUCTS', desc: 'LLMs, agents, and automation systems built for production. Not prototypes—deployed systems.', pct: 85 },
-            { num: '02', name: 'FULL-STACK WEB APPS', desc: 'From architecture to deployment. React, Next.js, Node. Complete products, not partial commits.', pct: 72 },
-            { num: '03', name: 'DATA PIPELINES', desc: 'ETL, real-time processing, analytics. Systems that handle millions of events without breaking.', pct: 60 },
-            { num: '04', name: 'TECHNICAL OPERATIONS', desc: 'DevOps, monitoring, reliability engineering. We keep things running when it matters.', pct: 90 },
+            { num: '01', name: 'AI-POWERED PRODUCTS', desc: 'LLMs, agents, and automation systems built for production. Not prototypes—deployed systems.', label: 'CORE CAPABILITY' },
+            { num: '02', name: 'FULL-STACK WEB APPS', desc: 'From architecture to deployment. React, Next.js, Node. Complete products, not partial commits.', label: 'CORE CAPABILITY' },
+            { num: '03', name: 'DATA PIPELINES', desc: 'ETL, real-time processing, analytics. Systems that handle millions of events without breaking.', label: 'SUPPORTING CAPABILITY' },
+            { num: '04', name: 'TECHNICAL OPERATIONS', desc: 'DevOps, monitoring, reliability engineering. We keep things running when it matters.', label: 'SUPPORTING CAPABILITY' },
           ].map((s, i) => (
             <div key={s.num} style={{
               background: 'rgba(255,255,255,0.04)',
@@ -73,19 +73,6 @@ export default function Capabilities() {
                 lineHeight: TYPOGRAPHY.lineHeightBody,
                 margin: '0.75rem 0',
               }}>{s.desc}</p>
-              <div style={{
-                background: 'rgba(255,255,255,0.1)',
-                height: '3px',
-                borderRadius: '2px',
-                marginTop: '1rem',
-              }}>
-                <div style={{
-                  background: COLORS.cyan,
-                  height: '100%',
-                  width: s.pct + '%',
-                  borderRadius: '2px',
-                }} />
-              </div>
               <span style={{
                 fontSize: TYPOGRAPHY.label,
                 color: COLORS.cyan,
@@ -93,7 +80,7 @@ export default function Capabilities() {
                 letterSpacing: TYPOGRAPHY.letterSpacingLabel,
                 marginTop: '0.5rem',
                 display: 'block',
-              }}>{s.pct}% OF PROJECTS</span>
+              }}>{s.label}</span>
             </div>
           ))}
         </div>

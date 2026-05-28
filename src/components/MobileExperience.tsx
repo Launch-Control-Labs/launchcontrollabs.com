@@ -38,7 +38,7 @@ function MobileHero() {
               textTransform: 'uppercase',
             }}
           >
-            Product Studio · Dallas · Barcelona · Miami
+            Product Studio · Los Angeles, CA
           </span>
           <span
             style={{
@@ -115,9 +115,9 @@ function MobileHero() {
 // MOBILE PROBLEM
 // ============================================================================
 const CALLOUTS = [
-  { label: 'INDUSTRY AVERAGE', value: '90%', suffix: 'FAIL' },
-  { label: 'TIME TO FAILURE', value: '18', suffix: 'MONTHS' },
-  { label: 'CAPITAL BURNED', value: '$1.2M', suffix: 'WASTED' },
+  { label: 'INDUSTRY AVERAGE', value: '70%', suffix: 'FAIL' },
+  { label: 'TIME TO FAILURE', value: '3', suffix: 'YEARS' },
+  { label: 'CAPITAL BURNED', value: '$2.5M', suffix: 'AVG BURN' },
 ]
 
 function MobileProblem() {
@@ -248,10 +248,10 @@ function MobileProblem() {
 // MOBILE GUIDE
 // ============================================================================
 const STATS = [
-  { stat: '12', label: 'SHIPPED' },
-  { stat: '47', label: 'LAUNCHED' },
-  { stat: '3.2B', label: 'EVENTS/DAY' },
-  { stat: '99.97%', label: 'UPTIME' },
+  { stat: '12', label: 'PRODUCTS SHIPPED' },
+  { stat: '6', label: 'LAUNCHED' },
+  { stat: '99.9%', label: 'UPTIME' },
+  { stat: '<48h', label: 'RESPONSE TIME' },
 ]
 
 function MobileGuide() {
@@ -381,9 +381,9 @@ const TALISMAN_PROJECT = {
   description: 'AI-powered accounting automation for modern finance teams. Graph-native architecture processing millions of transactions.',
   stats: [
     { value: '2.4M', label: 'TRANSACTIONS' },
-    { value: '98.7%', label: 'UPTIME' },
+    { value: '99.9%', label: 'UPTIME' },
     { value: '<200ms', label: 'P95 LATENCY' },
-    { value: '47', label: 'ML MODELS' },
+    { value: '4', label: 'ML MODELS' },
   ],
   techStack: ['NEXT.JS', 'NEO4J', 'LLMs'],
   status: 'ACTIVE',

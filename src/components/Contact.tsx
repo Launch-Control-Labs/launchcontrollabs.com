@@ -59,8 +59,8 @@ export default function Contact() {
         alignSelf: 'center',
       }}>
         {[
-          ['47', 'MISSIONS\nCOMPLETED'],
-          ['98.7%', 'ON-TIME\nDELIVERY'],
+          ['6', 'MISSIONS\nCOMPLETED'],
+          ['✓', 'ON-TIME\nDELIVERY'],
           ['2–3', 'NEW PER\nQUARTER'],
           ['<48h', 'RESPONSE\nTIME'],
         ].map(([value, label]) => (

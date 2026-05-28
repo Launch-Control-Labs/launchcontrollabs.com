@@ -13,7 +13,7 @@ const phases = [
     number: '02',
     label: 'THE APPROACH',
     content:
-      'Custom AI categorization engine. Anomaly detection. Natural language reporting. Built to replace 80% of manual bookkeeping workflows.',
+      'Custom AI categorization engine. Anomaly detection. Natural language reporting. Built to replace most manual bookkeeping workflows.',
   },
   {
     number: '03',

@@ -43,7 +43,7 @@ export function BeatPreLaunch() {
               textTransform: 'uppercase',
             }}
           >
-            Product Studio · Dallas · Barcelona · Miami
+            Product Studio · Los Angeles, CA
           </span>
           <span
             style={{

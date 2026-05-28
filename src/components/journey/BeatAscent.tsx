@@ -5,9 +5,9 @@ import { getBeatOpacity } from '@/config/beat-config'
 import { SECTION_FLAG, TYPOGRAPHY } from '@/styles/section-constants'
 
 const CALLOUTS = [
-  { label: 'INDUSTRY AVERAGE', value: '90%', suffix: 'FAIL' },
-  { label: 'TIME TO FAILURE', value: '18', suffix: 'MONTHS' },
-  { label: 'CAPITAL BURNED', value: '$1.2M', suffix: 'WASTED' },
+  { label: 'INDUSTRY AVERAGE', value: '70%', suffix: 'FAIL' },
+  { label: 'TIME TO FAILURE', value: '3', suffix: 'YEARS' },
+  { label: 'CAPITAL BURNED', value: '$2.5M', suffix: 'AVG BURN' },
 ]
 
 function CalloutCard({ label, value, suffix }: { label: string; value: string; suffix: string }) {

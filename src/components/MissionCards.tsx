@@ -64,9 +64,9 @@ export default function MissionCards() {
         }}>
           {[
             { value: '2.4M', label: 'TRANSACTIONS' },
-            { value: '98.7%', label: 'UPTIME' },
+            { value: '99.9%', label: 'UPTIME' },
             { value: '<200ms', label: 'P95 LATENCY' },
-            { value: '47', label: 'ML MODELS' },
+            { value: '4', label: 'ML MODELS' },
           ].map((stat) => (
             <div key={stat.label} style={{ textAlign: 'center' as const }}>
               <span style={{

@@ -32,7 +32,7 @@ export function HeroOverlay() {
               color: 'rgba(255,255,255,0.35)',
               textTransform: 'uppercase',
             }}>
-              Product Studio · Dallas · Barcelona · Miami
+              Product Studio · Los Angeles, CA
             </span>
             <span style={{
               fontFamily: 'var(--font-mono)',

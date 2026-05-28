@@ -4,10 +4,10 @@ import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
 
 const STATS = [
-  { stat: '12', label: 'SHIPPED' },
-  { stat: '47', label: 'LAUNCHED' },
-  { stat: '3.2B', label: 'EVENTS/DAY' },
-  { stat: '99.97%', label: 'UPTIME' },
+  { stat: '12', label: 'PRODUCTS SHIPPED' },
+  { stat: '6', label: 'LAUNCHED' },
+  { stat: '99.9%', label: 'UPTIME' },
+  { stat: '<48h', label: 'RESPONSE TIME' },
 ]
 
 function StatCard({ stat, label }: { stat: string; label: string }) {
