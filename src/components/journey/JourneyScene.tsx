@@ -10,7 +10,6 @@ import { useSceneStore } from '@/store/scene-store'
 import { RocketExhaust } from '@/components/3d/RocketExhaust'
 import { StarField } from '@/components/3d/StarField'
 import { getBackgroundColor } from '@/config/beat-config'
-import type { Group } from 'three'
 
 // CRITICAL: Set DRACO decoder path so compressed GLBs (earth, astronaut) load correctly.
 // Without this, DRACO-compressed models fail silently (empty scene object).
@@ -116,29 +115,6 @@ function AstronautModel() {
   if (!visible) return null
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
-      <primitive object={scene} />
-    </group>
-  )
-}
-
-function PlanetDriftModel() {
-  const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const { scene } = useGLTF('/models/optimized/various-planets.glb')
-  const ref = useRef<Group>(null)
-  const { position, rotation, scale } = SCENE_POSITIONS.planets
-
-  // Visible 35-55% scroll
-  const visible = scrollProgress >= 0.30 && scrollProgress <= 0.58
-
-  useFrame((_, delta) => {
-    if (!ref.current || !visible) return
-    ref.current.rotation.y += 0.02 * delta
-    ref.current.position.z += 0.5 * delta
-  })
-
-  if (!visible) return null
-  return (
-    <group ref={ref} position={position} rotation={rotation} scale={scale}>
       <primitive object={scene} />
     </group>
   )
