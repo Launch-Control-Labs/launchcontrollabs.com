@@ -37,7 +37,7 @@ function CalloutCard({ label, value, suffix }: { label: string; value: string; s
       <div
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(2rem, 5vw, 5rem)',
+          fontSize: 'clamp(1.5rem, 3.5vw, 3rem)',
           fontWeight: 400,
           lineHeight: 0.9,
           letterSpacing: '-0.02em',
@@ -48,7 +48,7 @@ function CalloutCard({ label, value, suffix }: { label: string; value: string; s
         <span
           style={{
             display: 'block',
-            fontSize: 'clamp(1.2rem, 2.5vw, 2.5rem)',
+            fontSize: 'clamp(0.9rem, 1.8vw, 1.8rem)',
             marginTop: '0.25rem',
           }}
         >
@@ -86,8 +86,8 @@ export function BeatAscent() {
           padding: 'clamp(1.5rem, 3vw, 2.5rem)',
           display: 'flex',
           flexDirection: 'column',
-          gap: 'clamp(0.75rem, 1.5vw, 1.5rem)',
-          maxWidth: '560px',
+          gap: 'clamp(0.5rem, 1vw, 1rem)',
+          maxWidth: '720px',
         }}
       >
         <div style={SECTION_FLAG}>
@@ -97,7 +97,7 @@ export function BeatAscent() {
         <h2
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: TYPOGRAPHY.sectionHeader.size,
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
             fontWeight: TYPOGRAPHY.sectionHeader.weight,
             lineHeight: TYPOGRAPHY.sectionHeader.lineHeight,
             letterSpacing: TYPOGRAPHY.sectionHeader.letterSpacing,
@@ -112,7 +112,7 @@ export function BeatAscent() {
         <p
           style={{
             fontFamily: 'var(--font-body)',
-            fontSize: TYPOGRAPHY.deck,
+            fontSize: 'clamp(0.9rem, 1.2vw, 1.1rem)',
             lineHeight: TYPOGRAPHY.lineHeightBody,
             letterSpacing: TYPOGRAPHY.letterSpacingDeck,
             color: '#FFFFFF',
@@ -132,7 +132,7 @@ export function BeatAscent() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
             gap: 'clamp(0.75rem, 1.5vw, 1.5rem)',
-            marginTop: '1rem',
+            marginTop: '0.5rem',
           }}
         >
           {CALLOUTS.map((callout) => (
