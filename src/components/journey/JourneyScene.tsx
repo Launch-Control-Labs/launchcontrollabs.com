@@ -43,30 +43,15 @@ function ShuttleModel() {
     etRef.current = scene.getObjectByName('Orange_Parts') || null
   }, [scene])
 
-  const { computedScale, nozzleY, orientationQuat } = useMemo(() => {
+  const { computedScale, nozzleY, centerOffset } = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene)
     const size = box.getSize(new THREE.Vector3())
+    const center = box.getCenter(new THREE.Vector3())
     const maxDim = Math.max(size.x, size.y, size.z)
     const scale = maxDim > 0 ? 7 / maxDim : 2.5
-
-    // Model is already oriented: nose at +Y, engines at -Y (confirmed from bounding box)
-    // Only need Y-axis rotation to face orbiter toward camera (+Z)
-    const q1 = new THREE.Quaternion().setFromAxisAngle(
-      new THREE.Vector3(0, 1, 0),
-      Math.PI  // 180° around Y — flip to show orbiter face toward camera
-    )
-
-    // Nozzle at bottom of model (engines at -Y end)
-    const nozzleWorld = -(box.max.y - box.min.y) * scale * 0.5
-
-    return { computedScale: scale, nozzleY: nozzleWorld || -3.5, orientationQuat: q1 }
+    const halfLength = size.x * 0.5 * scale
+    return { computedScale: scale, nozzleY: -halfLength, centerOffset: [-center.x, -center.y, -center.z] as [number, number, number] }
   }, [scene])
-
-  useEffect(() => {
-    if (modelGroupRef.current) {
-      modelGroupRef.current.quaternion.copy(orientationQuat)
-    }
-  }, [orientationQuat])
 
   const visible = scrollProgress <= 0.78
 
@@ -154,8 +139,10 @@ function ShuttleModel() {
 
   return (
     <group ref={shuttleRef} position={[5, 0, 0]}>
-      <group ref={modelGroupRef} scale={computedScale}>
-        <primitive object={scene} />
+      <group ref={modelGroupRef} rotation={[0, Math.PI, -Math.PI / 2]} scale={computedScale}>
+        <group position={centerOffset}>
+          <primitive object={scene} />
+        </group>
       </group>
       <RocketExhaust
         nozzlePosition={[0, nozzleY, 0]}
