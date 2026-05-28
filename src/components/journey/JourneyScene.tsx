@@ -38,11 +38,13 @@ function ShuttleModel() {
   const srbLeftRef = useRef<THREE.Object3D | null>(null)
   const srbRightRef = useRef<THREE.Object3D | null>(null)
   const etRef = useRef<THREE.Object3D | null>(null)
+  const bayDoorRef = useRef<THREE.Object3D | null>(null)
 
   useEffect(() => {
     srbLeftRef.current = scene.getObjectByName('Small_Rocket_Group_01') || null
     srbRightRef.current = scene.getObjectByName('Small_Rocket_Group_02') || null
     etRef.current = scene.getObjectByName('Orange_Parts') || null
+    bayDoorRef.current = scene.getObjectByName('Ceiling1') || null
 
     // Update world matrices so geometry bounding box checks are accurate
     scene.updateMatrixWorld(true)
@@ -211,6 +213,11 @@ function ShuttleModel() {
         etRef.current.visible = false
       }
     }
+
+    const bayProgress = THREE.MathUtils.clamp((scrollProgress - 0.65) / 0.07, 0, 1)
+    if (bayDoorRef.current) {
+      bayDoorRef.current.rotation.x = bayProgress * Math.PI * 0.6
+    }
   })
 
   if (!visible) return null
@@ -310,9 +317,9 @@ function AstronautModel() {
     const shuttleY = scrollProgress * 50
     const t = Date.now() * 0.001
 
-    const astroX = 5 + driftProgress * 4
-    const astroY = shuttleY + 1.5 + driftProgress * 3.5
-    const astroZ = -0.8 + driftProgress * 4.8
+    const astroX = 5 + driftProgress * 3
+    const astroY = shuttleY + 0.5 + driftProgress * 5
+    const astroZ = 0 + driftProgress * 6
 
     groupRef.current.position.set(astroX, astroY, astroZ)
 

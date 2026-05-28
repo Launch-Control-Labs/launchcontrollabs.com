@@ -20,6 +20,6 @@ export const SCENE_POSITIONS: Record<string, ModelTransform> = {
   astronaut: {
     position: [5, 43, 2],
     rotation: [0.1, 0.3, 0],
-    scale: 0.02,
+    scale: 1.1,  // Model is 3.12u native → 3.12 * 1.1 = 3.4 world units
   },
 } as const
