@@ -49,6 +49,13 @@ function ShuttleModel() {
           name.includes('rope') || name.includes('rocket_details')) {
         child.visible = false
       }
+      if (child.isMesh && child.geometry) {
+        const box = new THREE.Box3().setFromObject(child)
+        const s = box.getSize(new THREE.Vector3())
+        if (Math.min(s.x, s.y, s.z) < 0.15 && Math.max(s.x, s.y, s.z) > 1) {
+          child.visible = false
+        }
+      }
     })
   }, [scene])
 
