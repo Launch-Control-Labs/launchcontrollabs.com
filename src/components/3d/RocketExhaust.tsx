@@ -225,29 +225,29 @@ const SMOKE_CFG: StreamConfig = {
 }
 
 const SIDE_SMOKE_CFG: StreamConfig = {
-  count:    70,
-  radius:   0.30,
-  speed:    [0.08, 0.18],
-  spread:   0.06,
-  lifetime: [1.20, 3.00],
-  size:     [18, 42],
-  color:    '#aaaaaa',
-  inner:    'rgba(200,200,200,0.30)',
-  outer:    'rgba(120,120,120,0.0)',
-  expand:   0.07,
+  count:    45,
+  radius:   0.28,
+  speed:    [0.07, 0.16],
+  spread:   0.05,
+  lifetime: [1.00, 2.50],
+  size:     [12, 26],
+  color:    '#999999',
+  inner:    'rgba(180,180,180,0.18)',
+  outer:    'rgba(100,100,100,0.0)',
+  expand:   0.06,
 }
 
 const SRB_FIRE_CFG: StreamConfig = {
-  count:    65,
-  radius:   0.10,
-  speed:    [0.30, 0.55],
-  spread:   0.007,
-  lifetime: [0.10, 0.28],
-  size:     [4, 9],
-  color:    '#ff6a00',
-  inner:    'rgba(255,160,50,1)',
-  outer:    'rgba(255,70,0,0.25)',
-  expand:   0.010,
+  count:    100,
+  radius:   0.12,
+  speed:    [0.38, 0.68],
+  spread:   0.006,
+  lifetime: [0.08, 0.22],
+  size:     [8, 16],
+  color:    '#ffaa00',
+  inner:    'rgba(255,230,120,1)',
+  outer:    'rgba(255,80,0,0.5)',
+  expand:   0.012,
 }
 
 const SSME_CORE_CFG: StreamConfig = {
@@ -306,7 +306,11 @@ export function RocketExhaust({
         <PlumeStream cfg={CORE_CFG}   pos={nozzlePosition} dir={direction} />
         <PlumeStream cfg={BELL_CFG}   pos={nozzlePosition} dir={direction} />
         <PlumeStream cfg={STREAK_CFG} pos={nozzlePosition} dir={direction} />
-        {/* Left SRB fire */}
+        {/* 3 SSME engines also fire at T=0 — ignite 6.6s before SRB liftoff */}
+        <PlumeStream cfg={SSME_CORE_CFG} pos={[nx - 0.15, ny, nz - 0.06]} dir={direction} />
+        <PlumeStream cfg={SSME_CORE_CFG} pos={[nx + 0.15, ny, nz - 0.06]} dir={direction} />
+        <PlumeStream cfg={SSME_CORE_CFG} pos={[nx,        ny, nz + 0.18]} dir={direction} />
+        {/* Left SRB fire — bright, large, punches through smoke */}
         <PlumeStream cfg={SRB_FIRE_CFG} pos={[nx - 0.65, ny, nz]} dir={direction} />
         <PlumeStream cfg={SMOKE_CFG}    pos={[nx - 0.65, ny, nz]} dir={direction} />
         {/* Right SRB fire */}

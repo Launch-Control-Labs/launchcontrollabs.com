@@ -372,7 +372,9 @@ function SpaceTether() {
 function CloudLayer() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const lowerOpacity = 1 - THREE.MathUtils.clamp((scrollProgress - 0.15) / 0.15, 0, 1)
-  const upperOpacity = THREE.MathUtils.clamp(1 - (scrollProgress - 0.08) / 0.12, 0, 1)
+  const upperFadeIn  = THREE.MathUtils.clamp((scrollProgress - 0.03) / 0.06, 0, 1)
+  const upperFadeOut = THREE.MathUtils.clamp(1 - (scrollProgress - 0.12) / 0.08, 0, 1)
+  const upperOpacity = upperFadeIn * upperFadeOut
 
   if (lowerOpacity <= 0 && upperOpacity <= 0) return null
 
