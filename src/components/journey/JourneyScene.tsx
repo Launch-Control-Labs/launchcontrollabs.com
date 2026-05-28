@@ -7,6 +7,8 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { SCENE_POSITIONS } from '@/config/scene-positions'
 import { useSceneStore } from '@/store/scene-store'
+import { RocketExhaust } from '@/components/3d/RocketExhaust'
+import { StarField } from '@/components/3d/StarField'
 import { getBackgroundColor } from '@/config/beat-config'
 import type { Group } from 'three'
 
@@ -28,11 +30,51 @@ function useBeatVisible(beatStart: number, beatEnd: number, buffer = 0.05): bool
 }
 
 function ShuttleModel() {
-  const visible = useBeatVisible(0, 0.35)
   const { scene } = useGLTF('/models/optimized/space-shuttle.glb')
-  const { position, rotation, scale } = SCENE_POSITIONS.shuttle
+  const shuttleRef = useRef<THREE.Group>(null)
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+
+  // Visible during launch + atmosphere + space cruise + shuttle-earth (0-78%)
+  const visible = scrollProgress <= 0.78
+
+  // Exhaust intensity: full fire 0-15%, fades to 0 by 35%
+  const exhaustIntensity = THREE.MathUtils.clamp(
+    1 - (scrollProgress - 0.15) / 0.20,
+    0,
+    1
+  )
+  const exhaustVisible = exhaustIntensity > 0
+
+  useFrame(() => {
+    if (!shuttleRef.current) return
+    // Y rises with scroll: 0 at bottom, 50 at top of journey
+    shuttleRef.current.position.y = scrollProgress * 50
+    // Subtle vibration during ignition/launch (0-5%)
+    if (scrollProgress < 0.05) {
+      const vib = (1 - scrollProgress / 0.05) * 0.03
+      shuttleRef.current.position.x = (Math.random() - 0.5) * vib
+    } else {
+      shuttleRef.current.position.x = 0
+    }
+  })
+
   if (!visible) return null
-  return <primitive object={scene} position={position} rotation={rotation} scale={scale} />
+
+  return (
+    <group ref={shuttleRef} position={[0, 0, 0]}>
+      {/* Shuttle body at rotation [-π/2, 0, 0] (nose UP) */}
+      <group rotation={[-Math.PI / 2, 0, 0]} scale={2.5}>
+        <primitive object={scene} />
+      </group>
+      {/* Exhaust: nozzle at bottom of shuttle, pointing DOWN */}
+      <RocketExhaust
+        nozzlePosition={[0, -3.5, 0]}
+        direction={[0, -1, 0]}
+        intensity={exhaustIntensity}
+        visible={exhaustVisible}
+      />
+    </group>
+  )
 }
 
 function DriftingAstronautModel() {
