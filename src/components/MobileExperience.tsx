@@ -115,121 +115,249 @@ function MobileHero() {
 // MOBILE SERVICES
 // ============================================================================
 const MOBILE_SERVICES = [
-  { num: '01', name: 'AI-POWERED PRODUCTS', desc: 'LLMs, agents, and automation systems built for production.' },
-  { num: '02', name: 'FULL-STACK WEB APPS', desc: 'Architecture to deployment. React, Next.js, Node.' },
-  { num: '03', name: 'DATA PIPELINES', desc: 'ETL, real-time processing, and analytics at scale.' },
-  { num: '04', name: 'TECHNICAL OPERATIONS', desc: 'DevOps, monitoring, and reliability engineering.' },
+  { num: '01', name: 'AI-POWERED PRODUCTS', desc: 'LLMs, agents, and automation systems built for production.', featured: true },
+  { num: '02', name: 'FULL-STACK WEB APPS', desc: 'Architecture to deployment. React, Next.js, Node. Complete products.', featured: false },
+  { num: '03', name: 'DATA PIPELINES', desc: 'ETL, real-time processing, and analytics at scale.', featured: false },
+  { num: '04', name: 'TECHNICAL OPERATIONS', desc: 'DevOps, monitoring, and reliability engineering.', featured: false },
 ]
 
 function MobileServices() {
+  const featuredService = MOBILE_SERVICES.find((s) => s.featured)
+  const otherServices = MOBILE_SERVICES.filter((s) => !s.featured)
+
   return (
     <section
       id="services"
       style={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #020914 0%, #0a1628 100%)',
+        background: '#020914',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: 'clamp(2rem, 5vw, 3rem)',
+        padding: 'clamp(1.5rem, 5vw, 2.5rem)',
         position: 'relative',
       }}
     >
-      <span
-        style={{
-          display: 'inline-block',
-          border: '1px solid #22D3EE',
-          padding: '0.3rem 0.8rem',
-          fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(0.55rem, 2vw, 0.75rem)',
-          letterSpacing: '0.2em',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          color: '#22D3EE',
-          marginBottom: '1.5rem',
-          alignSelf: 'flex-start',
-        }}
-      >
-        SERVICES
-      </span>
+      {/* Section flag - ESPN Magazine style */}
+      <div style={{ marginBottom: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
+        <span
+          style={{
+            display: 'inline-block',
+            background: '#22D3EE',
+            color: '#020914',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'clamp(0.5rem, 1.8vw, 0.65rem)',
+            letterSpacing: '0.2em',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            padding: '0.2rem 0.5rem',
+          }}
+        >
+          CAPABILITIES
+        </span>
+      </div>
 
+      {/* MASSIVE editorial headline - ESPN Magazine style */}
       <h2
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+          fontSize: 'clamp(3.5rem, 14vw, 7rem)',
           fontWeight: 400,
-          lineHeight: 0.85,
-          letterSpacing: '-0.02em',
+          lineHeight: 0.8,
+          letterSpacing: '-0.04em',
           color: '#FFFFFF',
-          margin: '0 0 0.5rem 0',
+          margin: '0 0 0.25rem 0',
           textTransform: 'uppercase',
         }}
       >
-        WHAT WE BUILD
+        WHAT WE
+      </h2>
+      <h2
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(3.5rem, 14vw, 7rem)',
+          fontWeight: 400,
+          lineHeight: 0.8,
+          letterSpacing: '-0.04em',
+          color: '#22D3EE',
+          margin: '0 0 clamp(1rem, 3vw, 1.5rem) 0',
+          textTransform: 'uppercase',
+        }}
+      >
+        BUILD
       </h2>
 
+      {/* Deck paragraph - editorial context */}
       <p
         style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)',
-          color: 'rgba(255,255,255,0.6)',
-          letterSpacing: '0.1em',
+          fontSize: 'clamp(0.65rem, 2vw, 0.8rem)',
+          color: 'rgba(255,255,255,0.55)',
+          letterSpacing: '0.12em',
           textTransform: 'uppercase',
-          maxWidth: '35ch',
-          margin: '0 0 2rem 0',
+          maxWidth: '32ch',
+          margin: '0 0 clamp(2rem, 6vw, 3rem)',
           lineHeight: 1.5,
         }}
       >
-        Every engagement is full-stack, production-grade, and built to last.
+        From idea to shipped product. Every engagement is full-stack, production-grade, and built to last.
       </p>
 
+      {/* Featured service - ESPN Magazine hero treatment */}
+      <div
+        style={{
+          background: 'rgba(2, 9, 20, 0.95)',
+          padding: 'clamp(1.25rem, 4vw, 2rem)',
+          marginBottom: '1px',
+          borderLeft: '4px solid #22D3EE',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Oversized number anchor - ESPN jersey number style */}
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(4.5rem, 18vw, 8rem)',
+            color: 'rgba(34,211,238,0.12)',
+            lineHeight: 0.75,
+            letterSpacing: '-0.05em',
+            position: 'absolute',
+            top: '-0.1em',
+            right: '0.1em',
+          }}
+        >
+          {featuredService?.num}
+        </span>
+
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(2.5rem, 10vw, 4rem)',
+              color: 'rgba(34,211,238,0.25)',
+              lineHeight: 0.9,
+              display: 'block',
+              marginBottom: '0.5rem',
+            }}
+          >
+            {featuredService?.num}
+          </span>
+          <h3
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.25rem, 5vw, 2rem)',
+              textTransform: 'uppercase',
+              color: '#FFFFFF',
+              lineHeight: 1,
+              margin: '0 0 0.5rem',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            {featuredService?.name}
+          </h3>
+          <p
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 'clamp(0.8rem, 2.5vw, 0.95rem)',
+              color: 'rgba(255,255,255,0.6)',
+              lineHeight: 1.5,
+              margin: 0,
+              maxWidth: '30ch',
+            }}
+          >
+            {featuredService?.desc}
+          </p>
+        </div>
+      </div>
+
+      {/* Other services - compressed, stacked */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'rgba(34,211,238,0.2)' }}>
-        {MOBILE_SERVICES.map((service) => (
+        {otherServices.map((service, index) => (
           <div
             key={service.num}
             style={{
               background: 'rgba(2, 9, 20, 0.95)',
-              padding: 'clamp(1.25rem, 3vw, 1.75rem)',
+              padding: 'clamp(1rem, 3vw, 1.25rem)',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 'clamp(0.75rem, 2vw, 1rem)',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
-              <span
+            {/* Number as visual rhythm element */}
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(1.75rem, 6vw, 2.5rem)',
+                color: 'rgba(34,211,238,0.35)',
+                lineHeight: 0.9,
+                flexShrink: 0,
+              }}
+            >
+              {service.num}
+            </span>
+            <div>
+              <h3
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
-                  color: 'rgba(34,211,238,0.4)',
-                  lineHeight: 1,
+                  fontSize: 'clamp(0.85rem, 3vw, 1.1rem)',
+                  textTransform: 'uppercase',
+                  color: '#FFFFFF',
+                  lineHeight: 1.1,
+                  margin: '0 0 0.25rem',
+                  letterSpacing: '-0.01em',
                 }}
               >
-                {service.num}
-              </span>
-              <div>
-                <h3
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
-                    textTransform: 'uppercase',
-                    color: '#FFFFFF',
-                    lineHeight: 1.1,
-                    margin: 0,
-                  }}
-                >
-                  {service.name}
-                </h3>
-                <p
-                  style={{
-                    fontSize: 'clamp(0.75rem, 2.5vw, 0.85rem)',
-                    color: 'rgba(255,255,255,0.55)',
-                    lineHeight: 1.5,
-                    margin: '0.4rem 0 0',
-                  }}
-                >
-                  {service.desc}
-                </p>
-              </div>
+                {service.name}
+              </h3>
+              <p
+                style={{
+                  fontSize: 'clamp(0.7rem, 2vw, 0.8rem)',
+                  color: 'rgba(255,255,255,0.5)',
+                  lineHeight: 1.4,
+                  margin: 0,
+                }}
+              >
+                {service.desc}
+              </p>
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Bottom annotation bar - ESPN metadata style */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: 'clamp(1.5rem, 4vw, 2rem)',
+          borderTop: '1px solid rgba(34,211,238,0.2)',
+          paddingTop: 'clamp(0.75rem, 2vw, 1rem)',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'clamp(0.45rem, 1.5vw, 0.55rem)',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.35)',
+          }}
+        >
+          Launch Control Labs
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'clamp(0.45rem, 1.5vw, 0.55rem)',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(34,211,238,0.6)',
+          }}
+        >
+          Est. 2021
+        </span>
       </div>
     </section>
   )
