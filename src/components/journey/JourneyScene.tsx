@@ -24,11 +24,6 @@ function BackgroundController() {
   return null
 }
 
-function useBeatVisible(beatStart: number, beatEnd: number, buffer = 0.05): boolean {
-  const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  return scrollProgress >= beatStart - buffer && scrollProgress <= beatEnd + buffer
-}
-
 function ShuttleModel() {
   const { scene } = useGLTF('/models/optimized/space-shuttle.glb')
   const shuttleRef = useRef<THREE.Group>(null)
@@ -122,14 +117,6 @@ function AstronautModel() {
   )
 }
 
-function EarthModel() {
-  const visible = useBeatVisible(0.30, 0.80)
-  const { scene } = useGLTF('/models/optimized/earth.glb')
-  const { position, rotation, scale } = SCENE_POSITIONS.earth
-  if (!visible) return null
-  return <primitive object={scene} position={position} rotation={rotation} scale={scale} />
-}
-
 function PlanetDriftModel() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const { scene } = useGLTF('/models/optimized/various-planets.glb')
@@ -159,23 +146,6 @@ function StarFieldWrapper() {
   const opacity = THREE.MathUtils.clamp((scrollProgress - 0.25) / 0.10, 0, 1)
   if (opacity <= 0) return null
   return <StarField opacity={opacity} />
-}
-
-function SaturnVModel() {
-  const visible = useBeatVisible(0.65, 0.95)
-  const { scene } = useGLTF('/models/optimized/apollo-saturn-v.glb')
-  const { position, rotation, scale } = SCENE_POSITIONS.saturnV
-  if (!visible) return null
-  return <primitive object={scene} position={position} rotation={rotation} scale={scale} />
-}
-
-function CtaEarthModel() {
-  const visible = useBeatVisible(0.80, 1.0)
-  const { scene } = useGLTF('/models/optimized/earth.glb')
-  const cloned = scene.clone()
-  const { position, rotation, scale } = SCENE_POSITIONS.ctaEarth
-  if (!visible) return null
-  return <primitive object={cloned} position={position} rotation={rotation} scale={scale} />
 }
 
 export function JourneyScene() {
@@ -216,21 +186,15 @@ export function JourneyScene() {
         <ShuttleModel />
       </Suspense>
       <Suspense fallback={null}>
-        <DriftingAstronautModel />
+        <PlanetDriftModel />
       </Suspense>
       <Suspense fallback={null}>
         <EarthModel />
       </Suspense>
       <Suspense fallback={null}>
-        <PlanetDriftModel />
+        <AstronautModel />
       </Suspense>
       <StarFieldWrapper />
-      <Suspense fallback={null}>
-        <SaturnVModel />
-      </Suspense>
-      <Suspense fallback={null}>
-        <CtaEarthModel />
-      </Suspense>
 
       <EffectComposer>
         <Bloom luminanceThreshold={0.6} luminanceSmoothing={0.9} intensity={0.2} mipmapBlur={false} />
