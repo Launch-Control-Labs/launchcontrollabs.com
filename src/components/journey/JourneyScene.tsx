@@ -258,7 +258,7 @@ function EarthModel() {
 function AstronautModel() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const groupRef = useRef<THREE.Group>(null)
-  const { scene, animations } = useGLTF('/models/optimized/drifting-astronaut.glb')
+  const { scene, animations } = useGLTF('/models/drifting-astronaut.glb')
   const { actions } = useAnimations(animations, groupRef)
   const { rotation, scale } = SCENE_POSITIONS.astronaut
 
@@ -418,4 +418,4 @@ export function JourneyScene() {
 
 useGLTF.preload('/models/space-shuttle-oriented.glb')
 useGLTF.preload('/models/optimized/earth.glb')
-useGLTF.preload('/models/optimized/drifting-astronaut.glb')
+useGLTF.preload('/models/drifting-astronaut.glb')
