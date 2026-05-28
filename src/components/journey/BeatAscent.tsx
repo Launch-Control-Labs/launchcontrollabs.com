@@ -14,9 +14,9 @@ function CalloutCard({ label, value, suffix }: { label: string; value: string; s
   return (
     <div
       style={{
-        border: '1px solid #DC2626',
+        border: '1px solid #EF4444',
         padding: 'clamp(12px, 2vw, 20px) clamp(16px, 2.5vw, 28px)',
-        background: 'rgba(220, 38, 38, 0.05)',
+        background: 'rgba(239, 68, 68, 0.05)',
         position: 'relative' as const,
       }}
     >
@@ -26,7 +26,7 @@ function CalloutCard({ label, value, suffix }: { label: string; value: string; s
           fontSize: 'clamp(0.6rem, 0.75vw, 0.75rem)',
           display: 'block',
           letterSpacing: '0.2em',
-          color: '#DC2626',
+          color: '#EF4444',
           marginBottom: '0.5rem',
           opacity: 0.8,
         }}
@@ -61,7 +61,7 @@ function CalloutCard({ label, value, suffix }: { label: string; value: string; s
 
 export function BeatAscent() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const opacity = getBeatOpacity('ascent', scrollProgress)
+  const opacity = getBeatOpacity('atmosphere', scrollProgress)
   
   if (opacity === 0) return null
   

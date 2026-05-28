@@ -1,6 +1,7 @@
 'use client'
 
 import { useSceneStore } from '@/store/scene-store'
+import { getBeatOpacity } from '@/config/beat-config'
 
 const TALISMAN_PROJECT = {
   name: 'TALISMAN',
@@ -23,18 +24,9 @@ const CLIENT_PROJECTS = [
   { num: '06', name: 'NPS.TODAY', metric: 'ANALYTICS' },
 ]
 
-function getBeatOpacity(start: number, end: number, progress: number): number {
-  const range = end - start
-  const local = (progress - start) / range
-  if (local < 0 || local > 1) return 0
-  if (local < 0.1) return local / 0.1
-  if (local > 0.8) return (1 - local) / 0.2
-  return 1
-}
-
 export function BeatConstellation() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const opacity = getBeatOpacity(0.55, 0.75, scrollProgress)
+  const opacity = getBeatOpacity('shuttleEarth', scrollProgress)
   if (opacity === 0) return null
 
   return (
@@ -51,7 +43,7 @@ export function BeatConstellation() {
     >
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(10,10,15,0.92) 0%, rgba(10,10,15,0.75) 60%, transparent 100%)',
+          background: 'linear-gradient(135deg, rgba(10,10,15,0.72) 0%, rgba(10,10,15,0.55) 60%, transparent 100%)',
           backdropFilter: 'blur(4px)',
           WebkitBackdropFilter: 'blur(4px)',
           minHeight: '100vh',
@@ -277,7 +269,7 @@ export function BeatConstellation() {
             <div
               key={project.num}
               style={{
-                border: '2px solid #F59E0B',
+              border: '1px solid #F59E0B',
                 borderRadius: '50%',
                 width: 'clamp(140px, 15vw, 180px)',
                 height: 'clamp(140px, 15vw, 180px)',

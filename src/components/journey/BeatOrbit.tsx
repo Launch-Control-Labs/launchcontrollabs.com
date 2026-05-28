@@ -14,7 +14,7 @@ function StatCard({ stat, label }: { stat: string; label: string }) {
   return (
     <div
       style={{
-        border: '1px solid #2563EB',
+        border: '1px solid #22D3EE',
         background: 'rgba(10, 10, 15, 0.75)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
@@ -28,7 +28,7 @@ function StatCard({ stat, label }: { stat: string; label: string }) {
           fontSize: 'clamp(3rem, 6vw, 6rem)',
           display: 'block',
           lineHeight: 1,
-          color: '#2563EB',
+          color: '#22D3EE',
           letterSpacing: '-0.02em',
         }}
       >
@@ -53,7 +53,7 @@ function StatCard({ stat, label }: { stat: string; label: string }) {
 
 export function BeatOrbit() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const opacity = getBeatOpacity('orbit', scrollProgress)
+  const opacity = getBeatOpacity('spaceCruise', scrollProgress)
   
   if (opacity === 0) return null
   
@@ -79,14 +79,14 @@ export function BeatOrbit() {
           top: 'clamp(1.5rem, 3vw, 2.5rem)',
           left: 'clamp(1.5rem, 4vw, 3rem)',
           display: 'inline-block',
-          border: '1px solid #2563EB',
+        border: '1px solid #22D3EE',
           padding: '0.3rem 0.8rem',
           fontFamily: 'var(--font-mono)',
           fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
           letterSpacing: '0.25em',
           fontWeight: 700,
           textTransform: 'uppercase',
-          color: '#2563EB',
+          color: '#22D3EE',
           background: 'rgba(10, 10, 15, 0.8)',
           backdropFilter: 'blur(4px)',
           WebkitBackdropFilter: 'blur(4px)',

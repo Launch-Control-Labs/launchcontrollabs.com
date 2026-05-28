@@ -5,7 +5,7 @@ import { getBeatOpacity } from '@/config/beat-config'
 
 export function BeatPreLaunch() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const opacity = getBeatOpacity('preLaunch', scrollProgress)
+  const opacity = getBeatOpacity('launch', scrollProgress)
   
   if (opacity === 0) return null
   

@@ -1,6 +1,7 @@
 'use client'
 
 import { useSceneStore } from '@/store/scene-store'
+import { getBeatOpacity } from '@/config/beat-config'
 
 const COMPANIES = [
   'LINKEDIN',
@@ -17,18 +18,9 @@ const AWARDS = [
   { achievement: 'FEATURED', org: 'Awwwards', year: '2024' },
 ]
 
-function getBeatOpacity(start: number, end: number, progress: number): number {
-  const range = end - start
-  const local = (progress - start) / range
-  if (local < 0 || local > 1) return 0
-  if (local < 0.1) return local / 0.1
-  if (local > 0.8) return (1 - local) / 0.2
-  return 1
-}
-
 export function BeatAuthority() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const opacity = getBeatOpacity(0.75, 0.90, scrollProgress)
+  const opacity = getBeatOpacity('astronautFar', scrollProgress)
   if (opacity === 0) return null
 
   return (
@@ -48,7 +40,7 @@ export function BeatAuthority() {
           width: '58%',
           minHeight: '100vh',
           marginLeft: 'auto',
-          background: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.88) 20%, rgba(0,0,0,0.95) 100%)',
+          background: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.70) 20%, rgba(0,0,0,0.78) 100%)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -60,15 +52,14 @@ export function BeatAuthority() {
         <span
           style={{
             display: 'inline-block',
-            border: '2px solid rgba(255,255,255,0.4)',
+            border: '1px solid #22D3EE',
             padding: '0.3rem 0.8rem',
             fontFamily: 'var(--font-mono)',
             fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
             letterSpacing: '0.25em',
             fontWeight: 700,
             textTransform: 'uppercase',
-            color: '#FFFFFF',
-            opacity: 0.6,
+            color: '#22D3EE',
             marginBottom: '1.5rem',
             alignSelf: 'flex-start',
           }}

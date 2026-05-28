@@ -1,6 +1,7 @@
 'use client'
 
 import { useSceneStore } from '@/store/scene-store'
+import { getBeatOpacity } from '@/config/beat-config'
 
 const STATS = [
   { value: '47', label: 'MISSIONS\nCOMPLETED' },
@@ -9,18 +10,9 @@ const STATS = [
   { value: '<48h', label: 'RESPONSE\nTIME' },
 ]
 
-function getBeatOpacity(start: number, end: number, progress: number): number {
-  const range = end - start
-  const local = (progress - start) / range
-  if (local < 0 || local > 1) return 0
-  if (local < 0.1) return local / 0.1
-  if (local > 0.8) return (1 - local) / 0.2
-  return 1
-}
-
 export function BeatCTA() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const opacity = getBeatOpacity(0.90, 1.0, scrollProgress)
+  const opacity = getBeatOpacity('astronautClose', scrollProgress)
   if (opacity === 0) return null
 
   return (
@@ -50,14 +42,14 @@ export function BeatCTA() {
           <span
             style={{
               display: 'inline-block',
-              border: '2px solid #4ADE80',
+              border: '1px solid #22D3EE',
               padding: '0.3rem 0.8rem',
               fontFamily: 'var(--font-mono)',
               fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
               letterSpacing: '0.25em',
               fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#4ADE80',
+              color: '#22D3EE',
               marginBottom: '1.5rem',
             }}
           >
@@ -102,9 +94,9 @@ export function BeatCTA() {
               fontFamily: 'var(--font-mono)',
               fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
               letterSpacing: '0.25em',
-              color: '#4ADE80',
+              color: '#22D3EE',
               textDecoration: 'none',
-              border: '2px solid #4ADE80',
+              border: '2px solid #22D3EE',
               padding: '0.75rem 2rem',
               textTransform: 'uppercase',
               fontWeight: 700,
@@ -129,7 +121,7 @@ export function BeatCTA() {
               key={stat.label}
               style={{
                 background: 'rgba(255,255,255,0.03)',
-                border: '1px solid #1E3A5F',
+                border: '1px solid rgba(34,211,238,0.2)',
                 padding: 'clamp(1rem, 3vw, 2rem)',
                 textAlign: 'center',
               }}
@@ -152,7 +144,7 @@ export function BeatCTA() {
                   fontFamily: 'var(--font-mono)',
                   fontSize: 'clamp(0.5rem, 0.7vw, 0.65rem)',
                   letterSpacing: '0.15em',
-                  color: '#1E3A5F',
+                  color: 'rgba(255,255,255,0.45)',
                   whiteSpace: 'pre-line',
                   textTransform: 'uppercase',
                 }}
