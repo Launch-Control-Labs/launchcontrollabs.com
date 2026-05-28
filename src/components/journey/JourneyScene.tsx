@@ -284,23 +284,40 @@ function AstronautModel() {
       }
     })
     toRemove.forEach(obj => obj.removeFromParent())
+
+    // Set materials transparent for fade-in effect
+    scene.traverse((child: any) => {
+      if (child.isMesh) {
+        const mats = Array.isArray(child.material) ? child.material : [child.material]
+        mats.forEach((m: any) => { if (m) { m.transparent = true; m.opacity = 0 } })
+      }
+    })
   }, [scene])
 
-  useFrame((_, delta) => {
+  useFrame(() => {
     if (!groupRef.current || !visible) return
 
     const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
+    const fadeIn = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.04, 0, 1)
     const shuttleY = scrollProgress * 50
+    const t = Date.now() * 0.001
 
-    // Start at cargo bay hatch, drift outward into space
     const astroX = 5 + driftProgress * 4
     const astroY = shuttleY + 1.5 + driftProgress * 3.5
     const astroZ = -0.8 + driftProgress * 4.8
 
     groupRef.current.position.set(astroX, astroY, astroZ)
 
-    groupRef.current.rotation.y += delta * 0.1
-    groupRef.current.rotation.z += delta * 0.05
+    groupRef.current.rotation.y = Math.sin(t * 0.18) * 0.35
+    groupRef.current.rotation.z = Math.sin(t * 0.12 + 1.2) * 0.15
+    groupRef.current.rotation.x = Math.sin(t * 0.09 + 2.4) * 0.08
+
+    scene.traverse((child: any) => {
+      if (child.isMesh) {
+        const mats = Array.isArray(child.material) ? child.material : [child.material]
+        mats.forEach((m: any) => { if (m && m.transparent) m.opacity = fadeIn })
+      }
+    })
   })
 
   if (!visible) return null
@@ -383,20 +400,20 @@ function CloudLayer() {
       {/* Lower ground-level clouds (existing) */}
       {lowerOpacity > 0 && (
         <>
-          <Cloud position={[-6, -10, 5]} speed={0.1} opacity={lowerOpacity * 0.6} bounds={[15, 4, 5]} volume={8} seed={1} />
-          <Cloud position={[10, -12, 0]} speed={0.08} opacity={lowerOpacity * 0.4} bounds={[12, 3, 4]} volume={6} seed={2} />
-          <Cloud position={[-12, -8, -3]} speed={0.12} opacity={lowerOpacity * 0.5} bounds={[18, 5, 6]} volume={10} seed={3} />
-          <Cloud position={[4, -14, 7]} speed={0.06} opacity={lowerOpacity * 0.35} bounds={[16, 4, 5]} volume={7} seed={4} />
-          <Cloud position={[0, -9, -5]} speed={0.09} opacity={lowerOpacity * 0.45} bounds={[20, 4, 6]} volume={9} seed={5} />
+          <Cloud position={[-6, -10, 5]} speed={0.1} opacity={lowerOpacity * 0.22} bounds={[22, 2, 10]} volume={3} seed={1} />
+          <Cloud position={[10, -12, 0]} speed={0.08} opacity={lowerOpacity * 0.15} bounds={[18, 2, 8]} volume={2} seed={2} />
+          <Cloud position={[-12, -8, -3]} speed={0.12} opacity={lowerOpacity * 0.18} bounds={[28, 2, 12]} volume={3} seed={3} />
+          <Cloud position={[4, -14, 7]} speed={0.06} opacity={lowerOpacity * 0.12} bounds={[24, 2, 9]} volume={2} seed={4} />
+          <Cloud position={[0, -9, -5]} speed={0.09} opacity={lowerOpacity * 0.16} bounds={[30, 2, 11]} volume={3} seed={5} />
         </>
       )}
       {/* Upper overhead clouds — shuttle rises through these */}
       {upperOpacity > 0 && (
         <>
-          <Cloud position={[-8, 10, 6]} speed={0.04} opacity={upperOpacity * 0.5} bounds={[20, 3, 8]} volume={7} seed={10} />
-          <Cloud position={[12, 14, -4]} speed={0.03} opacity={upperOpacity * 0.4} bounds={[16, 3, 6]} volume={6} seed={11} />
-          <Cloud position={[-3, 18, 8]} speed={0.05} opacity={upperOpacity * 0.45} bounds={[22, 4, 7]} volume={8} seed={12} />
-          <Cloud position={[8, 12, 3]} speed={0.04} opacity={upperOpacity * 0.35} bounds={[14, 3, 5]} volume={5} seed={13} />
+          <Cloud position={[-8, 10, 6]} speed={0.04} opacity={upperOpacity * 0.28} bounds={[20, 3, 8]} volume={7} seed={10} />
+          <Cloud position={[12, 14, -4]} speed={0.03} opacity={upperOpacity * 0.22} bounds={[16, 3, 6]} volume={6} seed={11} />
+          <Cloud position={[-3, 18, 8]} speed={0.05} opacity={upperOpacity * 0.26} bounds={[22, 4, 7]} volume={8} seed={12} />
+          <Cloud position={[8, 12, 3]} speed={0.04} opacity={upperOpacity * 0.20} bounds={[14, 3, 5]} volume={5} seed={13} />
         </>
       )}
     </Clouds>
