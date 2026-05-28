@@ -12,9 +12,9 @@ export const SCENE_POSITIONS: Record<string, ModelTransform> = {
   },
 
   earth: {
-    position: [0, 35, -40],
+    position: [10, 35, -40],
     rotation: [0, 0, -0.2],
-    scale: 8,
+    scale: 4,
   },
 
   astronaut: {
