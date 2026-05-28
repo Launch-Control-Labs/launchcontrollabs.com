@@ -83,7 +83,7 @@ Every task MUST include agent-executed QA scenarios.
 
 ## TODOs
 
-- [ ] 1. Fix shuttle thin line removal — target Line/LineSegments objects + updateMatrixWorld
+- [x] 1. Fix shuttle thin line removal — target Line/LineSegments objects + updateMatrixWorld
 
   **What to do**:
   In `src/components/journey/JourneyScene.tsx`, replace the current useEffect traverse (lines 45-62) with:
