@@ -15,6 +15,9 @@ import { getBackgroundColor } from '@/config/beat-config'
 // Without this, DRACO-compressed models fail silently (empty scene object).
 useGLTF.setDecoderPath('/draco/')
 
+// (0,-1,0) normal clips below the plane; constant tracks shuttle world Y each frame
+const clipPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0)
+
 function BackgroundController() {
   const { scene } = useThree()
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
@@ -35,9 +38,7 @@ function ShuttleModel() {
   const shuttleRef = useRef<THREE.Group>(null)
   const modelGroupRef = useRef<THREE.Group>(null)
   const astronautGroupRef = useRef<THREE.Group>(null)
-  const reparentedRef = useRef(false)
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const { scene: threeScene } = useThree()
   const { actions: astroActions } = useAnimations(astronautGltf.animations, astronautGroupRef)
 
   const srbLeftRef = useRef<THREE.Object3D | null>(null)
@@ -103,7 +104,14 @@ function ShuttleModel() {
       if (child.isMesh) {
         const mats = Array.isArray(child.material) ? child.material : [child.material]
         mats.forEach((m: any) => {
-          if (m) { m.transparent = true; m.opacity = 0; m.depthWrite = true }
+          if (m) {
+            m.transparent = true
+            m.opacity = 1
+            m.depthWrite = true
+            m.clippingPlanes = [clipPlane]
+            m.clipShadows = true
+            m.side = THREE.DoubleSide
+          }
         })
       }
     })
@@ -242,51 +250,27 @@ function ShuttleModel() {
 
     const astroGroup = astronautGroupRef.current
     if (astroGroup) {
-      if (scrollProgress < 0.70) {
-        astroGroup.visible = false
-        if (reparentedRef.current) {
-          shuttleRef.current?.attach(astroGroup)
-          reparentedRef.current = false
-        }
-      } else if (scrollProgress < 0.78) {
-        astroGroup.visible = true
-        if (reparentedRef.current) {
-          shuttleRef.current?.attach(astroGroup)
-          reparentedRef.current = false
-        }
-        const emergeProgress = (scrollProgress - 0.70) / 0.08
-        astroGroup.position.y = THREE.MathUtils.lerp(0, 3, emergeProgress)
-        astroGroup.position.x = THREE.MathUtils.lerp(0, 0.5, emergeProgress)
-        astroGroup.position.z = THREE.MathUtils.lerp(0, 2, emergeProgress)
-        astroGroup.traverse((child: any) => {
-          if (child.isMesh && child.material) {
-            const mat = child.material
-            mat.opacity = THREE.MathUtils.clamp(emergeProgress * 1.5, 0, 1)
-          }
-        })
-      } else {
-        astroGroup.visible = true
-        if (!reparentedRef.current && shuttleRef.current) {
-          threeScene.attach(astroGroup)
-          reparentedRef.current = true
-        }
-        const driftProgress = (scrollProgress - 0.78) / 0.22
-        const shuttleY = scrollProgress * 50
-        astroGroup.position.x = 5 + 0.5 + driftProgress * 4
-        astroGroup.position.y = shuttleY + 3 + driftProgress * 6
-        astroGroup.position.z = 2 + driftProgress * 8
-        astroGroup.rotation.y += 0.002
-        astroGroup.rotation.x = Math.sin(driftProgress * 2) * 0.3
-        astroGroup.traverse((child: any) => {
-          if (child.isMesh && child.material) child.material.opacity = 1
-        })
+      const emergeStart = 0.68
+      const emergeEnd = 0.82
+      const emergeProgress = THREE.MathUtils.clamp((scrollProgress - emergeStart) / (emergeEnd - emergeStart), 0, 1)
+
+      astroGroup.position.y = THREE.MathUtils.lerp(-1, 4, emergeProgress)
+      astroGroup.position.x = THREE.MathUtils.lerp(0, 0.5, emergeProgress)
+      astroGroup.position.z = THREE.MathUtils.lerp(0, 3, emergeProgress)
+      astroGroup.visible = true
+
+      const shuttleWorldY = shuttleRef.current?.position.y || 0
+      clipPlane.constant = shuttleWorldY + 0.5
+
+      if (emergeProgress > 0.3) {
+        astroGroup.rotation.y += 0.003 * emergeProgress
       }
 
       if (astroActions && astroActions['idle']) {
         const action = astroActions['idle']
         if (!action.isRunning()) {
           action.play()
-          action.timeScale = 0.3
+          action.timeScale = 0.4
         }
       }
     }
@@ -308,7 +292,7 @@ function ShuttleModel() {
         visible={exhaustVisible}
         srbAttached={scrollProgress < 0.22}
       />
-      <group ref={astronautGroupRef} visible={false} position={[0, 0, 0]} scale={0.25}>
+      <group ref={astronautGroupRef} visible={true} position={[0, -1, 0]} scale={0.4}>
         <primitive object={astronautGltf.scene} />
       </group>
     </group>

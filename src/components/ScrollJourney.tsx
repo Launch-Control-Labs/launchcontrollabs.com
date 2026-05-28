@@ -86,6 +86,7 @@ const DynamicCanvas = dynamic(
             toneMapping: THREE.ACESFilmicToneMapping,
             toneMappingExposure: 1.2,
             outputColorSpace: THREE.SRGBColorSpace,
+            localClippingEnabled: true,
           }}
           camera={{ position: [0, -5, 10], fov: 60, near: 0.1, far: 2000 }}
           style={{ width: '100%', height: '100%' }}
