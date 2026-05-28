@@ -67,14 +67,15 @@ function ShuttleModel() {
         return
       }
 
-      // Rule 3: Thin geometry filter (now correct because updateMatrixWorld ran first)
+      // Rule 3: Thin geometry — only the most extreme hair-thin objects (lightning rods etc)
+      // Threshold kept at 0.09 to avoid removing flat panels like cargo bay doors
       if (child.isMesh && child.geometry) {
         child.geometry.computeBoundingBox()
         const bb = child.geometry.boundingBox
         if (bb) {
           const s = new THREE.Vector3()
           bb.getSize(s)
-          if (Math.min(s.x, s.y, s.z) < 0.15 && Math.max(s.x, s.y, s.z) > 1) {
+          if (Math.min(s.x, s.y, s.z) < 0.09 && Math.max(s.x, s.y, s.z) > 1) {
             toRemove.push(child)
           }
         }
@@ -140,22 +141,24 @@ function ShuttleModel() {
     shuttleRef.current.position.y = baseY
     shuttleRef.current.position.x = 5
 
-    // Rumble: extends to 20% scroll, decays linearly, X + Y jitter
-    if (scrollProgress < 0.20) {
-      const vibFade = 1 - scrollProgress / 0.20
-      const vib = vibFade * 0.045
+    if (scrollProgress < 0.30) {
+      const vibFade = 1 - scrollProgress / 0.30
+      const vib = vibFade * 0.055
       shuttleRef.current.position.x = 5 + (Math.random() - 0.5) * vib
-      shuttleRef.current.position.y = baseY + (Math.random() - 0.5) * vib * 0.35
+      shuttleRef.current.position.y = baseY + (Math.random() - 0.5) * vib * 0.4
     }
 
-    // Atmospheric sway: gentle sin oscillation during climb, fades by 25%
-    if (scrollProgress < 0.25 && modelGroupRef.current) {
+    if (modelGroupRef.current) {
       const t = Date.now() * 0.001
-      const fade = 1 - scrollProgress / 0.25
-      const swayZ = Math.sin(t * 0.75) * 0.014 * fade
-      const swayY = Math.sin(t * 1.20) * 0.007 * fade
-      modelGroupRef.current.rotation.z = -Math.PI / 2 + swayZ
-      modelGroupRef.current.rotation.y =  Math.PI    + swayY
+      if (scrollProgress < 0.30) {
+        const swayFade = 1 - scrollProgress / 0.30
+        modelGroupRef.current.rotation.z = -Math.PI / 2 + Math.sin(t * 0.75) * 0.022 * swayFade
+        modelGroupRef.current.rotation.y =  Math.PI    + Math.sin(t * 1.20) * 0.012 * swayFade
+      } else {
+        const glide = THREE.MathUtils.clamp((scrollProgress - 0.30) / 0.40, 0, 1)
+        modelGroupRef.current.rotation.z = -Math.PI / 2 + Math.sin(t * 0.15) * 0.006 * (1 - glide * 0.7) + glide * 0.025
+        modelGroupRef.current.rotation.y =  Math.PI    + Math.sin(t * 0.10) * 0.003
+      }
     }
 
     const srbProgress = THREE.MathUtils.clamp(
