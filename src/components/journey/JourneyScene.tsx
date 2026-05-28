@@ -31,9 +31,14 @@ function BackgroundController() {
 
 function ShuttleModel() {
   const { scene } = useGLTF('/models/space-shuttle-oriented.glb')
+  const astronautGltf = useGLTF('/models/astronaut-converted.glb')
   const shuttleRef = useRef<THREE.Group>(null)
   const modelGroupRef = useRef<THREE.Group>(null)
+  const astronautGroupRef = useRef<THREE.Group>(null)
+  const reparentedRef = useRef(false)
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const { scene: threeScene } = useThree()
+  const { actions: astroActions } = useAnimations(astronautGltf.animations, astronautGroupRef)
 
   const srbLeftRef = useRef<THREE.Object3D | null>(null)
   const srbRightRef = useRef<THREE.Object3D | null>(null)
@@ -86,7 +91,23 @@ function ShuttleModel() {
       }
     })
     toRemove.forEach(obj => obj.removeFromParent())
-  }, [scene])
+
+    astronautGltf.scene.traverse((child: any) => {
+      const name = (child.name || '').toLowerCase()
+      if (name.includes('wire') || name.includes('rope') ||
+          name.includes('necklace') || name.includes('cable') ||
+          name.includes('tether')) {
+        child.visible = false
+        return
+      }
+      if (child.isMesh) {
+        const mats = Array.isArray(child.material) ? child.material : [child.material]
+        mats.forEach((m: any) => {
+          if (m) { m.transparent = true; m.opacity = 0; m.depthWrite = true }
+        })
+      }
+    })
+  }, [scene, astronautGltf.scene])
 
   const { computedScale, nozzleY, centerOffset } = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene)
@@ -218,6 +239,57 @@ function ShuttleModel() {
     if (bayDoorRef.current) {
       bayDoorRef.current.rotation.x = bayProgress * Math.PI * 0.6
     }
+
+    const astroGroup = astronautGroupRef.current
+    if (astroGroup) {
+      if (scrollProgress < 0.70) {
+        astroGroup.visible = false
+        if (reparentedRef.current) {
+          shuttleRef.current?.attach(astroGroup)
+          reparentedRef.current = false
+        }
+      } else if (scrollProgress < 0.78) {
+        astroGroup.visible = true
+        if (reparentedRef.current) {
+          shuttleRef.current?.attach(astroGroup)
+          reparentedRef.current = false
+        }
+        const emergeProgress = (scrollProgress - 0.70) / 0.08
+        astroGroup.position.y = THREE.MathUtils.lerp(0.5, 4, emergeProgress)
+        astroGroup.position.x = THREE.MathUtils.lerp(0, 1, emergeProgress)
+        astroGroup.position.z = THREE.MathUtils.lerp(-1, 2, emergeProgress)
+        astroGroup.traverse((child: any) => {
+          if (child.isMesh && child.material) {
+            const mat = child.material
+            mat.opacity = THREE.MathUtils.clamp(emergeProgress * 1.5, 0, 1)
+          }
+        })
+      } else {
+        astroGroup.visible = true
+        if (!reparentedRef.current && shuttleRef.current) {
+          threeScene.attach(astroGroup)
+          reparentedRef.current = true
+        }
+        const driftProgress = (scrollProgress - 0.78) / 0.22
+        const shuttleY = scrollProgress * 50
+        astroGroup.position.x = 5 + 1 + driftProgress * 3
+        astroGroup.position.y = shuttleY + 4 + driftProgress * 5
+        astroGroup.position.z = 2 + driftProgress * 8
+        astroGroup.rotation.y += 0.002
+        astroGroup.rotation.x = Math.sin(driftProgress * 2) * 0.3
+        astroGroup.traverse((child: any) => {
+          if (child.isMesh && child.material) child.material.opacity = 1
+        })
+      }
+
+      if (astroActions && astroActions['idle']) {
+        const action = astroActions['idle']
+        if (!action.isRunning()) {
+          action.play()
+          action.timeScale = 0.3
+        }
+      }
+    }
   })
 
   if (!visible) return null
@@ -236,6 +308,9 @@ function ShuttleModel() {
         visible={exhaustVisible}
         srbAttached={scrollProgress < 0.22}
       />
+      <group ref={astronautGroupRef} visible={false} position={[0, 0.5, -1]} scale={1.1}>
+        <primitive object={astronautGltf.scene} />
+      </group>
     </group>
   )
 }
@@ -262,164 +337,6 @@ function EarthModel() {
   )
 }
 
-function AstronautModel() {
-  const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const groupRef = useRef<THREE.Group>(null)
-  const astronautMatsRef = useRef<THREE.Material[]>([])
-  const { scene, animations } = useGLTF('/models/astronaut-converted.glb')
-  const { actions } = useAnimations(animations, groupRef)
-  const { rotation, scale } = SCENE_POSITIONS.astronaut
-
-  const shouldRender = scrollProgress >= 0.65
-  const visible = scrollProgress >= 0.72
-
-  useEffect(() => {
-    const action = actions['idle'] || actions['floating'] || Object.values(actions)[0]
-    if (action) {
-      action.play()
-      action.paused = true  // Don't auto-advance — we control time from scroll
-      action.setEffectiveTimeScale(1)
-      action.setLoop(THREE.LoopOnce, 1)
-      action.clampWhenFinished = true
-    }
-  }, [actions])
-
-  useEffect(() => {
-    scene.traverse((child: any) => {
-      const name = (child.name || '').toLowerCase()
-
-      // Hide (don't remove!) bones — removal breaks SkinnedMesh skeleton
-      if (name.includes('wire') || name.includes('rope') ||
-          name.includes('necklace') || name.includes('cable') ||
-          name.includes('tether') || name.includes('tube')) {
-        child.visible = false
-        return
-      }
-
-      // Hide Line/LineSegments/Points
-      if (child.isLine || child.isLineSegments || child.isPoints) {
-        child.visible = false
-        return
-      }
-
-      // Thin geometry check — catch unnamed string/wire Meshes
-      if (child.isMesh && child.geometry) {
-        child.geometry.computeBoundingBox()
-        const bb = child.geometry.boundingBox
-        if (bb) {
-          const s = new THREE.Vector3()
-          bb.getSize(s)
-          if (Math.min(s.x, s.y, s.z) < 0.02 && Math.max(s.x, s.y, s.z) > 0.5) {
-            child.visible = false
-            return
-          }
-        }
-      }
-
-      // Set materials transparent for fade-in
-      if (child.isMesh) {
-        const mats = Array.isArray(child.material) ? child.material : [child.material]
-        mats.forEach((m: any) => { if (m) { m.transparent = true; m.opacity = 0 } })
-      }
-    })
-
-    const cachedMats: THREE.Material[] = []
-    scene.traverse((child: any) => {
-      if (child.isMesh && child.visible !== false) {
-        const ms = Array.isArray(child.material) ? child.material : [child.material]
-        ms.forEach((m: any) => { if (m && !cachedMats.includes(m)) cachedMats.push(m) })
-      }
-    })
-    astronautMatsRef.current = cachedMats
-  }, [scene])
-
-  useFrame(() => {
-    if (!groupRef.current || !visible) return
-
-    const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
-    const fadeIn = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.04, 0, 1)
-    const shuttleY = scrollProgress * 50
-    const t = Date.now() * 0.001
-
-    const astroX = 5 + driftProgress * 2.5
-    const astroY = shuttleY + 0.3 + driftProgress * 4
-    const astroZ = -2 + driftProgress * 8
-
-    groupRef.current.position.set(astroX, astroY, astroZ)
-    groupRef.current.visible = visible
-
-    // Scrub animation based on drift progress (0→1 maps to animation start→end)
-    const action = actions['idle'] || actions['floating'] || Object.values(actions)[0]
-    if (action && action.getClip()) {
-      const duration = action.getClip().duration
-      action.time = driftProgress * duration
-    }
-
-    // Gentle whole-body tumble layered on skeletal animation
-    groupRef.current.rotation.y += 0.0003 * Math.sin(t * 0.1)
-    groupRef.current.rotation.x += 0.0001 * Math.sin(t * 0.07 + 1.5)
-
-    astronautMatsRef.current.forEach(m => { (m as any).opacity = fadeIn })
-  })
-
-  if (!shouldRender) return null
-  return (
-    <group ref={groupRef} visible={false} rotation={rotation} scale={scale}>
-      <primitive object={scene} />
-    </group>
-  )
-}
-
-
-
-function EVATether() {
-  const scrollProgress = useSceneStore((s) => s.scrollProgress)
-  const meshRef = useRef<THREE.Mesh>(null)
-  const visible = scrollProgress >= 0.72
-
-  const material = useMemo(() => new THREE.MeshStandardMaterial({
-    color: '#888888',
-    metalness: 0.1,
-    roughness: 0.9,
-    transparent: true,
-    opacity: 0.7,
-  }), [])
-
-  const hullPosRef = useRef(new THREE.Vector3())
-  const astroPosRef = useRef(new THREE.Vector3())
-  const midRef = useRef(new THREE.Vector3())
-
-  useFrame(() => {
-    if (!meshRef.current || !visible) {
-      if (meshRef.current) meshRef.current.visible = false
-      return
-    }
-    meshRef.current.visible = true
-
-    const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
-    const shuttleY = scrollProgress * 50
-
-    hullPosRef.current.set(5, shuttleY + 0.3, -2)
-    astroPosRef.current.set(
-      5 + driftProgress * 2.5,
-      shuttleY + 0.3 + driftProgress * 4,
-      -2 + driftProgress * 8
-    )
-    midRef.current.lerpVectors(hullPosRef.current, astroPosRef.current, 0.5)
-    midRef.current.y -= 0.3 + driftProgress * 1.2
-
-    const curve = new THREE.CatmullRomCurve3(
-      [hullPosRef.current.clone(), midRef.current.clone(), astroPosRef.current.clone()],
-      false, 'catmullrom', 0.5
-    )
-    const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.015 + driftProgress * 0.005, 6, false)
-
-    if (meshRef.current.geometry) meshRef.current.geometry.dispose()
-    meshRef.current.geometry = tubeGeo
-  })
-
-  return <mesh ref={meshRef} material={material} frustumCulled={false} />
-}
 
 
 function CloudLayer() {
@@ -495,10 +412,7 @@ export function JourneyScene() {
       <Suspense fallback={null}>
         <EarthModel />
       </Suspense>
-      <Suspense fallback={null}>
-        <AstronautModel />
-      </Suspense>
-      <EVATether />
+
 
       <CloudLayer />
       <StarFieldWrapper />
