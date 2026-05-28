@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense, useEffect, useMemo, useRef } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import { useGLTF, useAnimations, Cloud, Clouds } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -227,28 +227,12 @@ function CloudLayer() {
   if (opacity <= 0) return null
 
   return (
-    <group>
-      <mesh position={[-6, -2, 12]}>
-        <planeGeometry args={[18, 5]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={opacity * 0.5} depthWrite={false} side={THREE.DoubleSide} />
-      </mesh>
-      <mesh position={[10, 0, 8]}>
-        <planeGeometry args={[14, 4]} />
-        <meshBasicMaterial color="#f0f4ff" transparent opacity={opacity * 0.4} depthWrite={false} side={THREE.DoubleSide} />
-      </mesh>
-      <mesh position={[-2, -4, 15]}>
-        <planeGeometry args={[24, 6]} />
-        <meshBasicMaterial color="#e8f0ff" transparent opacity={opacity * 0.45} depthWrite={false} side={THREE.DoubleSide} />
-      </mesh>
-      <mesh position={[-12, 1, 5]}>
-        <planeGeometry args={[16, 4]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={opacity * 0.35} depthWrite={false} side={THREE.DoubleSide} />
-      </mesh>
-      <mesh position={[8, -3, 18]}>
-        <planeGeometry args={[20, 5]} />
-        <meshBasicMaterial color="#f8faff" transparent opacity={opacity * 0.4} depthWrite={false} side={THREE.DoubleSide} />
-      </mesh>
-    </group>
+    <Clouds material={THREE.MeshBasicMaterial} limit={100}>
+      <Cloud position={[-4, -3, 5]} speed={0.1} opacity={opacity * 0.6} bounds={[10, 3, 3]} volume={8} seed={1} />
+      <Cloud position={[8, -1, 2]} speed={0.08} opacity={opacity * 0.4} bounds={[8, 2, 2]} volume={6} seed={2} />
+      <Cloud position={[-10, 0, -2]} speed={0.12} opacity={opacity * 0.5} bounds={[12, 4, 3]} volume={10} seed={3} />
+      <Cloud position={[3, -5, 8]} speed={0.06} opacity={opacity * 0.35} bounds={[14, 3, 3]} volume={7} seed={4} />
+    </Clouds>
   )
 }
 
