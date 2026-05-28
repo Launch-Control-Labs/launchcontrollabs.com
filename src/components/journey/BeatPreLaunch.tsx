@@ -21,9 +21,10 @@ export function BeatPreLaunch() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
+        background: 'linear-gradient(to top, rgba(2, 9, 20, 0.65) 0%, rgba(2, 9, 20, 0.3) 35%, transparent 60%)',
       }}
     >
-      <div style={{ padding: 0, paddingBottom: 'clamp(0.5rem, 1.5vh, 1.2rem)' }}>
+      <div style={{ padding: '0 clamp(1.5rem, 3vw, 3rem)', paddingBottom: 'clamp(2.5rem, 5vh, 4rem)' }}>
         <div
           style={{
             display: 'flex',
@@ -68,6 +69,7 @@ export function BeatPreLaunch() {
             margin: 0,
             opacity: 0.95,
             whiteSpace: 'nowrap',
+            textShadow: '0 2px 30px rgba(0,0,0,0.7)',
           }}
         >
           LAUNCH CONTROL
@@ -77,7 +79,7 @@ export function BeatPreLaunch() {
           style={{
             display: 'flex',
             alignItems: 'baseline',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
             marginTop: '-0.06em',
             width: '100%',
           }}
@@ -106,7 +108,7 @@ export function BeatPreLaunch() {
               textTransform: 'uppercase',
               margin: 0,
               opacity: 0.95,
-              textShadow: '0 0 60px rgba(34, 211, 238, 0.25)',
+              textShadow: '0 2px 30px rgba(0,0,0,0.7), 0 0 60px rgba(34, 211, 238, 0.25)',
             }}
           >
             LABS
