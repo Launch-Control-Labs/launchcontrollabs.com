@@ -345,6 +345,50 @@ function AstronautModel() {
 
 
 
+function EVATether() {
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const meshRef = useRef<THREE.Mesh>(null)
+  const visible = scrollProgress >= 0.72
+
+  const material = useMemo(() => new THREE.MeshStandardMaterial({
+    color: '#cccccc',
+    metalness: 0.3,
+    roughness: 0.7,
+    transparent: true,
+    opacity: 0.85,
+  }), [])
+
+  useFrame(() => {
+    if (!meshRef.current || !visible) {
+      if (meshRef.current) meshRef.current.visible = false
+      return
+    }
+    meshRef.current.visible = true
+
+    const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
+    const shuttleY = scrollProgress * 50
+
+    const hullPos = new THREE.Vector3(5, shuttleY + 0.5, 0)
+    const astroPos = new THREE.Vector3(
+      5 + driftProgress * 3,
+      shuttleY + 0.5 + driftProgress * 5,
+      0 + driftProgress * 6
+    )
+
+    const mid = new THREE.Vector3().lerpVectors(hullPos, astroPos, 0.5)
+    mid.y -= 0.3 + driftProgress * 1.2
+
+    const curve = new THREE.CatmullRomCurve3([hullPos, mid, astroPos], false, 'catmullrom', 0.5)
+    const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.03 + driftProgress * 0.01, 8, false)
+
+    if (meshRef.current.geometry) meshRef.current.geometry.dispose()
+    meshRef.current.geometry = tubeGeo
+  })
+
+  if (!visible) return null
+  return <mesh ref={meshRef} material={material} frustumCulled={false} />
+}
+
 
 function CloudLayer() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
@@ -422,6 +466,7 @@ export function JourneyScene() {
       <Suspense fallback={null}>
         <AstronautModel />
       </Suspense>
+      <EVATether />
 
       <CloudLayer />
       <StarFieldWrapper />
