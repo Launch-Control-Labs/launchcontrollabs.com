@@ -49,27 +49,15 @@ function ShuttleModel() {
     const maxDim = Math.max(size.x, size.y, size.z)
     const scale = maxDim > 0 ? 7 / maxDim : 2.5
 
-    const noseDir = new THREE.Vector3(-1, 0, 0).normalize()
-    const upDir = new THREE.Vector3(0, 1, 0)
-    const q1 = new THREE.Quaternion().setFromUnitVectors(noseDir, upDir)
+    // Model is already oriented: nose at +Y, engines at -Y (confirmed from bounding box)
+    // Only need Y-axis rotation to face orbiter toward camera (+Z)
+    const q1 = new THREE.Quaternion().setFromAxisAngle(
+      new THREE.Vector3(0, 1, 0),
+      Math.PI  // 180° around Y — flip to show orbiter face toward camera
+    )
 
-    const orbiterFace = new THREE.Vector3(0, 1, 0).applyQuaternion(q1)
-    const projected = orbiterFace.clone()
-    projected.y = 0
-    if (projected.lengthSq() > 0.001) {
-      projected.normalize()
-      const angle = Math.atan2(
-        projected.x * 1 - projected.z * 0,
-        projected.x * 0 + projected.z * 1
-      )
-      const q2 = new THREE.Quaternion().setFromAxisAngle(upDir, -angle)
-      q1.premultiply(q2)
-    }
-
-    const engineDir = new THREE.Vector3(1, 0, 0).applyQuaternion(q1)
-    const center = box.getCenter(new THREE.Vector3())
-    const halfExtentX = (box.max.x - box.min.x) / 2
-    const nozzleWorld = -(halfExtentX * scale) * Math.abs(engineDir.y)
+    // Nozzle at bottom of model (engines at -Y end)
+    const nozzleWorld = -(box.max.y - box.min.y) * scale * 0.5
 
     return { computedScale: scale, nozzleY: nozzleWorld || -3.5, orientationQuat: q1 }
   }, [scene])
@@ -240,29 +228,30 @@ function CloudLayer() {
 
   return (
     <group>
-      <mesh position={[-8, -3, -10]}>
-        <planeGeometry args={[22, 6]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={opacity * 0.3} depthWrite={false} />
+      <mesh position={[-6, -2, 12]}>
+        <planeGeometry args={[18, 5]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={opacity * 0.5} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
-      <mesh position={[12, 1, -15]}>
-        <planeGeometry args={[16, 5]} />
-        <meshBasicMaterial color="#f0f4ff" transparent opacity={opacity * 0.25} depthWrite={false} />
+      <mesh position={[10, 0, 8]}>
+        <planeGeometry args={[14, 4]} />
+        <meshBasicMaterial color="#f0f4ff" transparent opacity={opacity * 0.4} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
-      <mesh position={[0, -5, -8]}>
-        <planeGeometry args={[28, 5]} />
-        <meshBasicMaterial color="#e8f0ff" transparent opacity={opacity * 0.25} depthWrite={false} />
+      <mesh position={[-2, -4, 15]}>
+        <planeGeometry args={[24, 6]} />
+        <meshBasicMaterial color="#e8f0ff" transparent opacity={opacity * 0.45} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
-      <mesh position={[-15, 2, -18]}>
-        <planeGeometry args={[18, 4]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={opacity * 0.2} depthWrite={false} />
+      <mesh position={[-12, 1, 5]}>
+        <planeGeometry args={[16, 4]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={opacity * 0.35} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
-      <mesh position={[6, -7, -6]}>
-        <planeGeometry args={[20, 4]} />
-        <meshBasicMaterial color="#dce8f5" transparent opacity={opacity * 0.2} depthWrite={false} />
+      <mesh position={[8, -3, 18]}>
+        <planeGeometry args={[20, 5]} />
+        <meshBasicMaterial color="#f8faff" transparent opacity={opacity * 0.4} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
     </group>
   )
 }
+
 
 function StarFieldWrapper() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
