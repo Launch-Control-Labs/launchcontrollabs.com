@@ -13,6 +13,7 @@ import { JourneyScene } from '@/components/journey/JourneyScene'
 import { BeatOverlays } from '@/components/journey/BeatOverlays'
 import { MobileExperience } from '@/components/MobileExperience'
 import { StaticContent } from '@/components/StaticContent'
+import { SmoothScrollProvider } from '@/components/SmoothScroll'
 
 export default function Home() {
   const experienceMode = useExperienceMode()
@@ -29,23 +30,25 @@ export default function Home() {
       <SectionNav />
       <CompanyTicker />
 
-      <main id="main-content" data-experience-mode={experienceMode}>
-        <div style={{ minHeight: '100vh', position: 'relative' }}>
-          {experienceMode === '3d' ? (
-            <SceneErrorBoundary>
-              <Suspense fallback={<SceneLoadingState />}>
-                <ScrollJourney scene={<JourneyScene />}>
-                  <BeatOverlays />
-                </ScrollJourney>
-              </Suspense>
-            </SceneErrorBoundary>
-          ) : experienceMode === '2d-parallax' ? (
-            <MobileExperience />
-          ) : (
-            <StaticContent />
-          )}
-        </div>
-      </main>
+      <SmoothScrollProvider>
+        <main id="main-content" data-experience-mode={experienceMode}>
+          <div style={{ minHeight: '100vh', position: 'relative' }}>
+            {experienceMode === '3d' ? (
+              <SceneErrorBoundary>
+                <Suspense fallback={<SceneLoadingState />}>
+                  <ScrollJourney scene={<JourneyScene />}>
+                    <BeatOverlays />
+                  </ScrollJourney>
+                </Suspense>
+              </SceneErrorBoundary>
+            ) : experienceMode === '2d-parallax' ? (
+              <MobileExperience />
+            ) : (
+              <StaticContent />
+            )}
+          </div>
+        </main>
+      </SmoothScrollProvider>
     </>
   )
 }
