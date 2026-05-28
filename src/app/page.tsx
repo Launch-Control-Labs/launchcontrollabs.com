@@ -6,8 +6,6 @@ import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
 import { SceneLoadingState } from '@/components/3d/SceneLoadingState'
 import StatusBar from '@/components/StatusBar'
 import SectionNav from '@/components/SectionNav'
-import CompanyTicker from '@/components/CompanyTicker'
-
 import { ScrollJourney } from '@/components/ScrollJourney'
 import { JourneyScene } from '@/components/journey/JourneyScene'
 import { BeatOverlays } from '@/components/journey/BeatOverlays'
@@ -28,7 +26,6 @@ export default function Home() {
       </a>
       <StatusBar />
       <SectionNav />
-      <CompanyTicker />
 
       <SmoothScrollProvider>
         <main id="main-content" data-experience-mode={experienceMode}>

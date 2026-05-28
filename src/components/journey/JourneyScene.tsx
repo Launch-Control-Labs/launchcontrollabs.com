@@ -274,18 +274,13 @@ function AstronautModel() {
   const visible = scrollProgress >= 0.72
 
   useEffect(() => {
-    // Prefer 'idle' (natural relaxed pose) over 'floating' (arms splayed)
-    const preferred = actions['idle'] || actions['floating']
-    if (preferred) {
-      preferred.play()
-      preferred.setEffectiveTimeScale(0.3)
-      preferred.setLoop(THREE.LoopRepeat, Infinity)
-    } else {
-      const firstAction = Object.values(actions)[0]
-      if (firstAction) {
-        firstAction.play()
-        firstAction.setEffectiveTimeScale(0.3)
-      }
+    const action = actions['idle'] || actions['floating'] || Object.values(actions)[0]
+    if (action) {
+      action.play()
+      action.paused = true  // Don't auto-advance — we control time from scroll
+      action.setEffectiveTimeScale(1)
+      action.setLoop(THREE.LoopOnce, 1)
+      action.clampWhenFinished = true
     }
   }, [actions])
 
@@ -352,6 +347,13 @@ function AstronautModel() {
 
     groupRef.current.position.set(astroX, astroY, astroZ)
     groupRef.current.visible = visible
+
+    // Scrub animation based on drift progress (0→1 maps to animation start→end)
+    const action = actions['idle'] || actions['floating'] || Object.values(actions)[0]
+    if (action && action.getClip()) {
+      const duration = action.getClip().duration
+      action.time = driftProgress * duration
+    }
 
     // Gentle whole-body tumble layered on skeletal animation
     groupRef.current.rotation.y += 0.0003 * Math.sin(t * 0.1)
