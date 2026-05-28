@@ -30,9 +30,9 @@ function BackgroundController() {
 function ShuttleModel() {
   const { scene } = useGLTF('/models/space-shuttle-oriented.glb')
   const shuttleRef = useRef<THREE.Group>(null)
+  const modelGroupRef = useRef<THREE.Group>(null)
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
 
-  // Find SRB and ET nodes after mount
   const srbLeftRef = useRef<THREE.Object3D | null>(null)
   const srbRightRef = useRef<THREE.Object3D | null>(null)
   const etRef = useRef<THREE.Object3D | null>(null)
@@ -43,18 +43,45 @@ function ShuttleModel() {
     etRef.current = scene.getObjectByName('Orange_Parts') || null
   }, [scene])
 
-  // Normalize model to ~7 world units height
-  const computedScale = useMemo(() => {
+  const { computedScale, nozzleY, orientationQuat } = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene)
     const size = box.getSize(new THREE.Vector3())
     const maxDim = Math.max(size.x, size.y, size.z)
-    return maxDim > 0 ? 7 / maxDim : 2.5
+    const scale = maxDim > 0 ? 7 / maxDim : 2.5
+
+    const noseDir = new THREE.Vector3(-1, 0, 0).normalize()
+    const upDir = new THREE.Vector3(0, 1, 0)
+    const q1 = new THREE.Quaternion().setFromUnitVectors(noseDir, upDir)
+
+    const orbiterFace = new THREE.Vector3(0, 1, 0).applyQuaternion(q1)
+    const projected = orbiterFace.clone()
+    projected.y = 0
+    if (projected.lengthSq() > 0.001) {
+      projected.normalize()
+      const angle = Math.atan2(
+        projected.x * 1 - projected.z * 0,
+        projected.x * 0 + projected.z * 1
+      )
+      const q2 = new THREE.Quaternion().setFromAxisAngle(upDir, -angle)
+      q1.premultiply(q2)
+    }
+
+    const engineDir = new THREE.Vector3(1, 0, 0).applyQuaternion(q1)
+    const center = box.getCenter(new THREE.Vector3())
+    const halfExtentX = (box.max.x - box.min.x) / 2
+    const nozzleWorld = -(halfExtentX * scale) * Math.abs(engineDir.y)
+
+    return { computedScale: scale, nozzleY: nozzleWorld || -3.5, orientationQuat: q1 }
   }, [scene])
 
-  // Visible during launch + atmosphere + space cruise + shuttle-earth (0-78%)
+  useEffect(() => {
+    if (modelGroupRef.current) {
+      modelGroupRef.current.quaternion.copy(orientationQuat)
+    }
+  }, [orientationQuat])
+
   const visible = scrollProgress <= 0.78
 
-  // Exhaust intensity: full fire 0-15%, fades to 0 by 35%
   const exhaustIntensity = THREE.MathUtils.clamp(
     1 - (scrollProgress - 0.15) / 0.20,
     0,
@@ -65,24 +92,20 @@ function ShuttleModel() {
   useFrame(() => {
     if (!shuttleRef.current) return
 
-    // Y rises with scroll: 0 at bottom, 50 at top of journey
     shuttleRef.current.position.y = scrollProgress * 50
-    shuttleRef.current.position.x = 5 // ESPN right-side anchor
+    shuttleRef.current.position.x = 5
 
-    // Subtle vibration during ignition/launch (0-5%)
     if (scrollProgress < 0.05) {
       const vib = (1 - scrollProgress / 0.05) * 0.03
       shuttleRef.current.position.x = 5 + (Math.random() - 0.5) * vib
     }
 
-    // === SRB SEPARATION (20-30% scroll) ===
     const srbProgress = THREE.MathUtils.clamp(
-      (scrollProgress - 0.20) / 0.10, // 0 at 20%, 1 at 30%
+      (scrollProgress - 0.20) / 0.10,
       0,
       1
     )
 
-    // Reset SRBs when scrolling back up
     if (srbProgress <= 0) {
       if (srbLeftRef.current) {
         srbLeftRef.current.visible = true
@@ -98,7 +121,6 @@ function ShuttleModel() {
 
     if (srbLeftRef.current) {
       if (srbProgress > 0 && srbProgress < 1) {
-        // SRBs drift outward + fall behind
         srbLeftRef.current.position.x = -srbProgress * 8
         srbLeftRef.current.position.y = -srbProgress * 12
         srbLeftRef.current.rotation.z = srbProgress * 0.3
@@ -117,14 +139,12 @@ function ShuttleModel() {
       }
     }
 
-    // === ET SEPARATION (28-35% scroll) ===
     const etProgress = THREE.MathUtils.clamp(
-      (scrollProgress - 0.28) / 0.07, // 0 at 28%, 1 at 35%
+      (scrollProgress - 0.28) / 0.07,
       0,
       1
     )
 
-    // Reset ET when scrolling back up
     if (etProgress <= 0 && etRef.current) {
       etRef.current.visible = true
       etRef.current.position.set(0, 0, 0)
@@ -146,12 +166,11 @@ function ShuttleModel() {
 
   return (
     <group ref={shuttleRef} position={[5, 0, 0]}>
-      <group rotation={[-Math.PI / 2, Math.PI, 0]} scale={computedScale}>
+      <group ref={modelGroupRef} scale={computedScale}>
         <primitive object={scene} />
       </group>
-      {/* Exhaust: nozzle at bottom of shuttle, pointing DOWN */}
       <RocketExhaust
-        nozzlePosition={[0, -3.5, 0]}
+        nozzlePosition={[0, nozzleY, 0]}
         direction={[0, -1, 0]}
         intensity={exhaustIntensity}
         visible={exhaustVisible}
@@ -197,10 +216,50 @@ function AstronautModel() {
     if (firstAction) firstAction.play()
   }, [actions])
 
+  // Hide rope mesh that creates a thin line artifact across the screen
+  useEffect(() => {
+    scene.traverse((child) => {
+      if (child.name === 'Rope_Mat_0' || child.name === 'Rope_tip_Chrome_0') {
+        child.visible = false
+      }
+    })
+  }, [scene])
+
   if (!visible) return null
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
       <primitive object={scene} />
+    </group>
+  )
+}
+
+function CloudLayer() {
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const opacity = 1 - THREE.MathUtils.clamp((scrollProgress - 0.15) / 0.15, 0, 1)
+  if (opacity <= 0) return null
+
+  return (
+    <group>
+      <mesh position={[-8, -3, -10]}>
+        <planeGeometry args={[22, 6]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={opacity * 0.3} depthWrite={false} />
+      </mesh>
+      <mesh position={[12, 1, -15]}>
+        <planeGeometry args={[16, 5]} />
+        <meshBasicMaterial color="#f0f4ff" transparent opacity={opacity * 0.25} depthWrite={false} />
+      </mesh>
+      <mesh position={[0, -5, -8]}>
+        <planeGeometry args={[28, 5]} />
+        <meshBasicMaterial color="#e8f0ff" transparent opacity={opacity * 0.25} depthWrite={false} />
+      </mesh>
+      <mesh position={[-15, 2, -18]}>
+        <planeGeometry args={[18, 4]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={opacity * 0.2} depthWrite={false} />
+      </mesh>
+      <mesh position={[6, -7, -6]}>
+        <planeGeometry args={[20, 4]} />
+        <meshBasicMaterial color="#dce8f5" transparent opacity={opacity * 0.2} depthWrite={false} />
+      </mesh>
     </group>
   )
 }
@@ -248,6 +307,7 @@ export function JourneyScene() {
       <Suspense fallback={null}>
         <AstronautModel />
       </Suspense>
+      <CloudLayer />
       <StarFieldWrapper />
 
       <EffectComposer>

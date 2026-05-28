@@ -139,15 +139,11 @@ export function getCamera(progress: number): CameraState {
   return { position, lookAt, fov }
 }
 
-/**
- * Follow-mode camera: tracks the rising shuttle from behind/below.
- * Active during 0–30% scroll. Pull-back increases for cinematic reveal.
- */
 export function getCameraFollow(progress: number, shuttleY: number): CameraState {
-  const pullback = THREE.MathUtils.lerp(2, 8, Math.min(1, progress / 0.15))
+  const pullback = THREE.MathUtils.lerp(1, 8, Math.min(1, progress / 0.15))
   return {
     position: new THREE.Vector3(0, shuttleY - pullback, 25),
-    lookAt: new THREE.Vector3(0, shuttleY + 4, 0),
+    lookAt: new THREE.Vector3(5, shuttleY + 3, 0),
     fov: 55,
   }
 }

@@ -7,7 +7,7 @@ export interface ModelTransform {
 export const SCENE_POSITIONS: Record<string, ModelTransform> = {
   shuttle: {
     position: [5, 0, 0],
-    rotation: [-Math.PI / 2, Math.PI, 0],
+    rotation: [0, -Math.PI / 2, -Math.PI / 2],
     scale: 2.5,
   },
 
