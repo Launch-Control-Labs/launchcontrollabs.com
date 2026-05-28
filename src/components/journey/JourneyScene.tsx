@@ -136,12 +136,26 @@ function ShuttleModel() {
       }
     })
 
-    shuttleRef.current.position.y = scrollProgress * 50
+    const baseY = scrollProgress * 50
+    shuttleRef.current.position.y = baseY
     shuttleRef.current.position.x = 5
 
-    if (scrollProgress < 0.05) {
-      const vib = (1 - scrollProgress / 0.05) * 0.03
+    // Rumble: extends to 20% scroll, decays linearly, X + Y jitter
+    if (scrollProgress < 0.20) {
+      const vibFade = 1 - scrollProgress / 0.20
+      const vib = vibFade * 0.045
       shuttleRef.current.position.x = 5 + (Math.random() - 0.5) * vib
+      shuttleRef.current.position.y = baseY + (Math.random() - 0.5) * vib * 0.35
+    }
+
+    // Atmospheric sway: gentle sin oscillation during climb, fades by 25%
+    if (scrollProgress < 0.25 && modelGroupRef.current) {
+      const t = Date.now() * 0.001
+      const fade = 1 - scrollProgress / 0.25
+      const swayZ = Math.sin(t * 0.75) * 0.014 * fade
+      const swayY = Math.sin(t * 1.20) * 0.007 * fade
+      modelGroupRef.current.rotation.z = -Math.PI / 2 + swayZ
+      modelGroupRef.current.rotation.y =  Math.PI    + swayY
     }
 
     const srbProgress = THREE.MathUtils.clamp(
@@ -220,6 +234,7 @@ function ShuttleModel() {
         direction={[0, -1, 0]}
         intensity={exhaustIntensity}
         visible={exhaustVisible}
+        srbAttached={scrollProgress < 0.22}
       />
     </group>
   )

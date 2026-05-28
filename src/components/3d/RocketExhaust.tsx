@@ -224,6 +224,58 @@ const SMOKE_CFG: StreamConfig = {
   expand:   0.030,
 }
 
+const SIDE_SMOKE_CFG: StreamConfig = {
+  count:    70,
+  radius:   0.30,
+  speed:    [0.08, 0.18],
+  spread:   0.06,
+  lifetime: [1.20, 3.00],
+  size:     [18, 42],
+  color:    '#aaaaaa',
+  inner:    'rgba(200,200,200,0.30)',
+  outer:    'rgba(120,120,120,0.0)',
+  expand:   0.07,
+}
+
+const SRB_FIRE_CFG: StreamConfig = {
+  count:    65,
+  radius:   0.10,
+  speed:    [0.30, 0.55],
+  spread:   0.007,
+  lifetime: [0.10, 0.28],
+  size:     [4, 9],
+  color:    '#ff6a00',
+  inner:    'rgba(255,160,50,1)',
+  outer:    'rgba(255,70,0,0.25)',
+  expand:   0.010,
+}
+
+const SSME_CORE_CFG: StreamConfig = {
+  count:    110,
+  radius:   0.05,
+  speed:    [0.45, 0.70],
+  spread:   0.003,
+  lifetime: [0.06, 0.18],
+  size:     [2, 5],
+  color:    '#b8e0ff',
+  inner:    'rgba(210,235,255,1)',
+  outer:    'rgba(100,180,255,0.35)',
+  expand:   0.003,
+}
+
+const SSME_BELL_CFG: StreamConfig = {
+  count:    85,
+  radius:   0.09,
+  speed:    [0.28, 0.48],
+  spread:   0.004,
+  lifetime: [0.10, 0.26],
+  size:     [4, 8],
+  color:    '#ffffff',
+  inner:    'rgba(240,250,255,1)',
+  outer:    'rgba(150,200,255,0.25)',
+  expand:   0.005,
+}
+
 // ─── RocketExhaust ───────────────────────────────────────────────────────────
 
 interface RocketExhaustProps {
@@ -231,6 +283,7 @@ interface RocketExhaustProps {
   direction: [number, number, number]
   intensity?: number  // 0-1, default 1.0 — scales with scroll to fade out
   visible?: boolean   // default true
+  srbAttached?: boolean  // true = SRBs present, false = orbiter engines only
 }
 
 export function RocketExhaust({
@@ -238,16 +291,42 @@ export function RocketExhaust({
   direction,
   intensity = 1.0,
   visible = true,
+  srbAttached = true,
 }: RocketExhaustProps) {
   if (!visible || intensity <= 0) return null
 
+  const [nx, ny, nz] = nozzlePosition
+
+  if (srbAttached) {
+    return (
+      <>
+        {/* Center column: main plume */}
+        <PlumeStream cfg={SMOKE_CFG}  pos={nozzlePosition} dir={direction} />
+        <PlumeStream cfg={MID_CFG}    pos={nozzlePosition} dir={direction} />
+        <PlumeStream cfg={CORE_CFG}   pos={nozzlePosition} dir={direction} />
+        <PlumeStream cfg={BELL_CFG}   pos={nozzlePosition} dir={direction} />
+        <PlumeStream cfg={STREAK_CFG} pos={nozzlePosition} dir={direction} />
+        {/* Left SRB fire */}
+        <PlumeStream cfg={SRB_FIRE_CFG} pos={[nx - 0.65, ny, nz]} dir={direction} />
+        <PlumeStream cfg={SMOKE_CFG}    pos={[nx - 0.65, ny, nz]} dir={direction} />
+        {/* Right SRB fire */}
+        <PlumeStream cfg={SRB_FIRE_CFG} pos={[nx + 0.65, ny, nz]} dir={direction} />
+        <PlumeStream cfg={SMOKE_CFG}    pos={[nx + 0.65, ny, nz]} dir={direction} />
+        {/* Bilateral smoke clouds billowing sideways */}
+        <PlumeStream cfg={SIDE_SMOKE_CFG} pos={nozzlePosition} dir={[-0.70, -0.30, 0]} />
+        <PlumeStream cfg={SIDE_SMOKE_CFG} pos={nozzlePosition} dir={[ 0.70, -0.30, 0]} />
+      </>
+    )
+  }
+
+  // Post-SRB: SSME triangle — 3 engines (left, right, back-center)
   return (
     <>
-      <PlumeStream cfg={SMOKE_CFG}  pos={nozzlePosition} dir={direction} />
-      <PlumeStream cfg={MID_CFG}    pos={nozzlePosition} dir={direction} />
-      <PlumeStream cfg={CORE_CFG}   pos={nozzlePosition} dir={direction} />
-      <PlumeStream cfg={BELL_CFG}   pos={nozzlePosition} dir={direction} />
-      <PlumeStream cfg={STREAK_CFG} pos={nozzlePosition} dir={direction} />
+      <PlumeStream cfg={SSME_CORE_CFG} pos={[nx - 0.18, ny, nz - 0.05]} dir={direction} />
+      <PlumeStream cfg={SSME_CORE_CFG} pos={[nx + 0.18, ny, nz - 0.05]} dir={direction} />
+      <PlumeStream cfg={SSME_CORE_CFG} pos={[nx,        ny, nz + 0.20]} dir={direction} />
+      <PlumeStream cfg={SSME_BELL_CFG} pos={nozzlePosition}             dir={direction} />
+      <PlumeStream cfg={STREAK_CFG}    pos={nozzlePosition}             dir={direction} />
     </>
   )
 }
