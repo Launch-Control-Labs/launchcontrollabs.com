@@ -41,6 +41,15 @@ function ShuttleModel() {
     srbLeftRef.current = scene.getObjectByName('Small_Rocket_Group_01') || null
     srbRightRef.current = scene.getObjectByName('Small_Rocket_Group_02') || null
     etRef.current = scene.getObjectByName('Orange_Parts') || null
+
+    // Hide antenna/wire/cable meshes that create thin line artifacts
+    scene.traverse((child) => {
+      const name = child.name.toLowerCase()
+      if (name.includes('antenna') || name.includes('wire') ||
+          name.includes('cable') || name.includes('tether')) {
+        child.visible = false
+      }
+    })
   }, [scene])
 
   const { computedScale, nozzleY, centerOffset } = useMemo(() => {
@@ -215,10 +224,11 @@ function CloudLayer() {
 
   return (
     <Clouds material={THREE.MeshBasicMaterial} limit={100}>
-      <Cloud position={[-4, -3, 5]} speed={0.1} opacity={opacity * 0.6} bounds={[10, 3, 3]} volume={8} seed={1} />
-      <Cloud position={[8, -1, 2]} speed={0.08} opacity={opacity * 0.4} bounds={[8, 2, 2]} volume={6} seed={2} />
-      <Cloud position={[-10, 0, -2]} speed={0.12} opacity={opacity * 0.5} bounds={[12, 4, 3]} volume={10} seed={3} />
-      <Cloud position={[3, -5, 8]} speed={0.06} opacity={opacity * 0.35} bounds={[14, 3, 3]} volume={7} seed={4} />
+      <Cloud position={[-6, -10, 5]} speed={0.1} opacity={opacity * 0.6} bounds={[15, 4, 5]} volume={8} seed={1} />
+      <Cloud position={[10, -12, 0]} speed={0.08} opacity={opacity * 0.4} bounds={[12, 3, 4]} volume={6} seed={2} />
+      <Cloud position={[-12, -8, -3]} speed={0.12} opacity={opacity * 0.5} bounds={[18, 5, 6]} volume={10} seed={3} />
+      <Cloud position={[4, -14, 7]} speed={0.06} opacity={opacity * 0.35} bounds={[16, 4, 5]} volume={7} seed={4} />
+      <Cloud position={[0, -9, -5]} speed={0.09} opacity={opacity * 0.45} bounds={[20, 4, 6]} volume={9} seed={5} />
     </Clouds>
   )
 }

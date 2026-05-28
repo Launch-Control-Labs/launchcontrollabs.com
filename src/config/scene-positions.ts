@@ -20,6 +20,6 @@ export const SCENE_POSITIONS: Record<string, ModelTransform> = {
   astronaut: {
     position: [5, 43, 2],
     rotation: [0.1, 0.3, 0],
-    scale: 0.035,
+    scale: 0.02,
   },
 } as const
