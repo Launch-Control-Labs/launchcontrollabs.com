@@ -42,12 +42,11 @@ function ShuttleModel() {
     srbRightRef.current = scene.getObjectByName('Small_Rocket_Group_02') || null
     etRef.current = scene.getObjectByName('Orange_Parts') || null
 
-    // Hide antenna/wire/cable meshes that create thin line artifacts
-    scene.traverse((child) => {
+    scene.traverse((child: any) => {
       const name = child.name.toLowerCase()
       if (name.includes('antenna') || name.includes('wire') ||
           name.includes('cable') || name.includes('tether') ||
-          name.includes('rope')) {
+          name.includes('rope') || name.includes('rocket_details')) {
         child.visible = false
       }
     })
