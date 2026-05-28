@@ -234,7 +234,7 @@ function AstronautModel() {
   useEffect(() => {
     scene.traverse((child) => {
       if (child.name === 'Rope_Mat_0' || child.name === 'Rope_tip_Chrome_0') {
-        child.visible = true
+        child.visible = false
       }
     })
   }, [scene])
@@ -259,6 +259,61 @@ function AstronautModel() {
       <primitive object={scene} />
     </group>
   )
+}
+
+function SpaceTether() {
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const visible = scrollProgress >= 0.72
+
+  const lineObj = useMemo(() => {
+    const geometry = new THREE.BufferGeometry()
+    const material = new THREE.LineBasicMaterial({
+      color: '#cccccc',
+      transparent: true,
+      opacity: 0.8,
+    })
+    return new THREE.Line(geometry, material)
+  }, [])
+
+  useFrame(() => {
+    if (!visible) {
+      lineObj.visible = false
+      return
+    }
+    lineObj.visible = true
+
+    const driftProgress = THREE.MathUtils.clamp((scrollProgress - 0.72) / 0.28, 0, 1)
+
+    const shuttleY = scrollProgress * 50
+    const startX = 5
+    const startY = shuttleY + 1
+    const startZ = 0
+
+    const endX = 5 + driftProgress * 3
+    const endY = shuttleY + 2 + driftProgress * 5
+    const endZ = 2 + driftProgress * 4
+
+    const points: number[] = []
+    const segments = 20
+    for (let i = 0; i <= segments; i++) {
+      const t = i / segments
+      const x = THREE.MathUtils.lerp(startX, endX, t)
+      const y = THREE.MathUtils.lerp(startY, endY, t)
+      const z = THREE.MathUtils.lerp(startZ, endZ, t)
+      const sag = Math.sin(t * Math.PI) * -0.5 * driftProgress
+      points.push(x, y + sag, z)
+    }
+
+    lineObj.geometry.setAttribute(
+      'position',
+      new THREE.Float32BufferAttribute(points, 3)
+    )
+    lineObj.geometry.attributes.position.needsUpdate = true
+  })
+
+  if (!visible) return null
+
+  return <primitive object={lineObj} />
 }
 
 function CloudLayer() {
@@ -321,6 +376,7 @@ export function JourneyScene() {
       <Suspense fallback={null}>
         <AstronautModel />
       </Suspense>
+      <SpaceTether />
       <CloudLayer />
       <StarFieldWrapper />
 
