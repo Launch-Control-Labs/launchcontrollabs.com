@@ -42,19 +42,40 @@ function ShuttleModel() {
     srbRightRef.current = scene.getObjectByName('Small_Rocket_Group_02') || null
     etRef.current = scene.getObjectByName('Orange_Parts') || null
 
+    // Update world matrices so geometry bounding box checks are accurate
+    scene.updateMatrixWorld(true)
+
     const toRemove: THREE.Object3D[] = []
     scene.traverse((child: any) => {
       const name = child.name.toLowerCase()
+
+      // Rule 1: Name-based filter (defense-in-depth)
       if (name.includes('antenna') || name.includes('wire') ||
           name.includes('cable') || name.includes('tether') ||
           name.includes('rope') || name.includes('rocket_details')) {
         toRemove.push(child)
+        return
       }
+
+      // Rule 2: Remove ALL Line/LineSegments/Points — these are helper/wire geometry
+      // that are NOT Meshes and thus invisible to isMesh-based filters.
+      // This is the structural fix: isLine covers ropes, antennae, debug wires
+      // regardless of their node name.
+      if (child.isLine || child.isLineSegments || child.isPoints) {
+        toRemove.push(child)
+        return
+      }
+
+      // Rule 3: Thin geometry filter (now correct because updateMatrixWorld ran first)
       if (child.isMesh && child.geometry) {
-        const box = new THREE.Box3().setFromObject(child)
-        const s = box.getSize(new THREE.Vector3())
-        if (Math.min(s.x, s.y, s.z) < 0.15 && Math.max(s.x, s.y, s.z) > 1) {
-          toRemove.push(child)
+        child.geometry.computeBoundingBox()
+        const bb = child.geometry.boundingBox
+        if (bb) {
+          const s = new THREE.Vector3()
+          bb.getSize(s)
+          if (Math.min(s.x, s.y, s.z) < 0.15 && Math.max(s.x, s.y, s.z) > 1) {
+            toRemove.push(child)
+          }
         }
       }
     })
