@@ -249,7 +249,7 @@ function MobileProblem() {
 // ============================================================================
 const STATS = [
   { stat: '12', label: 'PRODUCTS SHIPPED' },
-  { stat: '6', label: 'LAUNCHED' },
+  { stat: '6', label: 'FEATURED' },
   { stat: '99.9%', label: 'UPTIME' },
   { stat: '<48h', label: 'RESPONSE TIME' },
 ]
@@ -438,7 +438,7 @@ function MobileProof() {
           margin: 0,
         }}
       >
-        MISSIONS
+        SELECT
       </h2>
       <h2
         style={{
@@ -451,7 +451,7 @@ function MobileProof() {
           margin: '0 0 2rem 0',
         }}
       >
-        COMPLETE
+        MISSIONS
       </h2>
 
       {/* Talisman Card */}
@@ -695,10 +695,8 @@ const COMPANIES = [
 ]
 
 const AWARDS = [
-  { achievement: 'WINNER', org: 'Webby Awards', year: '2023' },
   { achievement: 'BEST NEW STARTUP', org: 'TWIF', year: '2024' },
-  { achievement: 'PRODUCT OF THE WEEK', org: 'Product Hunt', year: '2024' },
-  { achievement: 'FEATURED', org: 'Awwwards', year: '2024' },
+  { achievement: '#2 OF THE DAY', org: 'Product Hunt', year: '2024' },
 ]
 
 function MobileAuthority() {

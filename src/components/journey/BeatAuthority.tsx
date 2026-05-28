@@ -12,10 +12,8 @@ const COMPANIES = [
 ]
 
 const AWARDS = [
-  { achievement: 'WINNER', org: 'Webby Awards', year: '2023' },
   { achievement: 'BEST NEW STARTUP', org: 'TWIF', year: '2024' },
-  { achievement: 'PRODUCT OF THE WEEK', org: 'Product Hunt', year: '2024' },
-  { achievement: 'FEATURED', org: 'Awwwards', year: '2024' },
+  { achievement: '#2 OF THE DAY', org: 'Product Hunt', year: '2024' },
 ]
 
 export function BeatAuthority() {

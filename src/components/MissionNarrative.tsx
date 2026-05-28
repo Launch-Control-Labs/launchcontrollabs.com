@@ -25,7 +25,7 @@ const phases = [
     number: '04',
     label: 'THE OUTCOME',
     content:
-      'Multiple design awards. SaaS Product of the Week on Product Hunt. Active user base across accounting firms.',
+      'TWIF Best New Startup. #2 of the Day on Product Hunt. Active user base across accounting firms.',
   },
 ]
 
@@ -90,7 +90,7 @@ export default function MissionNarrative() {
             letterSpacing: '-0.03em',
           }}
         >
-          AI-Powered Accounting Platform — Design Awards · Product Hunt SaaS of the Week
+          AI-Powered Accounting Platform — TWIF Best New Startup · Product Hunt #2 of the Day
         </h2>
 
         {/* Link to live product */}

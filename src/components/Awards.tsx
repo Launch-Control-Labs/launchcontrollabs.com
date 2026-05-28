@@ -29,15 +29,13 @@ export default function Awards() {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridTemplateColumns: 'repeat(2, 1fr)',
         border: `1px solid ${COLORS.cyanDim}`,
         marginTop: '2rem',
       }}>
         {[
-          { achievement: 'WINNER', org: 'Webby Awards', year: '2023' },
           { achievement: 'BEST NEW STARTUP', org: 'TWIF', year: '2024' },
-          { achievement: 'PRODUCT OF THE WEEK', org: 'Product Hunt', year: '2024' },
-          { achievement: 'FEATURED', org: 'Awwwards', year: '2024' },
+          { achievement: '#2 OF THE DAY', org: 'Product Hunt', year: '2024' },
         ].map((award, i) => (
           <div key={award.org} style={{
             background: 'rgba(255,255,255,0.04)',

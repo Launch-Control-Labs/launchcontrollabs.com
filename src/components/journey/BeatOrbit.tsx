@@ -5,7 +5,7 @@ import { getBeatOpacity } from '@/config/beat-config'
 
 const STATS = [
   { stat: '12', label: 'PRODUCTS SHIPPED' },
-  { stat: '6', label: 'LAUNCHED' },
+  { stat: '6', label: 'FEATURED' },
   { stat: '99.9%', label: 'UPTIME' },
   { stat: '<48h', label: 'RESPONSE TIME' },
 ]

@@ -4,7 +4,7 @@ import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
 
 const STATS = [
-  { value: '6', label: 'MISSIONS\nCOMPLETED' },
+  { value: '6', label: 'MISSIONS\nFEATURED' },
   { value: '✓', label: 'ON-TIME\nDELIVERY' },
   { value: '2–3', label: 'NEW PER\nQUARTER' },
   { value: '<48h', label: 'RESPONSE\nTIME' },

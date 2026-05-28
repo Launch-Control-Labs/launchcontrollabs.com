@@ -59,7 +59,7 @@ export default function Contact() {
         alignSelf: 'center',
       }}>
         {[
-          ['6', 'MISSIONS\nCOMPLETED'],
+          ['6', 'MISSIONS\nFEATURED'],
           ['✓', 'ON-TIME\nDELIVERY'],
           ['2–3', 'NEW PER\nQUARTER'],
           ['<48h', 'RESPONSE\nTIME'],

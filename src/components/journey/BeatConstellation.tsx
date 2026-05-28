@@ -91,7 +91,7 @@ export function BeatConstellation() {
               margin: 0,
             }}
           >
-            MISSIONS
+            SELECT
           </h2>
           <h2
             style={{
@@ -104,7 +104,7 @@ export function BeatConstellation() {
               margin: 0,
             }}
           >
-            COMPLETE
+            MISSIONS
           </h2>
         </div>
 
