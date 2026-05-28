@@ -29,6 +29,7 @@ export function BeatAuthority() {
       style={{
         position: 'absolute',
         inset: 0,
+        overflow: 'hidden',
         opacity,
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',
@@ -38,15 +39,16 @@ export function BeatAuthority() {
       <div
         style={{
           width: '58%',
-          minHeight: '100vh',
+          height: '100%',
           marginLeft: 'auto',
           background: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.70) 20%, rgba(0,0,0,0.78) 100%)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
+          padding: 'clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 3rem)',
           position: 'relative',
           zIndex: 2,
+          overflow: 'hidden',
         }}
       >
         <span
@@ -60,7 +62,7 @@ export function BeatAuthority() {
             fontWeight: 700,
             textTransform: 'uppercase',
             color: '#22D3EE',
-            marginBottom: '1.5rem',
+            marginBottom: '0.75rem',
             alignSelf: 'flex-start',
           }}
         >
@@ -70,19 +72,19 @@ export function BeatAuthority() {
         <h2
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(5rem, 13vw, 16rem)',
+            fontSize: 'clamp(3rem, 8vw, 9rem)',
             fontWeight: 400,
             lineHeight: 0.85,
             letterSpacing: '-0.03em',
             textTransform: 'uppercase',
             color: '#FFFFFF',
-            margin: '0 0 2rem 0',
+            margin: '0 0 1rem 0',
           }}
         >
           PROVEN<br />CREW
         </h2>
 
-        <div style={{ marginBottom: '3rem' }}>
+        <div style={{ marginBottom: '1.5rem' }}>
           <p
             style={{
               fontFamily: 'var(--font-mono)',
@@ -101,7 +103,7 @@ export function BeatAuthority() {
                 key={company}
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2rem, 5vw, 5rem)',
+                  fontSize: 'clamp(1.25rem, 2.8vw, 2.8rem)',
                   fontWeight: 400,
                   textTransform: 'uppercase',
                   letterSpacing: '-0.02em',

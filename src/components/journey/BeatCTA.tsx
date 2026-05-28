@@ -21,6 +21,7 @@ export function BeatCTA() {
       style={{
         position: 'absolute',
         inset: 0,
+        overflow: 'hidden',
         opacity,
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',
@@ -30,7 +31,7 @@ export function BeatCTA() {
       <div
         style={{
           position: 'relative',
-          minHeight: '100vh',
+          height: '100%',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
           gap: '3rem',

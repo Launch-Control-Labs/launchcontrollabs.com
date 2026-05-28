@@ -63,6 +63,7 @@ export function BeatOrbit() {
       style={{
         position: 'absolute',
         inset: 0,
+        overflow: 'hidden',
         opacity,
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',

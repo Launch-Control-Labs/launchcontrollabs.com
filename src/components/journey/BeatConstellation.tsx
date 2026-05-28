@@ -35,6 +35,7 @@ export function BeatConstellation() {
       style={{
         position: 'absolute',
         inset: 0,
+        overflow: 'hidden',
         opacity,
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',
@@ -46,13 +47,14 @@ export function BeatConstellation() {
           background: 'linear-gradient(135deg, rgba(10,10,15,0.72) 0%, rgba(10,10,15,0.55) 60%, transparent 100%)',
           backdropFilter: 'blur(4px)',
           WebkitBackdropFilter: 'blur(4px)',
-          minHeight: '100vh',
+          height: '100%',
           maxWidth: '780px',
+          overflow: 'hidden',
         }}
       >
         <div
           style={{
-            padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem) 0',
+            padding: 'clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 3rem) 0',
           }}
         >
           <span
@@ -107,8 +109,8 @@ export function BeatConstellation() {
 
         <div
           style={{
-            margin: 'clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem)',
-            padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+            margin: 'clamp(1rem, 2vw, 1.5rem) clamp(1.5rem, 4vw, 3rem)',
+            padding: 'clamp(0.75rem, 1.5vw, 1.25rem)',
             border: '3px solid #F59E0B',
             background: 'rgba(245, 158, 11, 0.05)',
             maxWidth: '900px',
@@ -239,7 +241,7 @@ export function BeatConstellation() {
         <div
           style={{
             padding: '0 clamp(1.5rem, 4vw, 3rem)',
-            marginTop: '2rem',
+            marginTop: '0.75rem',
           }}
         >
           <span
@@ -260,66 +262,25 @@ export function BeatConstellation() {
           style={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: 'clamp(1rem, 2vw, 1.5rem)',
-            padding: 'clamp(1.5rem, 3vw, 2rem) clamp(1.5rem, 4vw, 3rem) clamp(3rem, 6vw, 5rem)',
-            justifyContent: 'flex-start',
+            gap: 'clamp(0.5rem, 1vw, 1rem)',
+            padding: '0 clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2rem)',
           }}
         >
           {CLIENT_PROJECTS.map((project) => (
             <div
               key={project.num}
               style={{
-              border: '1px solid #F59E0B',
-                borderRadius: '50%',
-                width: 'clamp(140px, 15vw, 180px)',
-                height: 'clamp(140px, 15vw, 180px)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
+                border: '1px solid #F59E0B',
+                padding: '0.4rem 0.8rem',
                 fontFamily: 'var(--font-mono)',
-                background: 'rgba(245, 158, 11, 0.03)',
-                position: 'relative',
+                fontSize: 'clamp(0.6rem, 0.8vw, 0.75rem)',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: '#F59E0B',
+                opacity: 0.8,
               }}
             >
-              <span
-                style={{
-                  position: 'absolute',
-                  top: '15%',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.5rem',
-                  letterSpacing: '0.2em',
-                  color: '#F59E0B',
-                  opacity: 0.6,
-                }}
-              >
-                {project.num}
-              </span>
-
-              <span
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(0.9rem, 1.5vw, 1.25rem)',
-                  color: '#FAFAFA',
-                  textAlign: 'center',
-                  lineHeight: 1.1,
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                {project.name}
-              </span>
-
-              <span
-                style={{
-                  fontSize: 'clamp(0.5rem, 0.7vw, 0.65rem)',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: '#F59E0B',
-                  marginTop: '0.25rem',
-                }}
-              >
-                {project.metric}
-              </span>
+              {project.num} — {project.name}
             </div>
           ))}
         </div>
