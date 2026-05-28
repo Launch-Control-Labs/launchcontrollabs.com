@@ -97,15 +97,20 @@ export const STAR_BG = `
 // 6-section color theme system with WCAG AA compliance (4.5:1 contrast ratio)
 export const SECTION_THEMES = {
   hero: {
-    // Section 1 — THE PROMISE
     bg: '#080810',
     text: '#E5EBF2',
     accent: '#22D3EE',
     muted: '#4B5563',
     border: '#1F2937',
   },
+  services: {
+    bg: '#020914',
+    text: '#FAFAFA',
+    accent: '#22D3EE',
+    muted: '#1E3A5F',
+    border: '#22D3EE',
+  },
   problem: {
-    // Section 2 — THE PROBLEM
     bg: '#1A0505',
     text: '#FAFAFA',
     accent: '#DC2626',
@@ -113,7 +118,6 @@ export const SECTION_THEMES = {
     border: '#991B1B',
   },
   guide: {
-    // Section 3 — THE GUIDE
     bg: '#FAFAFA',
     text: '#0A0A0F',
     accent: '#2563EB',
@@ -121,7 +125,6 @@ export const SECTION_THEMES = {
     border: '#E5E7EB',
   },
   proof: {
-    // Section 4 — THE PROOF
     bg: '#0A0A0F',
     text: '#FAFAFA',
     accent: '#F59E0B',
@@ -129,7 +132,6 @@ export const SECTION_THEMES = {
     border: '#1F2937',
   },
   authority: {
-    // Section 5 — THE AUTHORITY
     bg: '#000000',
     text: '#FFFFFF',
     accent: '#FFFFFF',
@@ -137,7 +139,6 @@ export const SECTION_THEMES = {
     border: '#374151',
   },
   orbit: {
-    // Section 6 — THE ORBIT
     bg: '#0C1E3A',
     text: '#E5EBF2',
     accent: '#4ADE80',

@@ -2,15 +2,16 @@
 
 import { useSceneStore } from '@/store/scene-store'
 
-const SECTION_NAMES = ['THE PROMISE', 'THE PROBLEM', 'THE GUIDE', 'THE PROOF', 'THE AUTHORITY', 'THE ORBIT']
+const SECTION_NAMES = ['THE PROMISE', 'SERVICES', 'THE PROBLEM', 'THE GUIDE', 'THE PROOF', 'THE AUTHORITY', 'THE ORBIT']
 
 function getBeatIndex(progress: number): number {
-  if (progress < 0.15) return 0
-  if (progress < 0.35) return 1
-  if (progress < 0.55) return 2
-  if (progress < 0.75) return 3
-  if (progress < 0.90) return 4
-  return 5
+  if (progress < 0.12) return 0
+  if (progress < 0.26) return 1
+  if (progress < 0.40) return 2
+  if (progress < 0.56) return 3
+  if (progress < 0.72) return 4
+  if (progress < 0.88) return 5
+  return 6
 }
 
 export default function StatusBar() {

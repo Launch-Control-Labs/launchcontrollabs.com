@@ -112,6 +112,130 @@ function MobileHero() {
 }
 
 // ============================================================================
+// MOBILE SERVICES
+// ============================================================================
+const MOBILE_SERVICES = [
+  { num: '01', name: 'AI-POWERED PRODUCTS', desc: 'LLMs, agents, and automation systems built for production.' },
+  { num: '02', name: 'FULL-STACK WEB APPS', desc: 'Architecture to deployment. React, Next.js, Node.' },
+  { num: '03', name: 'DATA PIPELINES', desc: 'ETL, real-time processing, and analytics at scale.' },
+  { num: '04', name: 'TECHNICAL OPERATIONS', desc: 'DevOps, monitoring, and reliability engineering.' },
+]
+
+function MobileServices() {
+  return (
+    <section
+      id="services"
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #020914 0%, #0a1628 100%)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: 'clamp(2rem, 5vw, 3rem)',
+        position: 'relative',
+      }}
+    >
+      <span
+        style={{
+          display: 'inline-block',
+          border: '1px solid #22D3EE',
+          padding: '0.3rem 0.8rem',
+          fontFamily: 'var(--font-mono)',
+          fontSize: 'clamp(0.55rem, 2vw, 0.75rem)',
+          letterSpacing: '0.2em',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          color: '#22D3EE',
+          marginBottom: '1.5rem',
+          alignSelf: 'flex-start',
+        }}
+      >
+        SERVICES
+      </span>
+
+      <h2
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+          fontWeight: 400,
+          lineHeight: 0.85,
+          letterSpacing: '-0.02em',
+          color: '#FFFFFF',
+          margin: '0 0 0.5rem 0',
+          textTransform: 'uppercase',
+        }}
+      >
+        WHAT WE BUILD
+      </h2>
+
+      <p
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)',
+          color: 'rgba(255,255,255,0.6)',
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          maxWidth: '35ch',
+          margin: '0 0 2rem 0',
+          lineHeight: 1.5,
+        }}
+      >
+        Every engagement is full-stack, production-grade, and built to last.
+      </p>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'rgba(34,211,238,0.2)' }}>
+        {MOBILE_SERVICES.map((service) => (
+          <div
+            key={service.num}
+            style={{
+              background: 'rgba(2, 9, 20, 0.95)',
+              padding: 'clamp(1.25rem, 3vw, 1.75rem)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
+                  color: 'rgba(34,211,238,0.4)',
+                  lineHeight: 1,
+                }}
+              >
+                {service.num}
+              </span>
+              <div>
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
+                    textTransform: 'uppercase',
+                    color: '#FFFFFF',
+                    lineHeight: 1.1,
+                    margin: 0,
+                  }}
+                >
+                  {service.name}
+                </h3>
+                <p
+                  style={{
+                    fontSize: 'clamp(0.75rem, 2.5vw, 0.85rem)',
+                    color: 'rgba(255,255,255,0.55)',
+                    lineHeight: 1.5,
+                    margin: '0.4rem 0 0',
+                  }}
+                >
+                  {service.desc}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+// ============================================================================
 // MOBILE PROBLEM
 // ============================================================================
 const CALLOUTS = [
@@ -955,6 +1079,7 @@ export function MobileExperience() {
   return (
     <main style={{ background: '#020914', color: '#FFFFFF' }}>
       <MobileHero />
+      <MobileServices />
       <MobileProblem />
       <MobileGuide />
       <MobileProof />

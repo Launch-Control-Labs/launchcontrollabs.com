@@ -3,19 +3,20 @@
 import * as THREE from 'three'
 
 export const BEAT_RANGES = {
-  launch:         [0.00, 0.15] as [number, number],
-  atmosphere:     [0.15, 0.35] as [number, number],
-  spaceCruise:    [0.35, 0.55] as [number, number],
-  shuttleEarth:   [0.55, 0.75] as [number, number],
-  astronautFar:   [0.75, 0.90] as [number, number],
-  astronautClose: [0.90, 1.00] as [number, number],
+  launch:         [0.00, 0.12] as [number, number],
+  services:       [0.12, 0.26] as [number, number],
+  atmosphere:     [0.26, 0.40] as [number, number],
+  spaceCruise:    [0.40, 0.56] as [number, number],
+  shuttleEarth:   [0.56, 0.72] as [number, number],
+  astronautFar:   [0.72, 0.88] as [number, number],
+  astronautClose: [0.88, 1.00] as [number, number],
   // Legacy beat keys (backward compatibility)
-  preLaunch:      [0.00, 0.15] as [number, number],
-  ascent:         [0.15, 0.35] as [number, number],
-  orbit:          [0.35, 0.55] as [number, number],
-  constellation:  [0.55, 0.75] as [number, number],
-  deepSpace:      [0.75, 0.90] as [number, number],
-  cta:            [0.90, 1.00] as [number, number],
+  preLaunch:      [0.00, 0.12] as [number, number],
+  ascent:         [0.26, 0.40] as [number, number],
+  orbit:          [0.40, 0.56] as [number, number],
+  constellation:  [0.56, 0.72] as [number, number],
+  deepSpace:      [0.72, 0.88] as [number, number],
+  cta:            [0.88, 1.00] as [number, number],
 } as const
 
 export type BeatKey = keyof typeof BEAT_RANGES
@@ -49,16 +50,16 @@ export function getBackgroundColor(progress: number): string {
 
   let color: THREE.Color
 
-  if (progress < 0.15) {
-    // 0.0–0.15: lerp sky blue → dark blue
-    const t = progress / 0.15
+  if (progress < 0.12) {
+    // 0.0–0.12: lerp sky blue → dark blue
+    const t = progress / 0.12
     color = skyBlue.clone().lerp(darkBlue, t)
-  } else if (progress < 0.35) {
-    // 0.15–0.35: lerp dark blue → deep space
-    const t = (progress - 0.15) / 0.2
+  } else if (progress < 0.26) {
+    // 0.12–0.26: lerp dark blue → deep space
+    const t = (progress - 0.12) / 0.14
     color = darkBlue.clone().lerp(deepSpace, t)
   } else {
-    // 0.35+: deep space
+    // 0.26+: deep space
     color = deepSpace
   }
 

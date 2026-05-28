@@ -1,6 +1,7 @@
 'use client'
 
 import { BeatPreLaunch } from './journey/BeatPreLaunch'
+import { BeatServices } from './journey/BeatServices'
 import { BeatAscent } from './journey/BeatAscent'
 import { BeatOrbit } from './journey/BeatOrbit'
 import { BeatConstellation } from './journey/BeatConstellation'
@@ -37,7 +38,23 @@ export function StaticContent() {
         </div>
       </section>
 
-      {/* Beat 2: Ascent */}
+      {/* Beat 2: Services */}
+      <section
+        style={{
+          position: 'relative',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: 'clamp(2rem, 4vw, 3rem)',
+        }}
+      >
+        <div style={{ opacity: 1, width: '100%' }}>
+          <BeatServices />
+        </div>
+      </section>
+
+      {/* Beat 3: Ascent */}
       <section
         style={{
           position: 'relative',
