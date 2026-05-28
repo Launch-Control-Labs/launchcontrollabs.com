@@ -120,12 +120,12 @@ export function BeatConstellation() {
           <h3
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2rem, 5vw, 4rem)',
+              fontSize: 'clamp(1.5rem, 3.5vw, 2.75rem)',
               lineHeight: 0.85,
               letterSpacing: '-0.02em',
               textTransform: 'uppercase',
               color: '#FAFAFA',
-              margin: '0 0 1rem 0',
+              margin: '0 0 0.5rem 0',
             }}
           >
             {TALISMAN_PROJECT.name}
@@ -134,11 +134,11 @@ export function BeatConstellation() {
           <p
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.875rem, 1.2vw, 1.125rem)',
+              fontSize: 'clamp(0.75rem, 1vw, 0.9rem)',
               color: 'rgba(250, 250, 250, 0.7)',
-              lineHeight: 1.6,
+              lineHeight: 1.5,
               maxWidth: '60ch',
-              margin: '0 0 1.5rem 0',
+              margin: '0 0 0.75rem 0',
             }}
           >
             {TALISMAN_PROJECT.description}

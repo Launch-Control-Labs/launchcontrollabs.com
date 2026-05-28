@@ -43,10 +43,11 @@ export function BeatAuthority() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: 'clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 3rem)',
+          padding: 'clamp(1rem, 2vw, 1.5rem) clamp(1.5rem, 4vw, 3rem)',
           position: 'relative',
           zIndex: 2,
           overflow: 'hidden',
+          boxSizing: 'border-box',
         }}
       >
         <span
@@ -70,19 +71,19 @@ export function BeatAuthority() {
         <h2
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(3rem, 8vw, 9rem)',
+            fontSize: 'clamp(2.5rem, 5.5vw, 6rem)',
             fontWeight: 400,
             lineHeight: 0.85,
             letterSpacing: '-0.03em',
             textTransform: 'uppercase',
             color: '#FFFFFF',
-            margin: '0 0 1rem 0',
+            margin: '0 0 0.75rem 0',
           }}
         >
           PROVEN<br />CREW
         </h2>
 
-        <div style={{ marginBottom: '1.5rem' }}>
+        <div style={{ marginBottom: '1rem' }}>
           <p
             style={{
               fontFamily: 'var(--font-mono)',
@@ -90,25 +91,25 @@ export function BeatAuthority() {
               letterSpacing: '0.25em',
               textTransform: 'uppercase',
               color: '#6B7280',
-              marginBottom: '1.5rem',
+              marginBottom: '0.75rem',
             }}
           >
             Flight History
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
             {COMPANIES.map((company, i) => (
               <div
                 key={company}
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.25rem, 2.8vw, 2.8rem)',
+                  fontSize: 'clamp(1rem, 2vw, 2rem)',
                   fontWeight: 400,
                   textTransform: 'uppercase',
                   letterSpacing: '-0.02em',
                   color: '#FFFFFF',
                   borderBottom: i < COMPANIES.length - 1 ? '1px solid #374151' : 'none',
-                  paddingBottom: '0.3rem',
-                  paddingTop: '0.3rem',
+                  paddingBottom: '0.2rem',
+                  paddingTop: '0.2rem',
                   opacity: 0.9,
                 }}
               >
@@ -126,7 +127,7 @@ export function BeatAuthority() {
               letterSpacing: '0.25em',
               textTransform: 'uppercase',
               color: '#6B7280',
-              marginBottom: '1rem',
+              marginBottom: '0.5rem',
             }}
           >
             Recognition
@@ -145,12 +146,12 @@ export function BeatAuthority() {
                 key={award.org}
                 style={{
                   background: 'rgba(0,0,0,0.9)',
-                  padding: '1.5rem 1rem',
+                  padding: '0.75rem 1rem',
                   textAlign: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
-                  minHeight: '120px',
+                  minHeight: '80px',
                 }}
               >
                 <span
