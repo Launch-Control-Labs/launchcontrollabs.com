@@ -269,6 +269,7 @@ function AstronautModel() {
   const { actions } = useAnimations(animations, groupRef)
   const { rotation, scale } = SCENE_POSITIONS.astronaut
 
+  const shouldRender = scrollProgress >= 0.65
   const visible = scrollProgress >= 0.72
 
   useEffect(() => {
@@ -287,21 +288,38 @@ function AstronautModel() {
   }, [actions])
 
   useEffect(() => {
-    const toRemove: THREE.Object3D[] = []
     scene.traverse((child: any) => {
-      if (child.name && (child.name.toLowerCase().includes('rope') || child.name.toLowerCase().includes('wire'))) {
-        toRemove.push(child)
-        return
-      }
-      if (child.isLine || child.isLineSegments || child.isPoints) {
-        toRemove.push(child)
-        return
-      }
-    })
-    toRemove.forEach(obj => obj.removeFromParent())
+      const name = (child.name || '').toLowerCase()
 
-    // Set materials transparent for fade-in effect
-    scene.traverse((child: any) => {
+      // Hide (don't remove!) bones — removal breaks SkinnedMesh skeleton
+      if (name.includes('wire') || name.includes('rope') ||
+          name.includes('necklace') || name.includes('cable') ||
+          name.includes('tether') || name.includes('tube')) {
+        child.visible = false
+        return
+      }
+
+      // Hide Line/LineSegments/Points
+      if (child.isLine || child.isLineSegments || child.isPoints) {
+        child.visible = false
+        return
+      }
+
+      // Thin geometry check — catch unnamed string/wire Meshes
+      if (child.isMesh && child.geometry) {
+        child.geometry.computeBoundingBox()
+        const bb = child.geometry.boundingBox
+        if (bb) {
+          const s = new THREE.Vector3()
+          bb.getSize(s)
+          if (Math.min(s.x, s.y, s.z) < 0.02 && Math.max(s.x, s.y, s.z) > 0.5) {
+            child.visible = false
+            return
+          }
+        }
+      }
+
+      // Set materials transparent for fade-in
       if (child.isMesh) {
         const mats = Array.isArray(child.material) ? child.material : [child.material]
         mats.forEach((m: any) => { if (m) { m.transparent = true; m.opacity = 0 } })
@@ -322,6 +340,7 @@ function AstronautModel() {
     const astroZ = 0 + driftProgress * 6
 
     groupRef.current.position.set(astroX, astroY, astroZ)
+    groupRef.current.visible = visible
 
     // Gentle whole-body tumble layered on skeletal animation
     groupRef.current.rotation.y += 0.0003 * Math.sin(t * 0.1)
@@ -335,9 +354,9 @@ function AstronautModel() {
     })
   })
 
-  if (!visible) return null
+  if (!shouldRender) return null
   return (
-    <group ref={groupRef} position={[5, 38, 2]} rotation={rotation} scale={scale}>
+    <group ref={groupRef} visible={false} rotation={rotation} scale={scale}>
       <primitive object={scene} />
     </group>
   )
@@ -385,7 +404,6 @@ function EVATether() {
     meshRef.current.geometry = tubeGeo
   })
 
-  if (!visible) return null
   return <mesh ref={meshRef} material={material} frustumCulled={false} />
 }
 
