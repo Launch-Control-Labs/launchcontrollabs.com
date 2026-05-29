@@ -1,6 +1,7 @@
 'use client'
 
 import { useSceneStore } from '@/store/scene-store'
+import { Logo } from '@/components/Logo'
 
 const SECTION_NAMES = ['THE PROMISE', 'SERVICES', 'THE PROBLEM', 'THE GUIDE', 'THE PROOF', 'THE AUTHORITY', 'THE ORBIT']
 
@@ -36,7 +37,10 @@ export default function StatusBar() {
       textTransform: 'uppercase',
       color: 'rgba(255,255,255,0.6)',
     }}>
-      <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em' }}>LAUNCH CONTROL</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <Logo size={32} />
+        <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em' }}>LAUNCH CONTROL</span>
+      </div>
       <span style={{ fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.3em', fontSize: '0.7rem' }}>
         {currentSectionName}
       </span>

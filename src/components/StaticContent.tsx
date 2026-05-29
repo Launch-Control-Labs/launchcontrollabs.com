@@ -7,6 +7,7 @@ import { BeatOrbit } from './journey/BeatOrbit'
 import { BeatConstellation } from './journey/BeatConstellation'
 import { BeatAuthority } from './journey/BeatAuthority'
 import { BeatCTA } from './journey/BeatCTA'
+import { Logo } from './Logo'
 
 /**
  * StaticContent: Renders all 6 beats stacked vertically without animation.
@@ -134,6 +135,47 @@ export function StaticContent() {
         <div style={{ opacity: 1, width: '100%' }}>
           <BeatCTA />
         </div>
+      </section>
+
+      {/* Colophon */}
+      <section
+        style={{
+          position: 'relative',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 'clamp(2rem, 4vw, 3rem)',
+          opacity: 0.7,
+        }}
+      >
+        <Logo size={140} />
+        <h2
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+            letterSpacing: '0.15em',
+            color: '#E5EBF2',
+            marginTop: '1.5rem',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+          }}
+        >
+          LAUNCH CONTROL LABS
+        </h2>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'clamp(0.65rem, 1.5vw, 0.85rem)',
+            letterSpacing: '0.2em',
+            color: 'rgba(255,255,255,0.5)',
+            marginTop: '0.5rem',
+            textTransform: 'uppercase',
+          }}
+        >
+          Dallas, TX &middot; Est. 2021
+        </span>
       </section>
     </div>
   )

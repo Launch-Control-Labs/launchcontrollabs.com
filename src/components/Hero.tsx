@@ -48,7 +48,7 @@ export default function Hero() {
             marginBottom: 'var(--space-5)',
           }}
         >
-          Est. 2021 · Los Angeles, CA ·{' '}
+          Est. 2021 · Dallas, TX ·{' '}
           <a
             href="mailto:projects@launchcontrollabs.com"
             style={{

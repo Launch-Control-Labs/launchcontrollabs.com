@@ -1,5 +1,7 @@
 'use client'
 
+import { Logo } from '@/components/Logo'
+
 // NO imports from @react-three/fiber, @react-three/drei, three, gsap
 // Pure React + CSS only
 
@@ -38,7 +40,7 @@ function MobileHero() {
               textTransform: 'uppercase',
             }}
           >
-            Product Studio · Los Angeles, CA
+            Product Studio · Dallas, TX
           </span>
           <span
             style={{
@@ -1201,6 +1203,53 @@ function MobileCTA() {
 }
 
 // ============================================================================
+// MOBILE COLOPHON (Editorial endmark)
+// ============================================================================
+function MobileColophon() {
+  return (
+    <section
+      style={{
+        minHeight: '100vh',
+        background: '#020914',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 'clamp(2rem, 5vw, 3rem)',
+        opacity: 0.7,
+      }}
+    >
+      <Logo size={140} />
+      <h2
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+          letterSpacing: '0.15em',
+          color: '#E5EBF2',
+          marginTop: '1.5rem',
+          textTransform: 'uppercase',
+          textAlign: 'center',
+        }}
+      >
+        LAUNCH CONTROL LABS
+      </h2>
+      <span
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 'clamp(0.65rem, 1.5vw, 0.85rem)',
+          letterSpacing: '0.2em',
+          color: 'rgba(255,255,255,0.5)',
+          marginTop: '0.5rem',
+          textTransform: 'uppercase',
+        }}
+      >
+        Dallas, TX &middot; Est. 2021
+      </span>
+    </section>
+  )
+}
+
+// ============================================================================
 // MOBILE EXPERIENCE (Main Export)
 // ============================================================================
 export function MobileExperience() {
@@ -1213,6 +1262,7 @@ export function MobileExperience() {
       <MobileProof />
       <MobileAuthority />
       <MobileCTA />
+      <MobileColophon />
     </main>
   )
 }
