@@ -43,7 +43,7 @@ export function BeatAuthority() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: 'clamp(1rem, 2vw, 1.5rem) clamp(1.5rem, 4vw, 3rem)',
+          padding: 'clamp(3rem, 4vw, 4rem) clamp(1.5rem, 4vw, 3rem)',
           position: 'relative',
           zIndex: 2,
           overflow: 'hidden',

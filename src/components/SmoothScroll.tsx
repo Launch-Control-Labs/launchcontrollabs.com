@@ -4,13 +4,17 @@ import { ReactLenis } from 'lenis/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useEffect, useRef } from 'react'
+import { useExperienceMode } from '@/hooks/useExperienceMode'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
+  const experienceMode = useExperienceMode()
   const lenisRef = useRef<any>(null)
 
   useEffect(() => {
+    if (experienceMode !== '3d') return
+
     const lenis = lenisRef.current?.lenis
     if (!lenis) return
 
@@ -26,7 +30,11 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       gsap.ticker.remove(update)
       lenis.off('scroll', ScrollTrigger.update)
     }
-  }, [])
+  }, [experienceMode])
+
+  if (experienceMode !== '3d') {
+    return <>{children}</>
+  }
 
   return (
     <ReactLenis
