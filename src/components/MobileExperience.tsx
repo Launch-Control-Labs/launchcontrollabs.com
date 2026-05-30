@@ -1,29 +1,224 @@
 'use client'
 
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+  type RefObject,
+} from 'react'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { Logo } from '@/components/Logo'
+import { useSceneStore } from '@/store/scene-store'
 
 // NO imports from @react-three/fiber, @react-three/drei, three, gsap
 // Pure React + CSS only
+
+const SECTION_IDS = [
+  'section-hero',
+  'section-services',
+  'section-problem',
+  'section-guide',
+  'section-proof',
+  'section-authority',
+  'section-orbit',
+  'section-footer',
+] as const
+
+/** Matches StatusBar / SectionNav beat thresholds */
+const SCROLL_PROGRESS_BY_BEAT = [0.06, 0.19, 0.33, 0.48, 0.64, 0.8, 0.94, 1] as const
+
+const BEAT_COUNT = SECTION_IDS.length
+const VIEW_TRANSITION_MS = 650
+const SWIPE_THRESHOLD_PX = 48
+const WHEEL_THRESHOLD_PX = 40
+
+const MobileViewContext = createContext(0)
+
+type MobileSectionProps = {
+  beatIndex: number
+  align?: 'center' | 'end'
+  background?: string
+  children: ReactNode
+  contentStyle?: CSSProperties
+}
+
+function MobileSection({
+  beatIndex,
+  align = 'center',
+  background,
+  children,
+  contentStyle,
+}: MobileSectionProps) {
+  const ref = useRef<HTMLElement>(null)
+  const activeIndex = useContext(MobileViewContext)
+  const isActive = activeIndex === beatIndex
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    if (isActive) {
+      el.classList.add('is-visible')
+    } else {
+      el.classList.remove('is-visible')
+    }
+  }, [isActive])
+
+  const alignClass =
+    align === 'end' ? 'mobile-beat-section--end' : 'mobile-beat-section--center'
+
+  return (
+    <section
+      ref={ref}
+      id={SECTION_IDS[beatIndex]}
+      data-beat-index={beatIndex}
+      className={`mobile-beat-section ${alignClass}`}
+    >
+      {background ? (
+        <div className="mobile-section-bg" style={{ background }} aria-hidden />
+      ) : null}
+      <div className="mobile-section-content" style={contentStyle}>
+        {children}
+      </div>
+    </section>
+  )
+}
+
+function useMobileViewTransition(viewportRef: RefObject<HTMLDivElement | null>) {
+  const prefersReducedMotion = useReducedMotion()
+  const setScrollProgress = useSceneStore((s) => s.setScrollProgress)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const activeIndexRef = useRef(0)
+  const isTransitioningRef = useRef(false)
+  const transitionMs = prefersReducedMotion ? 0 : VIEW_TRANSITION_MS
+
+  const goToIndex = useCallback(
+    (index: number) => {
+      const clamped = Math.max(0, Math.min(BEAT_COUNT - 1, index))
+      if (clamped === activeIndexRef.current || isTransitioningRef.current) return
+
+      isTransitioningRef.current = true
+      activeIndexRef.current = clamped
+      setActiveIndex(clamped)
+      setScrollProgress(SCROLL_PROGRESS_BY_BEAT[clamped] ?? 0)
+
+      window.setTimeout(() => {
+        isTransitioningRef.current = false
+      }, transitionMs)
+    },
+    [setScrollProgress, transitionMs]
+  )
+
+  const goNext = useCallback(() => {
+    goToIndex(activeIndexRef.current + 1)
+  }, [goToIndex])
+
+  const goPrev = useCallback(() => {
+    goToIndex(activeIndexRef.current - 1)
+  }, [goToIndex])
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex
+  }, [activeIndex])
+
+  useEffect(() => {
+    setScrollProgress(SCROLL_PROGRESS_BY_BEAT[0] ?? 0)
+  }, [setScrollProgress])
+
+  useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow
+    const previousHtmlOverflow = document.documentElement.style.overflow
+    document.body.style.overflow = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousBodyOverflow
+      document.documentElement.style.overflow = previousHtmlOverflow
+    }
+  }, [])
+
+  useEffect(() => {
+    const viewport = viewportRef.current
+    if (!viewport) return
+
+    let touchStartY = 0
+    let wheelDelta = 0
+    let wheelResetTimer = 0
+
+    const onTouchStart = (event: TouchEvent) => {
+      touchStartY = event.touches[0]?.clientY ?? 0
+    }
+
+    const onTouchEnd = (event: TouchEvent) => {
+      const touchEndY = event.changedTouches[0]?.clientY ?? touchStartY
+      const deltaY = touchStartY - touchEndY
+
+      if (Math.abs(deltaY) < SWIPE_THRESHOLD_PX) return
+
+      if (deltaY > 0) goNext()
+      else goPrev()
+    }
+
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault()
+
+      if (isTransitioningRef.current) return
+
+      wheelDelta += event.deltaY
+      window.clearTimeout(wheelResetTimer)
+      wheelResetTimer = window.setTimeout(() => {
+        wheelDelta = 0
+      }, 120)
+
+      if (Math.abs(wheelDelta) < WHEEL_THRESHOLD_PX) return
+
+      if (wheelDelta > 0) goNext()
+      else goPrev()
+      wheelDelta = 0
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+        event.preventDefault()
+        goNext()
+      } else if (event.key === 'ArrowUp' || event.key === 'PageUp') {
+        event.preventDefault()
+        goPrev()
+      }
+    }
+
+    viewport.addEventListener('touchstart', onTouchStart, { passive: true })
+    viewport.addEventListener('touchend', onTouchEnd, { passive: true })
+    viewport.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      viewport.removeEventListener('touchstart', onTouchStart)
+      viewport.removeEventListener('touchend', onTouchEnd)
+      viewport.removeEventListener('wheel', onWheel)
+      window.removeEventListener('keydown', onKeyDown)
+      window.clearTimeout(wheelResetTimer)
+    }
+  }, [goNext, goPrev, viewportRef])
+
+  return { activeIndex, transitionMs }
+}
 
 // ============================================================================
 // MOBILE HERO
 // ============================================================================
 function MobileHero() {
   return (
-    <section
-      id="hero"
-      style={{
-        minHeight: '100vh',
-        background: 'radial-gradient(ellipse at 50% 100%, rgba(34,211,238,0.15) 0%, #020914 60%)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: 'clamp(2rem, 5vw, 3rem)',
-        position: 'relative',
-        backgroundAttachment: 'fixed',
-      }}
+    <MobileSection
+      beatIndex={0}
+      align="end"
+      background="radial-gradient(ellipse at 50% 100%, rgba(34,211,238,0.15) 0%, #020914 60%)"
     >
-      <div style={{ marginBottom: 'clamp(1rem, 3vh, 2rem)' }}>
+      <div style={{ marginBottom: 'clamp(0.5rem, 2vh, 1.5rem)' }}>
         <div
           style={{
             display: 'flex',
@@ -58,35 +253,29 @@ function MobileHero() {
         <h1
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(3rem, 12vw, 6rem)',
+            fontSize: 'clamp(2.25rem, 13.5vw, 6rem)',
             lineHeight: 0.82,
             letterSpacing: '-0.04em',
             color: '#FFFFFF',
             textTransform: 'uppercase',
             margin: 0,
             opacity: 0.95,
+            textShadow: '0 2px 30px rgba(0,0,0,0.7)',
           }}
         >
           LAUNCH CONTROL
         </h1>
 
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            justifyContent: 'space-between',
-            marginTop: '-0.05em',
-          }}
-        >
+        <div className="mobile-hero-tagline-row">
           <p
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.55rem, 2vw, 0.85rem)',
+              fontSize: 'clamp(0.55rem, 2.8vw, 0.85rem)',
               letterSpacing: '0.15em',
               color: 'rgba(255,255,255,0.5)',
               textTransform: 'uppercase',
               margin: 0,
-              maxWidth: '24ch',
+              maxWidth: '28ch',
               lineHeight: 1.4,
             }}
           >
@@ -95,21 +284,22 @@ function MobileHero() {
           <h2
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3rem, 12vw, 6rem)',
+              fontSize: 'clamp(2.25rem, 13.5vw, 6rem)',
               lineHeight: 0.82,
               letterSpacing: '-0.01em',
               color: '#FFFFFF',
               textTransform: 'uppercase',
               margin: 0,
               opacity: 0.95,
-              textShadow: '0 0 40px rgba(34, 211, 238, 0.25)',
+              flexShrink: 0,
+              textShadow: '0 2px 30px rgba(0,0,0,0.7), 0 0 60px rgba(34, 211, 238, 0.25)',
             }}
           >
             LABS
           </h2>
         </div>
       </div>
-    </section>
+    </MobileSection>
   )
 }
 
@@ -128,18 +318,7 @@ function MobileServices() {
   const otherServices = MOBILE_SERVICES.filter((s) => !s.featured)
 
   return (
-    <section
-      id="services"
-      style={{
-        minHeight: '100vh',
-        background: '#020914',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        padding: 'clamp(1.5rem, 5vw, 2.5rem)',
-        position: 'relative',
-      }}
-    >
+    <MobileSection beatIndex={1} background="#020914">
       {/* Section flag - ESPN Magazine style */}
       <div style={{ marginBottom: 'clamp(1.5rem, 4vw, 2.5rem)' }}>
         <span
@@ -163,7 +342,7 @@ function MobileServices() {
       <h2
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(3.5rem, 14vw, 7rem)',
+          fontSize: 'clamp(2.5rem, 12vw, 7rem)',
           fontWeight: 400,
           lineHeight: 0.8,
           letterSpacing: '-0.04em',
@@ -177,7 +356,7 @@ function MobileServices() {
       <h2
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(3.5rem, 14vw, 7rem)',
+          fontSize: 'clamp(2.5rem, 12vw, 7rem)',
           fontWeight: 400,
           lineHeight: 0.8,
           letterSpacing: '-0.04em',
@@ -361,7 +540,7 @@ function MobileServices() {
           Est. 2021
         </span>
       </div>
-    </section>
+    </MobileSection>
   )
 }
 
@@ -376,20 +555,12 @@ const CALLOUTS = [
 
 function MobileProblem() {
   return (
-    <section
-      id="problem"
-      style={{
-        minHeight: '100vh',
-        background: 'radial-gradient(ellipse at 20% 50%, rgba(220,38,38,0.1) 0%, #020914 60%)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: 'clamp(2rem, 5vw, 3rem)',
-        position: 'relative',
-        backgroundAttachment: 'fixed',
-      }}
+    <MobileSection
+      beatIndex={2}
+      align="end"
+      background="radial-gradient(ellipse at 20% 50%, rgba(220,38,38,0.1) 0%, #020914 60%)"
     >
-      <div style={{ maxWidth: '560px' }}>
+      <div style={{ maxWidth: '36rem', width: '100%' }}>
         <span
           style={{
             display: 'inline-block',
@@ -440,13 +611,7 @@ function MobileProblem() {
           been to orbit and back, even the best missions drift into the void.
         </p>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: 'clamp(0.75rem, 2vw, 1rem)',
-          }}
-        >
+        <div className="mobile-callouts">
           {CALLOUTS.map((callout) => (
             <div
               key={callout.label}
@@ -494,7 +659,7 @@ function MobileProblem() {
           ))}
         </div>
       </div>
-    </section>
+    </MobileSection>
   )
 }
 
@@ -510,26 +675,15 @@ const STATS = [
 
 function MobileGuide() {
   return (
-    <section
-      id="guide"
-      style={{
-        minHeight: '100vh',
-        background: 'radial-gradient(ellipse at 80% 50%, rgba(37,99,235,0.1) 0%, #020914 60%)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 'clamp(2rem, 5vw, 3rem)',
-        position: 'relative',
-        backgroundAttachment: 'fixed',
-      }}
+    <MobileSection
+      beatIndex={3}
+      background="radial-gradient(ellipse at 80% 50%, rgba(37,99,235,0.1) 0%, #020914 60%)"
+      contentStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
       <span
         style={{
-          position: 'absolute',
-          top: 'clamp(1.5rem, 4vw, 2.5rem)',
-          left: 'clamp(1.5rem, 4vw, 2rem)',
           display: 'inline-block',
+          alignSelf: 'flex-start',
           border: '1px solid #2563EB',
           padding: '0.3rem 0.8rem',
           fontFamily: 'var(--font-mono)',
@@ -539,6 +693,7 @@ function MobileGuide() {
           textTransform: 'uppercase',
           color: '#2563EB',
           background: 'rgba(10, 10, 15, 0.8)',
+          marginBottom: '1.5rem'
         }}
       >
         THE GUIDE
@@ -576,15 +731,7 @@ function MobileGuide() {
         Systems engineered for production. Numbers that prove it.
       </p>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, minmax(120px, 180px))',
-          gap: 'clamp(0.75rem, 2vw, 1.25rem)',
-          justifyContent: 'center',
-          marginTop: '1.5rem',
-        }}
-      >
+      <div className="mobile-guide-stats">
         {STATS.map((item) => (
           <div
             key={item.label}
@@ -623,7 +770,7 @@ function MobileGuide() {
           </div>
         ))}
       </div>
-    </section>
+    </MobileSection>
   )
 }
 
@@ -653,16 +800,10 @@ const CLIENT_PROJECTS = [
 
 function MobileProof() {
   return (
-    <section
-      id="proof"
-      style={{
-        minHeight: '100vh',
-        background: 'radial-gradient(ellipse at 30% 70%, rgba(245,158,11,0.1) 0%, #020914 60%)',
-        color: '#FAFAFA',
-        padding: 'clamp(2rem, 5vw, 3rem)',
-        position: 'relative',
-        backgroundAttachment: 'fixed',
-      }}
+    <MobileSection
+      beatIndex={4}
+      background="radial-gradient(ellipse at 30% 70%, rgba(245,158,11,0.1) 0%, #020914 60%)"
+      contentStyle={{ color: '#FAFAFA' }}
     >
       <span
         style={{
@@ -745,10 +886,8 @@ function MobileProof() {
         </p>
 
         <div
+          className="mobile-proof-stat-grid"
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '0.75rem',
             borderTop: '1px solid rgba(245, 158, 11, 0.3)',
             paddingTop: '1rem',
             marginBottom: '1rem',
@@ -855,85 +994,14 @@ function MobileProof() {
         CLIENT WORK
       </span>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 'clamp(0.75rem, 2vw, 1rem)',
-        }}
-      >
+      <div className="mobile-proof-projects proof-projects-wrap">
         {CLIENT_PROJECTS.map((project) => (
-          <div
-            key={project.num}
-            style={{
-              border: '2px solid #F59E0B',
-              borderRadius: '50%',
-              width: 'clamp(80px, 22vw, 120px)',
-              height: 'clamp(80px, 22vw, 120px)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontFamily: 'var(--font-mono)',
-              background: 'rgba(245, 158, 11, 0.03)',
-              position: 'relative',
-              margin: '0 auto',
-            }}
-          >
-            <span
-              style={{
-                position: 'absolute',
-                top: '12%',
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'clamp(0.4rem, 1.2vw, 0.5rem)',
-                letterSpacing: '0.2em',
-                color: '#F59E0B',
-                opacity: 0.6,
-              }}
-            >
-              {project.num}
-            </span>
-
-            <span
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(0.65rem, 2vw, 0.9rem)',
-                color: '#FAFAFA',
-                textAlign: 'center',
-                lineHeight: 1.1,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              {project.name}
-            </span>
-
-            <span
-              style={{
-                fontSize: 'clamp(0.4rem, 1.2vw, 0.55rem)',
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: '#F59E0B',
-                marginTop: '0.15rem',
-              }}
-            >
-              {project.metric}
-            </span>
-
-            <span
-              style={{
-                position: 'absolute',
-                bottom: '12%',
-                fontSize: 'clamp(0.35rem, 1vw, 0.45rem)',
-                letterSpacing: '0.2em',
-                color: 'rgba(250, 250, 250, 0.4)',
-              }}
-            >
-              {project.year}
-            </span>
-          </div>
+          <span key={project.num} className="mobile-proof-chip">
+            {project.num} — {project.name}
+          </span>
         ))}
       </div>
-    </section>
+    </MobileSection>
   )
 }
 
@@ -955,16 +1023,10 @@ const AWARDS = [
 
 function MobileAuthority() {
   return (
-    <section
-      id="authority"
-      style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(180deg, #020914 0%, #0a0a1a 100%)',
-        color: '#FFFFFF',
-        padding: 'clamp(2rem, 5vw, 3rem)',
-        position: 'relative',
-        backgroundAttachment: 'fixed',
-      }}
+    <MobileSection
+      beatIndex={5}
+      background="linear-gradient(180deg, #020914 0%, #0a0a1a 100%)"
+      contentStyle={{ color: '#FFFFFF' }}
     >
       <span
         style={{
@@ -1050,9 +1112,10 @@ function MobileAuthority() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
             gap: '1px',
             background: 'rgba(255,255,255,0.1)',
+            width: '100%',
             maxWidth: '400px',
           }}
         >
@@ -1108,7 +1171,7 @@ function MobileAuthority() {
           ))}
         </div>
       </div>
-    </section>
+    </MobileSection>
   )
 }
 
@@ -1117,19 +1180,10 @@ function MobileAuthority() {
 // ============================================================================
 function MobileCTA() {
   return (
-    <section
-      id="cta"
-      style={{
-        minHeight: '100vh',
-        background: 'radial-gradient(ellipse at 50% 50%, rgba(74,222,128,0.1) 0%, #020914 60%)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 'clamp(2rem, 5vw, 3rem)',
-        position: 'relative',
-        backgroundAttachment: 'fixed',
-      }}
+    <MobileSection
+      beatIndex={6}
+      background="radial-gradient(ellipse at 50% 50%, rgba(74,222,128,0.1) 0%, #020914 60%)"
+      contentStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
       <span
         style={{
@@ -1183,11 +1237,14 @@ function MobileCTA() {
         href="mailto:hello@launchcontrollabs.com"
         style={{
           display: 'inline-block',
+          maxWidth: '100%',
+          textAlign: 'center',
+          wordBreak: 'break-word',
           border: '2px solid #4ADE80',
-          padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem)',
+          padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.25rem, 4vw, 2rem)',
           fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(0.75rem, 2vw, 0.9rem)',
-          letterSpacing: '0.2em',
+          fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)',
+          letterSpacing: '0.15em',
           fontWeight: 700,
           textTransform: 'uppercase',
           color: '#4ADE80',
@@ -1198,54 +1255,52 @@ function MobileCTA() {
       >
         hello@launchcontrollabs.com
       </a>
-    </section>
+    </MobileSection>
   )
 }
 
 // ============================================================================
-// MOBILE COLOPHON (Editorial endmark)
+// MOBILE FOOTER
 // ============================================================================
-function MobileColophon() {
+function MobileFooter() {
   return (
-    <section
-      style={{
-        minHeight: '100vh',
-        background: '#020914',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 'clamp(2rem, 5vw, 3rem)',
-        opacity: 0.7,
-      }}
-    >
-      <Logo size={140} />
-      <h2
+    <MobileSection beatIndex={7} background="#020914">
+      <div
+        style={{
+          opacity: 0.7,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Logo size={160} />
+      <span
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-          letterSpacing: '0.15em',
-          color: '#E5EBF2',
+          fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+          letterSpacing: '0.1em',
+          color: '#FFFFFF',
           marginTop: '1.5rem',
           textTransform: 'uppercase',
           textAlign: 'center',
         }}
       >
         LAUNCH CONTROL LABS
-      </h2>
+      </span>
       <span
         style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(0.65rem, 1.5vw, 0.85rem)',
-          letterSpacing: '0.2em',
-          color: 'rgba(255,255,255,0.5)',
+          fontSize: 'clamp(0.6rem, 0.9vw, 0.8rem)',
+          letterSpacing: '0.25em',
+          color: 'rgba(255,255,255,0.4)',
           marginTop: '0.5rem',
           textTransform: 'uppercase',
         }}
       >
-        Dallas, TX &middot; Est. 2021
+        Dallas, TX · Est. 2021
       </span>
-    </section>
+      </div>
+    </MobileSection>
   )
 }
 
@@ -1253,16 +1308,39 @@ function MobileColophon() {
 // MOBILE EXPERIENCE (Main Export)
 // ============================================================================
 export function MobileExperience() {
+  const viewportRef = useRef<HTMLDivElement>(null)
+  const { activeIndex, transitionMs } = useMobileViewTransition(viewportRef)
+
   return (
-    <main style={{ background: '#020914', color: '#FFFFFF' }}>
-      <MobileHero />
-      <MobileServices />
-      <MobileProblem />
-      <MobileGuide />
-      <MobileProof />
-      <MobileAuthority />
-      <MobileCTA />
-      <MobileColophon />
-    </main>
+    <MobileViewContext.Provider value={activeIndex}>
+      <div
+        ref={viewportRef}
+        className="mobile-snap-viewport"
+        role="region"
+        aria-label="Launch Control Labs story"
+        aria-roledescription="carousel"
+        tabIndex={0}
+        data-active-beat={activeIndex}
+      >
+        <div
+          className="mobile-experience"
+          style={
+            {
+              '--mobile-active-index': activeIndex,
+              '--mobile-transition-ms': `${transitionMs}ms`,
+            } as CSSProperties
+          }
+        >
+          <MobileHero />
+          <MobileServices />
+          <MobileProblem />
+          <MobileGuide />
+          <MobileProof />
+          <MobileAuthority />
+          <MobileCTA />
+          <MobileFooter />
+        </div>
+      </div>
+    </MobileViewContext.Provider>
   )
 }

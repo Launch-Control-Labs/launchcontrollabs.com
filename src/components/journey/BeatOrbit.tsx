@@ -77,10 +77,10 @@ export function BeatOrbit() {
       <span
         style={{
           position: 'absolute',
-          top: 'clamp(1.5rem, 3vw, 2.5rem)',
+          top: 'clamp(3rem, 4vw, 4rem)',
           left: 'clamp(1.5rem, 4vw, 3rem)',
           display: 'inline-block',
-        border: '1px solid #22D3EE',
+          border: '1px solid #22D3EE',
           padding: '0.3rem 0.8rem',
           fontFamily: 'var(--font-mono)',
           fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',

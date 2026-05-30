@@ -30,7 +30,14 @@ export default function Home() {
 
       <SmoothScrollProvider>
         <main id="main-content" data-experience-mode={experienceMode}>
-          <div style={{ minHeight: '100vh', position: 'relative' }}>
+          <div
+            className={experienceMode === '2d-parallax' ? 'mobile-journey-shell' : undefined}
+            style={
+              experienceMode === '2d-parallax'
+                ? { position: 'relative' }
+                : { minHeight: '100vh', position: 'relative' }
+            }
+          >
             {experienceMode === '3d' ? (
               <SceneErrorBoundary>
                 <Suspense fallback={<SceneLoadingState />}>
@@ -46,6 +53,7 @@ export default function Home() {
             )}
           </div>
 
+          {experienceMode !== '2d-parallax' ? (
           <section
             style={{
               minHeight: '100vh',
@@ -85,6 +93,7 @@ export default function Home() {
               </span>
             </div>
           </section>
+          ) : null}
         </main>
       </SmoothScrollProvider>
     </>
