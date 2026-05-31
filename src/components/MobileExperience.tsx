@@ -606,8 +606,8 @@ function MobileProblem() {
             textShadow: '0 2px 12px rgba(0,0,0,0.9)',
           }}
         >
-          Most products don&apos;t fail because of bad ideas. They fail because the right team 
-          wasn&apos;t there to navigate the unknown. Without experienced operators who&apos;ve 
+          Most products don&apos;t fail because of bad ideas. They fail because the right team
+          wasn&apos;t there to navigate the unknown. Without experienced operators who&apos;ve
           been to orbit and back, even the best missions drift into the void.
         </p>
 
@@ -1274,31 +1274,31 @@ function MobileFooter() {
         }}
       >
         <Logo size={160} />
-      <span
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-          letterSpacing: '0.1em',
-          color: '#FFFFFF',
-          marginTop: '1.5rem',
-          textTransform: 'uppercase',
-          textAlign: 'center',
-        }}
-      >
-        LAUNCH CONTROL LABS
-      </span>
-      <span
-        style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(0.6rem, 0.9vw, 0.8rem)',
-          letterSpacing: '0.25em',
-          color: 'rgba(255,255,255,0.4)',
-          marginTop: '0.5rem',
-          textTransform: 'uppercase',
-        }}
-      >
-        Dallas, TX · Est. 2021
-      </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+            letterSpacing: '0.1em',
+            color: '#FFFFFF',
+            marginTop: '1.5rem',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+          }}
+        >
+          LAUNCH CONTROL LABS
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'clamp(0.6rem, 0.9vw, 0.8rem)',
+            letterSpacing: '0.25em',
+            color: 'rgba(255,255,255,0.4)',
+            marginTop: '0.5rem',
+            textTransform: 'uppercase',
+          }}
+        >
+          Dallas, TX · Est. 2021
+        </span>
       </div>
     </MobileSection>
   )
