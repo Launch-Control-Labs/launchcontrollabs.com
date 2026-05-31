@@ -2,6 +2,7 @@
 
 import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const STATS = [
   { stat: '12', label: 'PRODUCTS SHIPPED' },
@@ -10,7 +11,7 @@ const STATS = [
   { stat: '<48h', label: 'RESPONSE TIME' },
 ]
 
-function StatCard({ stat, label }: { stat: string; label: string }) {
+function StatCard({ stat, label, isMobile }: { stat: string; label: string; isMobile: boolean }) {
   return (
     <div
       style={{
@@ -18,14 +19,14 @@ function StatCard({ stat, label }: { stat: string; label: string }) {
         background: 'rgba(10, 10, 15, 0.75)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
-        padding: '2rem 2.5rem',
+        padding: isMobile ? '1rem 0.5rem' : '2rem 2.5rem',
         textAlign: 'center',
       }}
     >
       <span
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(3rem, 6vw, 6rem)',
+          fontSize: isMobile ? 'clamp(2rem, 5vw, 4.5rem)' : 'clamp(3rem, 6vw, 6rem)',
           display: 'block',
           lineHeight: 1,
           color: '#22D3EE',
@@ -37,12 +38,13 @@ function StatCard({ stat, label }: { stat: string; label: string }) {
       <span
         style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.75rem',
-          letterSpacing: '0.2em',
+          fontSize: isMobile ? '0.55rem' : '0.75rem',
+          letterSpacing: '0.15em',
           color: 'rgba(255,255,255,0.6)',
           textTransform: 'uppercase',
           display: 'block',
           marginTop: '0.5rem',
+          lineHeight: 1.2,
         }}
       >
         {label}
@@ -54,6 +56,7 @@ function StatCard({ stat, label }: { stat: string; label: string }) {
 export function BeatOrbit() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const opacity = getBeatOpacity('spaceCruise', scrollProgress)
+  const isMobile = useIsMobile()
   
   if (opacity === 0) return null
   
@@ -71,20 +74,23 @@ export function BeatOrbit() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 'clamp(2rem, 5vw, 4rem)',
+        padding: isMobile ? '1rem' : 'clamp(2rem, 5vw, 4rem)',
+        background: isMobile
+          ? 'linear-gradient(to top, rgba(2, 9, 20, 0.95) 0%, rgba(2, 9, 20, 0.85) 60%, rgba(2, 9, 20, 0.4) 100%)'
+          : undefined,
       }}
     >
       <span
         style={{
           position: 'absolute',
-          top: 'clamp(3rem, 4vw, 4rem)',
-          left: 'clamp(1.5rem, 4vw, 3rem)',
+          top: isMobile ? '4.5rem' : 'clamp(3rem, 4vw, 4rem)',
+          left: isMobile ? '1rem' : 'clamp(1.5rem, 4vw, 3rem)',
           display: 'inline-block',
           border: '1px solid #22D3EE',
-          padding: '0.3rem 0.8rem',
+          padding: '0.2rem 0.6rem',
           fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
-          letterSpacing: '0.25em',
+          fontSize: 'clamp(0.55rem, 0.9vw, 0.85rem)',
+          letterSpacing: '0.2em',
           fontWeight: 700,
           textTransform: 'uppercase',
           color: '#22D3EE',
@@ -99,14 +105,14 @@ export function BeatOrbit() {
       <h2
         style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(3rem, 8vw, 8rem)',
+          fontSize: isMobile ? 'clamp(2.5rem, 8vw, 5rem)' : 'clamp(3rem, 8vw, 8rem)',
           lineHeight: 0.85,
           letterSpacing: '-0.02em',
           textTransform: 'uppercase',
           color: '#FFFFFF',
           margin: 0,
           textAlign: 'center',
-          marginBottom: '1rem',
+          marginBottom: '0.5rem',
           textShadow: '0 2px 20px rgba(0,0,0,0.8)',
         }}
       >
@@ -116,14 +122,14 @@ export function BeatOrbit() {
       <p
         style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)',
+          fontSize: isMobile ? 'clamp(0.7rem, 1.5vw, 1rem)' : 'clamp(0.9rem, 1.5vw, 1.2rem)',
           color: 'rgba(255,255,255,0.7)',
           letterSpacing: '0.1em',
           textTransform: 'uppercase',
           textAlign: 'center',
-          maxWidth: '50ch',
-          margin: '0 auto 3rem',
-          lineHeight: 1.6,
+          maxWidth: '40ch',
+          margin: isMobile ? '0 auto 1.5rem' : '0 auto 3rem',
+          lineHeight: 1.4,
         }}
       >
         Systems engineered for production. Numbers that prove it.
@@ -132,14 +138,18 @@ export function BeatOrbit() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, minmax(200px, 280px))',
-          gap: '1.5rem',
+          gridTemplateColumns: isMobile 
+            ? 'repeat(2, minmax(130px, 1fr))' 
+            : 'repeat(2, minmax(200px, 280px))',
+          gap: isMobile ? '0.5rem' : '1.5rem',
           justifyContent: 'center',
-          marginTop: '3rem',
+          marginTop: isMobile ? '1rem' : '3rem',
+          width: isMobile ? '100%' : 'auto',
+          maxWidth: isMobile ? '340px' : 'none',
         }}
       >
         {STATS.map((item) => (
-          <StatCard key={item.label} stat={item.stat} label={item.label} />
+          <StatCard key={item.label} stat={item.stat} label={item.label} isMobile={isMobile} />
         ))}
       </div>
     </div>

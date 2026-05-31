@@ -2,6 +2,7 @@
 
 import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const STATS = [
   { value: '6', label: 'MISSIONS\nFEATURED' },
@@ -13,6 +14,8 @@ const STATS = [
 export function BeatCTA() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const opacity = getBeatOpacity('astronautClose', scrollProgress)
+  const isMobile = useIsMobile()
+
   if (opacity === 0) return null
 
   return (
@@ -26,6 +29,9 @@ export function BeatCTA() {
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',
         color: '#E5EBF2',
+        background: isMobile
+          ? 'linear-gradient(to top, rgba(2, 9, 20, 0.95) 0%, rgba(2, 9, 20, 0.85) 60%, rgba(2, 9, 20, 0.4) 100%)'
+          : undefined,
       }}
     >
       <div
@@ -33,10 +39,10 @@ export function BeatCTA() {
           position: 'relative',
           height: '100%',
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '3rem',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          gap: isMobile ? '1.5rem' : '3rem',
           alignContent: 'center',
-          padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
+          padding: isMobile ? '4.5rem 1rem 1rem' : 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
         }}
       >
         <div style={{ position: 'relative', zIndex: 10 }}>
@@ -112,9 +118,10 @@ export function BeatCTA() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '2px',
             alignSelf: 'center',
+            width: '100%',
           }}
         >
           {STATS.map((stat) => (
@@ -123,18 +130,18 @@ export function BeatCTA() {
               style={{
                 background: 'rgba(255,255,255,0.03)',
                 border: '1px solid rgba(34,211,238,0.2)',
-                padding: 'clamp(1rem, 3vw, 2rem)',
+                padding: isMobile ? '0.75rem 0.5rem' : 'clamp(1rem, 3vw, 2rem)',
                 textAlign: 'center',
               }}
             >
               <span
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                  fontSize: isMobile ? 'clamp(1.5rem, 5vw, 2.5rem)' : 'clamp(2rem, 5vw, 3.5rem)',
                   fontWeight: 400,
                   lineHeight: 0.85,
                   display: 'block',
-                  marginBottom: '0.5rem',
+                  marginBottom: '0.25rem',
                   color: '#E5EBF2',
                 }}
               >
@@ -143,11 +150,12 @@ export function BeatCTA() {
               <span
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: 'clamp(0.5rem, 0.7vw, 0.65rem)',
-                  letterSpacing: '0.15em',
+                  fontSize: isMobile ? '0.55rem' : 'clamp(0.5rem, 0.7vw, 0.65rem)',
+                  letterSpacing: '0.12em',
                   color: 'rgba(255,255,255,0.45)',
                   whiteSpace: 'pre-line',
                   textTransform: 'uppercase',
+                  lineHeight: 1.2,
                 }}
               >
                 {stat.label}
@@ -162,7 +170,7 @@ export function BeatCTA() {
             bottom: 'clamp(1.5rem, 3vw, 2.5rem)',
             left: 'clamp(1.5rem, 4vw, 3rem)',
             right: 'clamp(1.5rem, 4vw, 3rem)',
-            display: 'flex',
+            display: isMobile ? 'none' : 'flex',
             justifyContent: 'space-between',
             fontFamily: 'var(--font-mono)',
             fontSize: 'clamp(0.45rem, 0.6vw, 0.55rem)',

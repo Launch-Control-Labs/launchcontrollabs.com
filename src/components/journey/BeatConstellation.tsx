@@ -2,6 +2,7 @@
 
 import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const TALISMAN_PROJECT = {
   name: 'TALISMAN',
@@ -27,6 +28,8 @@ const CLIENT_PROJECTS = [
 export function BeatConstellation() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const opacity = getBeatOpacity('shuttleEarth', scrollProgress)
+  const isMobile = useIsMobile()
+
   if (opacity === 0) return null
 
   return (
@@ -44,74 +47,62 @@ export function BeatConstellation() {
     >
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(10,10,15,0.72) 0%, rgba(10,10,15,0.55) 60%, transparent 100%)',
+          width: isMobile ? '100%' : '58%',
+          height: '100%',
+          marginRight: 'auto',
+          background: isMobile
+            ? 'linear-gradient(to top, rgba(2, 9, 20, 0.95) 0%, rgba(2, 9, 20, 0.85) 60%, rgba(2, 9, 20, 0.4) 100%)'
+            : 'linear-gradient(to left, transparent 0%, rgba(10,10,15,0.72) 20%, rgba(10,10,15,0.85) 100%)',
           backdropFilter: 'blur(4px)',
           WebkitBackdropFilter: 'blur(4px)',
-          height: '100%',
-          maxWidth: '780px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: isMobile ? '1.5rem 1rem' : 'clamp(3rem, 4vw, 4rem) clamp(1.5rem, 4vw, 3rem)',
+          position: 'relative',
+          zIndex: 2,
           overflow: 'hidden',
+          boxSizing: 'border-box',
         }}
       >
-        <div
+        <span
           style={{
-            padding: 'clamp(3rem, 4vw, 4rem) clamp(1.5rem, 4vw, 3rem) clamp(0.25rem, 0.5vw, 0.5rem)',
+            display: 'inline-block',
+            border: '2px solid #F59E0B',
+            padding: '0.3rem 0.8rem',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
+            letterSpacing: '0.25em',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            color: '#F59E0B',
+            marginBottom: '0.75rem',
+            alignSelf: 'flex-start',
           }}
         >
-          <span
-            style={{
-              display: 'inline-block',
-              border: '2px solid #F59E0B',
-              padding: '0.3rem 0.8rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
-              letterSpacing: '0.25em',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              color: '#F59E0B',
-            }}
-          >
-            THE PROOF
-          </span>
-        </div>
+          THE PROOF
+        </span>
+
+        <h2
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2.5rem, 5.5vw, 6rem)',
+            fontWeight: 400,
+            lineHeight: 0.85,
+            letterSpacing: '-0.03em',
+            textTransform: 'uppercase',
+            color: '#FAFAFA',
+            margin: '0 0 0.75rem 0',
+          }}
+        >
+          SELECT<br />
+          <span style={{ color: '#F59E0B' }}>MISSIONS</span>
+        </h2>
 
         <div
           style={{
-            padding: '0 clamp(1.5rem, 4vw, 3rem)',
-            marginTop: 'clamp(0.5rem, 1.2vw, 1rem)',
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3.5rem, 8vw, 8rem)',
-              lineHeight: 0.85,
-              letterSpacing: '-0.02em',
-              textTransform: 'uppercase',
-              color: '#FAFAFA',
-              margin: 0,
-            }}
-          >
-            SELECT
-          </h2>
-          <h2
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3.5rem, 8vw, 8rem)',
-              lineHeight: 0.85,
-              letterSpacing: '-0.02em',
-              textTransform: 'uppercase',
-              color: '#F59E0B',
-              margin: 0,
-            }}
-          >
-            MISSIONS
-          </h2>
-        </div>
-
-        <div
-          style={{
-            margin: 'clamp(1rem, 2vw, 1.5rem) clamp(1.5rem, 4vw, 3rem)',
-            padding: 'clamp(0.75rem, 1.5vw, 1.25rem)',
+            margin: '1rem 0',
+            padding: isMobile ? '0.75rem' : 'clamp(0.75rem, 1.5vw, 1.25rem)',
             border: '3px solid #F59E0B',
             background: 'rgba(245, 158, 11, 0.05)',
             maxWidth: '900px',
@@ -134,9 +125,9 @@ export function BeatConstellation() {
           <p
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.75rem, 1vw, 0.9rem)',
+              fontSize: 'clamp(0.7rem, 1vw, 0.9rem)',
               color: 'rgba(250, 250, 250, 0.7)',
-              lineHeight: 1.5,
+              lineHeight: 1.4,
               maxWidth: '60ch',
               margin: '0 0 0.75rem 0',
             }}
@@ -147,8 +138,8 @@ export function BeatConstellation() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '1rem',
+              gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+              gap: isMobile ? '0.5rem' : '1rem',
               borderTop: '1px solid #1F2937',
               paddingTop: '1.5rem',
               marginBottom: '1.5rem',
@@ -239,32 +230,26 @@ export function BeatConstellation() {
           </div>
         </div>
 
-        <div
+        <span
           style={{
-            padding: '0 clamp(1.5rem, 4vw, 3rem)',
-            marginTop: '0.75rem',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.55rem',
+            fontWeight: 700,
+            letterSpacing: '0.25em',
+            textTransform: 'uppercase',
+            color: '#374151',
+            margin: '0.75rem 0 0.5rem 0',
           }}
         >
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.55rem',
-              fontWeight: 700,
-              letterSpacing: '0.25em',
-              textTransform: 'uppercase',
-              color: '#374151',
-            }}
-          >
-            CLIENT WORK
-          </span>
-        </div>
+          CLIENT WORK
+        </span>
 
         <div
           style={{
             display: 'flex',
             flexWrap: 'wrap',
             gap: 'clamp(0.5rem, 1vw, 1rem)',
-            padding: '0 clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2rem)',
+            margin: '0.5rem 0 0 0',
           }}
         >
           {CLIENT_PROJECTS.map((project) => (
