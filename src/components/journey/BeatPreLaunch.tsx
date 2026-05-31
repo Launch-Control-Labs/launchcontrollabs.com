@@ -2,12 +2,16 @@
 
 import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 export function BeatPreLaunch() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const opacity = getBeatOpacity('launch', scrollProgress)
+  const isMobile = useIsMobile()
   
   if (opacity === 0) return null
+  
+  const titleFontSize = isMobile ? '11.5vw' : '13.5vw'
   
   return (
     <div
@@ -24,7 +28,7 @@ export function BeatPreLaunch() {
         background: 'linear-gradient(to top, rgba(2, 9, 20, 0.65) 0%, rgba(2, 9, 20, 0.3) 35%, transparent 60%)',
       }}
     >
-      <div style={{ padding: '0 clamp(1.5rem, 3vw, 3rem)', paddingBottom: 'clamp(2.5rem, 5vh, 4rem)' }}>
+      <div style={{ padding: isMobile ? '0 1rem 2rem 1rem' : '0 clamp(1.5rem, 3vw, 3rem) clamp(2.5rem, 5vh, 4rem)' }}>
         <div
           style={{
             display: 'flex',
@@ -37,8 +41,8 @@ export function BeatPreLaunch() {
           <span
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.6rem, 1vw, 0.85rem)',
-              letterSpacing: '0.25em',
+              fontSize: 'clamp(0.5rem, 1vw, 0.85rem)',
+              letterSpacing: '0.2em',
               color: 'rgba(255,255,255,0.35)',
               textTransform: 'uppercase',
             }}
@@ -48,8 +52,8 @@ export function BeatPreLaunch() {
           <span
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.6rem, 1vw, 0.85rem)',
-              letterSpacing: '0.25em',
+              fontSize: 'clamp(0.5rem, 1vw, 0.85rem)',
+              letterSpacing: '0.2em',
               color: 'rgba(34,211,238,0.6)',
               textTransform: 'uppercase',
             }}
@@ -61,7 +65,7 @@ export function BeatPreLaunch() {
         <h1
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '13.5vw',
+            fontSize: titleFontSize,
             lineHeight: 0.82,
             letterSpacing: '-0.04em',
             color: '#FFFFFF',
@@ -82,18 +86,19 @@ export function BeatPreLaunch() {
             justifyContent: 'flex-end',
             marginTop: '-0.06em',
             width: '100%',
+            gap: isMobile ? '0.5rem' : '0',
           }}
         >
           <p
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.6rem, 1.1vw, 1rem)',
-              letterSpacing: '0.15em',
+              fontSize: 'clamp(0.5rem, 1.1vw, 1rem)',
+              letterSpacing: '0.12em',
               color: 'rgba(255,255,255,0.5)',
               textTransform: 'uppercase',
               margin: 0,
-              maxWidth: '28ch',
-              lineHeight: 1.4,
+              maxWidth: isMobile ? '20ch' : '28ch',
+              lineHeight: 1.3,
             }}
           >
             From idea to shipped product. No guessing.
@@ -101,7 +106,7 @@ export function BeatPreLaunch() {
           <h2
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: '13.5vw',
+              fontSize: titleFontSize,
               lineHeight: 0.82,
               letterSpacing: '-0.01em',
               color: '#FFFFFF',

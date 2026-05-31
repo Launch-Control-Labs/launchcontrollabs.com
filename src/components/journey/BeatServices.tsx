@@ -2,6 +2,7 @@
 
 import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const SERVICES = [
   { num: '01', name: 'AI-POWERED PRODUCTS', desc: 'LLMs, agents, and automation systems built for production.' },
@@ -13,6 +14,7 @@ const SERVICES = [
 export function BeatServices() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const opacity = getBeatOpacity('services', scrollProgress)
+  const isMobile = useIsMobile()
 
   if (opacity === 0) return null
 
@@ -26,19 +28,21 @@ export function BeatServices() {
         opacity,
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',
-        background: 'linear-gradient(to right, rgba(2, 9, 20, 0.88) 0%, rgba(2, 9, 20, 0.6) 50%, transparent 100%)',
+        background: isMobile 
+          ? 'linear-gradient(to top, rgba(2, 9, 20, 0.95) 0%, rgba(2, 9, 20, 0.85) 60%, rgba(2, 9, 20, 0.4) 100%)' 
+          : 'linear-gradient(to right, rgba(2, 9, 20, 0.88) 0%, rgba(2, 9, 20, 0.6) 50%, transparent 100%)',
       }}
     >
       <div
         style={{
           position: 'absolute',
-          bottom: 0,
+          bottom: isMobile ? '1.5rem' : 0,
           left: 0,
-          padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+          padding: isMobile ? '1rem' : 'clamp(1.5rem, 3vw, 2.5rem)',
           display: 'flex',
           flexDirection: 'column',
-          gap: 'clamp(0.75rem, 1.5vw, 1.25rem)',
-          maxWidth: 'min(600px, 55vw)',
+          gap: isMobile ? '0.5rem' : 'clamp(0.75rem, 1.5vw, 1.25rem)',
+          maxWidth: isMobile ? 'min(600px, 92vw)' : 'min(600px, 55vw)',
         }}
       >
         <span

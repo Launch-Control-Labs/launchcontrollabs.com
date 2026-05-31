@@ -2,6 +2,7 @@
 
 import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const COMPANIES = [
   'LINKEDIN',
@@ -19,6 +20,8 @@ const AWARDS = [
 export function BeatAuthority() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const opacity = getBeatOpacity('astronautFar', scrollProgress)
+  const isMobile = useIsMobile()
+
   if (opacity === 0) return null
 
   return (
@@ -36,14 +39,16 @@ export function BeatAuthority() {
     >
       <div
         style={{
-          width: '58%',
+          width: isMobile ? '100%' : '58%',
           height: '100%',
           marginLeft: 'auto',
-          background: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.70) 20%, rgba(0,0,0,0.78) 100%)',
+          background: isMobile 
+            ? 'linear-gradient(to top, rgba(2, 9, 20, 0.95) 0%, rgba(2, 9, 20, 0.85) 60%, rgba(2, 9, 20, 0.4) 100%)'
+            : 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.70) 20%, rgba(0,0,0,0.78) 100%)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: 'clamp(3rem, 4vw, 4rem) clamp(1.5rem, 4vw, 3rem)',
+          padding: isMobile ? '1.5rem 1rem' : 'clamp(3rem, 4vw, 4rem) clamp(1.5rem, 4vw, 3rem)',
           position: 'relative',
           zIndex: 2,
           overflow: 'hidden',

@@ -3,6 +3,7 @@
 import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
 import { SECTION_FLAG, TYPOGRAPHY } from '@/styles/section-constants'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 const CALLOUTS = [
   { label: 'INDUSTRY AVERAGE', value: '70%', suffix: 'FAIL' },
@@ -62,6 +63,7 @@ function CalloutCard({ label, value, suffix }: { label: string; value: string; s
 export function BeatAscent() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const opacity = getBeatOpacity('atmosphere', scrollProgress)
+  const isMobile = useIsMobile()
   
   if (opacity === 0) return null
   
@@ -75,19 +77,21 @@ export function BeatAscent() {
         opacity,
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',
-        background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)',
+        background: isMobile
+          ? 'linear-gradient(to top, rgba(2, 9, 20, 0.95) 0%, rgba(2, 9, 20, 0.85) 60%, rgba(2, 9, 20, 0.4) 100%)'
+          : 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)',
       }}
     >
       <div
         style={{
           position: 'absolute',
-          bottom: 0,
+          bottom: isMobile ? '1.5rem' : 0,
           left: 0,
-          padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+          padding: isMobile ? '1rem' : 'clamp(1.5rem, 3vw, 2.5rem)',
           display: 'flex',
           flexDirection: 'column',
-          gap: 'clamp(0.5rem, 1vw, 1rem)',
-          maxWidth: '720px',
+          gap: isMobile ? '0.5rem' : 'clamp(0.5rem, 1vw, 1rem)',
+          maxWidth: isMobile ? 'min(720px, 92vw)' : '720px',
         }}
       >
         <div style={SECTION_FLAG}>

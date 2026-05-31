@@ -31,14 +31,12 @@ export function useExperienceMode(): '3d' | '2d-parallax' | 'static' {
     // Determine experience mode based on priority
     if (prefersReducedMotion) {
       setMode('static')
-    } else if (isMobile) {
-      setMode('2d-parallax')
     } else if (deviceTier === 1) {
-      setMode('2d-parallax')
+      setMode('static')
     } else {
       setMode('3d')
     }
-  }, [prefersReducedMotion, isMobile, deviceTier])
+  }, [prefersReducedMotion, deviceTier])
 
   return mode
 }
