@@ -53,8 +53,6 @@ export function BeatConstellation() {
           background: isMobile
             ? 'linear-gradient(to top, rgba(2, 9, 20, 0.95) 0%, rgba(2, 9, 20, 0.85) 60%, rgba(2, 9, 20, 0.4) 100%)'
             : 'linear-gradient(to left, transparent 0%, rgba(10,10,15,0.72) 20%, rgba(10,10,15,0.85) 100%)',
-          backdropFilter: 'blur(4px)',
-          WebkitBackdropFilter: 'blur(4px)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
