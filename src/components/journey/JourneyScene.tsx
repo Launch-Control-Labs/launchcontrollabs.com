@@ -32,14 +32,85 @@ function BackgroundController() {
   return null
 }
 
-function ShuttleModel() {
-  const { scene } = useGLTF('/models/space-shuttle-oriented.glb')
+function AstronautModel({
+  shuttleRef,
+  clipPlane,
+}: {
+  shuttleRef: React.RefObject<THREE.Group | null>
+  clipPlane: THREE.Plane
+}) {
   const astronautGltf = useGLTF('/models/astronaut-converted.glb')
-  const shuttleRef = useRef<THREE.Group>(null)
-  const modelGroupRef = useRef<THREE.Group>(null)
   const astronautGroupRef = useRef<THREE.Group>(null)
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const { actions: astroActions } = useAnimations(astronautGltf.animations, astronautGroupRef)
+
+  useEffect(() => {
+    astronautGltf.scene.traverse((child: any) => {
+      const name = (child.name || '').toLowerCase()
+      if (name.includes('wire') || name.includes('rope') ||
+          name.includes('necklace') || name.includes('cable') ||
+          name.includes('tether')) {
+        child.visible = false
+        return
+      }
+      if (child.isMesh) {
+        const mats = Array.isArray(child.material) ? child.material : [child.material]
+        mats.forEach((m: any) => {
+          if (m) {
+            m.transparent = true
+            m.opacity = 1
+            m.depthWrite = true
+            m.clippingPlanes = [clipPlane]
+            m.clipShadows = true
+            m.side = THREE.DoubleSide
+          }
+        })
+      }
+    })
+  }, [astronautGltf.scene, clipPlane])
+
+  useFrame(() => {
+    const astroGroup = astronautGroupRef.current
+    if (astroGroup) {
+      const emergeStart = 0.68
+      const emergeEnd = 0.82
+      const emergeProgress = THREE.MathUtils.clamp((scrollProgress - emergeStart) / (emergeEnd - emergeStart), 0, 1)
+
+      astroGroup.position.y = THREE.MathUtils.lerp(-1, 4, emergeProgress)
+      astroGroup.position.x = THREE.MathUtils.lerp(0, 0.5, emergeProgress)
+      astroGroup.position.z = THREE.MathUtils.lerp(0, 3, emergeProgress)
+      astroGroup.visible = true
+
+      const shuttleWorldY = shuttleRef.current?.position.y || 0
+      clipPlane.constant = shuttleWorldY + 0.5
+
+      if (emergeProgress > 0.3) {
+        astroGroup.rotation.y += 0.003 * emergeProgress
+      }
+
+      if (astroActions && astroActions['idle']) {
+        const action = astroActions['idle']
+        if (!action.isRunning()) {
+          action.play()
+          action.timeScale = 0.4
+        }
+      }
+    }
+  })
+
+  return (
+    <group ref={astronautGroupRef} visible={true} position={[0, -1, 0]} scale={0.4}>
+      <primitive object={astronautGltf.scene} />
+    </group>
+  )
+}
+
+function ShuttleModel() {
+  const { scene } = useGLTF('/models/space-shuttle-oriented.glb')
+  const shuttleRef = useRef<THREE.Group>(null)
+  const modelGroupRef = useRef<THREE.Group>(null)
+  const scrollProgress = useSceneStore((s) => s.scrollProgress)
+  const firstPageInteractive = useSceneStore((s) => s.firstPageInteractive)
 
   const srbLeftRef = useRef<THREE.Object3D | null>(null)
   const srbRightRef = useRef<THREE.Object3D | null>(null)
@@ -92,30 +163,7 @@ function ShuttleModel() {
       }
     })
     toRemove.forEach(obj => obj.removeFromParent())
-
-    astronautGltf.scene.traverse((child: any) => {
-      const name = (child.name || '').toLowerCase()
-      if (name.includes('wire') || name.includes('rope') ||
-          name.includes('necklace') || name.includes('cable') ||
-          name.includes('tether')) {
-        child.visible = false
-        return
-      }
-      if (child.isMesh) {
-        const mats = Array.isArray(child.material) ? child.material : [child.material]
-        mats.forEach((m: any) => {
-          if (m) {
-            m.transparent = true
-            m.opacity = 1
-            m.depthWrite = true
-            m.clippingPlanes = [clipPlane]
-            m.clipShadows = true
-            m.side = THREE.DoubleSide
-          }
-        })
-      }
-    })
-  }, [scene, astronautGltf.scene])
+  }, [scene])
 
   const { computedScale, nozzleY, centerOffset } = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene)
@@ -247,33 +295,6 @@ function ShuttleModel() {
     if (bayDoorRef.current) {
       bayDoorRef.current.rotation.z = bayProgress * Math.PI * 0.6
     }
-
-    const astroGroup = astronautGroupRef.current
-    if (astroGroup) {
-      const emergeStart = 0.68
-      const emergeEnd = 0.82
-      const emergeProgress = THREE.MathUtils.clamp((scrollProgress - emergeStart) / (emergeEnd - emergeStart), 0, 1)
-
-      astroGroup.position.y = THREE.MathUtils.lerp(-1, 4, emergeProgress)
-      astroGroup.position.x = THREE.MathUtils.lerp(0, 0.5, emergeProgress)
-      astroGroup.position.z = THREE.MathUtils.lerp(0, 3, emergeProgress)
-      astroGroup.visible = true
-
-      const shuttleWorldY = shuttleRef.current?.position.y || 0
-      clipPlane.constant = shuttleWorldY + 0.5
-
-      if (emergeProgress > 0.3) {
-        astroGroup.rotation.y += 0.003 * emergeProgress
-      }
-
-      if (astroActions && astroActions['idle']) {
-        const action = astroActions['idle']
-        if (!action.isRunning()) {
-          action.play()
-          action.timeScale = 0.4
-        }
-      }
-    }
   })
 
   if (!visible) return null
@@ -292,9 +313,14 @@ function ShuttleModel() {
         visible={exhaustVisible}
         srbAttached={scrollProgress < 0.22}
       />
-      <group ref={astronautGroupRef} visible={true} position={[0, -1, 0]} scale={0.4}>
-        <primitive object={astronautGltf.scene} />
-      </group>
+      <Suspense fallback={null}>
+        {firstPageInteractive && (
+          <AstronautModel
+            shuttleRef={shuttleRef}
+            clipPlane={clipPlane}
+          />
+        )}
+      </Suspense>
     </group>
   )
 }
@@ -364,6 +390,22 @@ function StarFieldWrapper() {
 }
 
 export function JourneyScene() {
+  const firstPageInteractive = useSceneStore((s) => s.firstPageInteractive)
+  const setFirstPageInteractive = useSceneStore((s) => s.setFirstPageInteractive)
+
+  useEffect(() => {
+    // Set a small delay/timeout to let the landing page render and settle before loading other resources
+    const timer = setTimeout(() => {
+      setFirstPageInteractive(true)
+      
+      // Load subsequent screen assets in the background
+      useGLTF.preload('/models/optimized/earth.glb')
+      useGLTF.preload('/models/astronaut-converted.glb')
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [setFirstPageInteractive])
+
   return (
     <>
       <BackgroundController />
@@ -394,7 +436,7 @@ export function JourneyScene() {
         <ShuttleModel />
       </Suspense>
       <Suspense fallback={null}>
-        <EarthModel />
+        {firstPageInteractive && <EarthModel />}
       </Suspense>
 
 
@@ -408,6 +450,5 @@ export function JourneyScene() {
   )
 }
 
+// Only preload the landing screen asset immediately to optimize initial load
 useGLTF.preload('/models/space-shuttle-oriented.glb')
-useGLTF.preload('/models/optimized/earth.glb')
-useGLTF.preload('/models/astronaut-converted.glb')
