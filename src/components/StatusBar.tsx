@@ -18,7 +18,7 @@ function getBeatIndex(progress: number): number {
 export default function StatusBar() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const activeSection = getBeatIndex(scrollProgress)
-  const currentSectionName = SECTION_NAMES[activeSection] || 'THE PROMISE'
+  const currentSectionName = activeSection === 0 ? '' : (SECTION_NAMES[activeSection] || '')
 
   return (
     <header style={{
