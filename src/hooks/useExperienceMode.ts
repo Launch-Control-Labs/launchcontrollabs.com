@@ -20,23 +20,23 @@ import { useDeviceTier } from './useDeviceTier'
  */
 
 export function useExperienceMode(): '3d' | '2d-parallax' | 'static' {
-  const prefersReducedMotion = useReducedMotion()
-  const isMobile = useIsMobile()
-  const deviceTier = useDeviceTier()
+  //const prefersReducedMotion = useReducedMotion()
+  //const isMobile = useIsMobile()
+  //const deviceTier = useDeviceTier()
 
   // SSR-safe default: return '3d' on server, actual mode on client
   const [mode, setMode] = useState<'3d' | '2d-parallax' | 'static'>('3d')
 
-  useEffect(() => {
-    // Determine experience mode based on priority
-    if (prefersReducedMotion) {
-      setMode('static')
-    } else if (deviceTier === 1) {
-      setMode('static')
-    } else {
-      setMode('3d')
-    }
-  }, [prefersReducedMotion, deviceTier])
+  // useEffect(() => {
+  //   // Determine experience mode based on priority
+  //   if (prefersReducedMotion) {
+  //     setMode('static')
+  //   } else if (deviceTier === 1) {
+  //     setMode('static')
+  //   } else {
+  //     setMode('3d')
+  //   }
+  // }, [prefersReducedMotion, deviceTier])
 
   return mode
 }
