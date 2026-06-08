@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
 import { useExperienceMode } from '@/hooks/useExperienceMode'
 import { SceneErrorBoundary } from '@/components/3d/SceneErrorBoundary'
 import { SceneLoadingState } from '@/components/3d/SceneLoadingState'
@@ -16,6 +16,7 @@ import { SmoothScrollProvider } from '@/components/SmoothScroll'
 
 export default function Home() {
   const experienceMode = useExperienceMode()
+  const [loadingComplete, setLoadingComplete] = useState(false)
 
   return (
     <>
@@ -27,6 +28,10 @@ export default function Home() {
       </a>
       <StatusBar />
       <SectionNav />
+
+      {experienceMode === '3d' && !loadingComplete && (
+        <SceneLoadingState onComplete={() => setLoadingComplete(true)} />
+      )}
 
       <SmoothScrollProvider>
         <main id="main-content" data-experience-mode={experienceMode}>
