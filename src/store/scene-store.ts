@@ -7,11 +7,13 @@ interface SceneState {
   deviceTier: 1 | 2 | 3
   experienceMode: '3d' | '2d-parallax' | 'static'
   firstPageInteractive: boolean
+  shuttleLoaded: boolean
 
   setScrollProgress: (progress: number) => void
   setDeviceTier: (tier: 1 | 2 | 3) => void
   setExperienceMode: (mode: '3d' | '2d-parallax' | 'static') => void
   setFirstPageInteractive: (interactive: boolean) => void
+  setShuttleLoaded: (loaded: boolean) => void
 }
 
 export const useSceneStore = create<SceneState>((set) => ({
@@ -19,9 +21,11 @@ export const useSceneStore = create<SceneState>((set) => ({
   deviceTier: 2,
   experienceMode: '3d',
   firstPageInteractive: false,
+  shuttleLoaded: false,
 
   setScrollProgress: (progress) => set({ scrollProgress: progress }),
   setDeviceTier: (tier) => set({ deviceTier: tier }),
   setExperienceMode: (mode) => set({ experienceMode: mode }),
   setFirstPageInteractive: (interactive) => set({ firstPageInteractive: interactive }),
+  setShuttleLoaded: (loaded) => set({ shuttleLoaded: loaded }),
 }))

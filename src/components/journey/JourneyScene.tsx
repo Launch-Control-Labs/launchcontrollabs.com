@@ -111,6 +111,12 @@ function ShuttleModel() {
   const modelGroupRef = useRef<THREE.Group>(null)
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const firstPageInteractive = useSceneStore((s) => s.firstPageInteractive)
+  const setShuttleLoaded = useSceneStore((s) => s.setShuttleLoaded)
+
+  useEffect(() => {
+    setShuttleLoaded(true)
+    return () => setShuttleLoaded(false)
+  }, [setShuttleLoaded])
 
   const srbLeftRef = useRef<THREE.Object3D | null>(null)
   const srbRightRef = useRef<THREE.Object3D | null>(null)
