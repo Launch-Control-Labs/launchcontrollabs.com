@@ -14,6 +14,7 @@ import {
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { Logo } from '@/components/Logo'
 import { useSceneStore } from '@/store/scene-store'
+import { ContactForm } from '@/components/ContactForm'
 
 // NO imports from @react-three/fiber, @react-three/drei, three, gsap
 // Pure React + CSS only
@@ -1233,28 +1234,7 @@ function MobileCTA() {
         Let&apos;s discuss your mission. No commitment required.
       </p>
 
-      <a
-        href="mailto:hello@launchcontrollabs.com"
-        style={{
-          display: 'inline-block',
-          maxWidth: '100%',
-          textAlign: 'center',
-          wordBreak: 'break-word',
-          border: '2px solid #4ADE80',
-          padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.25rem, 4vw, 2rem)',
-          fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(0.7rem, 2.8vw, 0.9rem)',
-          letterSpacing: '0.15em',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          color: '#4ADE80',
-          textDecoration: 'none',
-          background: 'rgba(74, 222, 128, 0.05)',
-          transition: 'background 0.2s ease',
-        }}
-      >
-        hello@launchcontrollabs.com
-      </a>
+      <ContactForm accentColor="#4ADE80" />
     </MobileSection>
   )
 }
