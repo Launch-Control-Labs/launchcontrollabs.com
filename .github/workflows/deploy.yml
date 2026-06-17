@@ -1,9 +1,7 @@
-name: Deploy to Porkbun
+name: Deploy to Porkbun (disabled — project now deploys via Vercel)
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: # manual trigger only — auto-deploy disabled
 
 jobs:
   build-and-deploy:

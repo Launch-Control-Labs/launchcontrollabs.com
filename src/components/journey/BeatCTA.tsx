@@ -2,7 +2,7 @@
 
 import { useSceneStore } from '@/store/scene-store'
 import { getBeatOpacity } from '@/config/beat-config'
-import { useIsMobile } from '@/hooks/useIsMobile'
+import { ContactForm } from '@/components/ContactForm'
 
 const STATS = [
   { value: '6', label: 'MISSIONS\nFEATURED' },
@@ -14,7 +14,6 @@ const STATS = [
 export function BeatCTA() {
   const scrollProgress = useSceneStore((s) => s.scrollProgress)
   const opacity = getBeatOpacity('astronautClose', scrollProgress)
-  const isMobile = useIsMobile()
 
   if (opacity === 0) return null
 
@@ -24,40 +23,39 @@ export function BeatCTA() {
       style={{
         position: 'absolute',
         inset: 0,
-        overflow: 'hidden',
+        overflow: 'hidden auto',
         opacity,
         transition: 'opacity 0.1s',
         pointerEvents: opacity > 0.5 ? 'auto' : 'none',
         color: '#E5EBF2',
-        background: isMobile
-          ? 'linear-gradient(to top, rgba(2, 9, 20, 0.95) 0%, rgba(2, 9, 20, 0.85) 60%, rgba(2, 9, 20, 0.4) 100%)'
-          : undefined,
       }}
     >
       <div
         style={{
           position: 'relative',
-          height: '100%',
+          minHeight: '100%',
           display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-          gap: isMobile ? '1.5rem' : '3rem',
+          // Single column on narrow, side-by-side from ~800 px up
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
+          gap: 'clamp(1.5rem, 4vw, 3rem)',
           alignContent: 'center',
-          padding: isMobile ? '4.5rem 1rem 1rem' : 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 3rem)',
+          padding: 'clamp(4rem, 8vw, 5rem) clamp(1.25rem, 4vw, 3rem) clamp(3rem, 6vw, 4rem)',
         }}
       >
-        <div style={{ position: 'relative', zIndex: 10 }}>
+        {/* Left column — heading + form */}
+        <div style={{ position: 'relative', zIndex: 10, minWidth: 0 }}>
           <span
             style={{
               display: 'inline-block',
               border: '1px solid #22D3EE',
               padding: '0.3rem 0.8rem',
               fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
+              fontSize: 'clamp(0.6rem, 0.9vw, 0.85rem)',
               letterSpacing: '0.25em',
               fontWeight: 700,
               textTransform: 'uppercase',
               color: '#22D3EE',
-              marginBottom: '1.5rem',
+              marginBottom: '1.25rem',
             }}
           >
             THE ORBIT
@@ -66,13 +64,13 @@ export function BeatCTA() {
           <h2
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3.5rem, 8vw, 8rem)',
+              fontSize: 'clamp(3rem, 7vw, 8rem)',
               fontWeight: 400,
               lineHeight: 0.85,
               letterSpacing: '-0.02em',
               color: '#E5EBF2',
               textTransform: 'uppercase',
-              margin: '0 0 1.5rem',
+              margin: '0 0 1.25rem',
             }}
           >
             READY TO<br />LAUNCH?
@@ -81,40 +79,21 @@ export function BeatCTA() {
           <p
             style={{
               fontFamily: 'var(--font-body)',
-              fontSize: 'clamp(0.875rem, 1vw, 1rem)',
+              fontSize: 'clamp(0.85rem, 1vw, 1rem)',
               lineHeight: 1.6,
               maxWidth: '35ch',
               color: '#E5EBF2',
               opacity: 0.7,
-              marginBottom: '2rem',
+              marginBottom: '1.5rem',
             }}
           >
             Your next venture deserves mission-grade execution.
           </p>
 
-          <a
-            href="mailto:projects@launchcontrollabs.com"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.65rem, 0.9vw, 0.85rem)',
-              letterSpacing: '0.25em',
-              color: '#22D3EE',
-              textDecoration: 'none',
-              border: '2px solid #22D3EE',
-              padding: '0.75rem 2rem',
-              textTransform: 'uppercase',
-              fontWeight: 700,
-              transition: 'all 0.2s ease',
-            }}
-          >
-            PROJECTS@LAUNCHCONTROLLABS.COM
-            <span style={{ fontSize: '1.2em' }}>→</span>
-          </a>
+          <ContactForm accentColor="#22D3EE" />
         </div>
 
+        {/* Right column — stats grid */}
         <div
           style={{
             display: 'grid',
@@ -122,6 +101,7 @@ export function BeatCTA() {
             gap: '2px',
             alignSelf: 'center',
             width: '100%',
+            minWidth: 0,
           }}
         >
           {STATS.map((stat) => (
@@ -130,14 +110,14 @@ export function BeatCTA() {
               style={{
                 background: 'rgba(255,255,255,0.03)',
                 border: '1px solid rgba(34,211,238,0.2)',
-                padding: isMobile ? '0.75rem 0.5rem' : 'clamp(1rem, 3vw, 2rem)',
+                padding: 'clamp(0.75rem, 2.5vw, 2rem)',
                 textAlign: 'center',
               }}
             >
               <span
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: isMobile ? 'clamp(1.5rem, 5vw, 2.5rem)' : 'clamp(2rem, 5vw, 3.5rem)',
+                  fontSize: 'clamp(1.75rem, 5vw, 3.5rem)',
                   fontWeight: 400,
                   lineHeight: 0.85,
                   display: 'block',
@@ -150,7 +130,7 @@ export function BeatCTA() {
               <span
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: isMobile ? '0.55rem' : 'clamp(0.5rem, 0.7vw, 0.65rem)',
+                  fontSize: 'clamp(0.5rem, 0.7vw, 0.65rem)',
                   letterSpacing: '0.12em',
                   color: 'rgba(255,255,255,0.45)',
                   whiteSpace: 'pre-line',
@@ -164,13 +144,14 @@ export function BeatCTA() {
           ))}
         </div>
 
+        {/* Footer line */}
         <div
           style={{
             position: 'absolute',
-            bottom: 'clamp(1.5rem, 3vw, 2.5rem)',
-            left: 'clamp(1.5rem, 4vw, 3rem)',
-            right: 'clamp(1.5rem, 4vw, 3rem)',
-            display: isMobile ? 'none' : 'flex',
+            bottom: 'clamp(1rem, 2vw, 2rem)',
+            left: 'clamp(1.25rem, 4vw, 3rem)',
+            right: 'clamp(1.25rem, 4vw, 3rem)',
+            display: 'flex',
             justifyContent: 'space-between',
             fontFamily: 'var(--font-mono)',
             fontSize: 'clamp(0.45rem, 0.6vw, 0.55rem)',
